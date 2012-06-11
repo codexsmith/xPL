@@ -33,6 +33,32 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
+		<Unit filename="xPLLib/xPL-config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-hub.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-io.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-listeners.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-message.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-service.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-store.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL-utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="xPLLib/xPL.h" />
+		<Unit filename="xPLLib/xPL_priv.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
