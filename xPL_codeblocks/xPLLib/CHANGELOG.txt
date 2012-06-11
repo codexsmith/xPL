@@ -1,0 +1,73 @@
+xPL4Linux -- Change History
+
+xPL4Linux V1.3a -- released October 18, 2006
+
+* If you create an xPL message that is too large (larger than a UDP packet is
+  allowed to be and if you have debugging enabled, a message indicating the
+  message was too large and was discarded is issued and the message is not
+  sent.  The logic for not sending message that are too large has been then
+  since V1.0, but the addition of printing a debug message is what was added.
+
+* Altered the addServiceListener so an empty schema class or type is the same
+  as a null schema class or type (made Kylix interfacing a bit easier)
+
+* Have added a kylix "wrapper" that allows kylix developers to use the same
+  API as the C developers.
+
+* Updated xPL_createService so that if the instance ID to use is null, we
+  create a unique one for use (like we do with unconfigured services).
+
+* xPLLib will now, by default, scan all network interfaces in order (the order
+  listed by ifconfig, usually) until it find a valid, running (i.e. UP),
+  non-loopback interface and use that.  Of course, it the xPLLib base app uses
+  the xPL_parseCommonArgs call (and it should), you can still manually specify
+  which interface to use.
+
+* Fixed a problem whereby the xPL receive code would treat any message from
+  the "xpl" vendor as a group message.  This affects the xPLLib and xPL_Hub.
+
+* Fixed a nasty bug in the xPL Hub code that would close connections/ports for
+  xPL devices prematurely when more than one device was sharing the same
+  port/connection.
+
+xPL4Linux V1.3 - release December 6, 2005
+
+* Implemented full device configuration support (check the
+  include CONFIG.txt for notes about it).
+
+* Finished implementation of filters and groups (associated 
+  with configuration subsystem).
+
+* Added a new xPL_ServiceSendMessage(theMessage) which should
+  be used by any xPL Service (in order to properly take advantage
+  of changes in the device instance name/configuration changes)
+
+* Copied the xPL_Clock.c demo program to xPL_ConfigClock.c that
+  is very similar, but implements a configurable interface (user
+  can configure the instance name heartbeat interval and how
+  often the clock sends the time out to the network).
+
+* The xPL_Logger.c demo program has been upgraded to be configurable
+  wit hthe ability to both configure if data should append too a log
+  file or not and what the log file name is.
+
+* Added a new xPLSend.c program in examples that allows sending xPL
+  messages from the command line
+
+* Various small bug fixes.
+
+xPL4Linux V1.2 - released Sept 26, 2005
+ * Added support for setting and sending a services version
+ * Added support for responding to device discovery request
+ * Fixed a bug in xPL Hub logic that would only recognize local
+   traffic from a single address on the system vs. from any
+   address on the system.
+
+xPL4Linux V1.1 - released 9/16/2005
+ * Support for new hub-detection protocol
+
+xPL4Linux V1.0a - released 4/15/2005
+ * Minor bug fixes
+ * More work on configuration subsystem
+
+xPL4Linux V1.0 - initial release 12/30/2004

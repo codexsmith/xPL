@@ -1,0 +1,34 @@
+Installing xPL4Linux
+
+Untar the xPL4Linux.tar file into an empty directory.  Go into the xPL4Linux
+directory and type make.  This will compile the components of xPL4Linux
+library (xPLLib).
+
+If there are no errors (*), you can install it into your systems by becoming
+root and typing "make install".  The shared and static libraries are installed
+into /usr/local/lib and the xPL.h header file is installed in
+/usr/local/include.  You can changed the destinations in the Makefile if you'd
+like.
+
+If you do not want a 3rd part programming running as root, here are the steps
+to manually install xP4Linux's xPLLib:
+
+1) Make sure you typed "make" and had no errors (a few warnings are OK)
+
+2) As root, copy libxPL.so into your library directory (often
+   /usr/local/lib or /usr/lib)
+
+3) Copy the static link library xPL.a into the same place you installed the
+   share libxPL.so
+
+4) Install the xPL.h into the system include directory (often
+   /usr/local/include or /usr/include)
+
+5) If this is a brand new install of xPLLib, type "ldconfig" to have the
+   system library cache updated and made aware of xPLLib
+
+You really only need steps 3 & 4 for machines you will develop and compile
+xPLLib based applications on.  If you are deploying a previously compiled
+application, you need only do steps #2 and 5
+
+* You'll get a warning about a date formats (2 digit years).  They are harmless.
