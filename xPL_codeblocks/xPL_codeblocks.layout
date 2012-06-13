@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="117" topLine="0" />
+	<File name="main.c" open="0" top="0" tabpos="0">
+		<Cursor position="417" topLine="5" />
 	</File>
-	<File name="xPLLib/xPL-config.c" open="1" top="0" tabpos="5">
+	<File name="test.h" open="1" top="0" tabpos="8">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-hub.c" open="1" top="1" tabpos="7">
+	<File name="xPLLib/test3.cpp" open="1" top="0" tabpos="12">
+		<Cursor position="38" topLine="0" />
+	</File>
+	<File name="xPLLib/xPL-config.c" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-io.c" open="1" top="0" tabpos="2">
+	<File name="xPLLib/xPL-hub.c" open="1" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="xPLLib/xPL-io.c" open="1" top="0" tabpos="1">
 		<Cursor position="157" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-listeners.c" open="1" top="0" tabpos="6">
+	<File name="xPLLib/xPL-listeners.c" open="1" top="0" tabpos="5">
 		<Cursor position="156" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-message.c" open="1" top="0" tabpos="3">
-		<Cursor position="28655" topLine="884" />
+	<File name="xPLLib/xPL-message.c" open="1" top="0" tabpos="2">
+		<Cursor position="12290" topLine="350" />
 	</File>
-	<File name="xPLLib/xPL.h" open="1" top="0" tabpos="4">
-		<Cursor position="10435" topLine="317" />
+	<File name="xPLLib/xPL-service.c" open="1" top="0" tabpos="9">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="xPLLib/xPL-store.c" open="1" top="0" tabpos="10">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="xPLLib/xPL-utils.c" open="1" top="0" tabpos="11">
+		<Cursor position="14559" topLine="454" />
+	</File>
+	<File name="xPLLib/xPL.h" open="1" top="1" tabpos="3">
+		<Cursor position="522" topLine="5" />
+	</File>
+	<File name="xPLLib/xPL_priv.h" open="1" top="0" tabpos="7">
+		<Cursor position="581" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
