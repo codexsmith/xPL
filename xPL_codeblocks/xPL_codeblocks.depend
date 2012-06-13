@@ -87,3 +87,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
+1339619744 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.c
+	<stdio.h>
+	"xPLLib/xPL.h"
+
