@@ -32,9 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="main.cpp" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
 		</Unit>
