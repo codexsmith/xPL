@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="XPLHal.h" />
+		<Unit filename="XPLMessage.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
