@@ -1,6 +1,7 @@
 // xPL Linux Hal Server
 
 #include <stdio.h>
+#include "XPLHal.h";
 extern "C" {
 
     #include "xPLLib/xPL.h"
@@ -9,6 +10,7 @@ extern "C" {
 
 int main(int argc, String argv[])
 {
+    XPLMessage testMsg, testMsg2;
     int argIndex = 0;
     xPL_ServicePtr theService = NULL;
     xPL_MessagePtr theMessage = NULL;
@@ -21,10 +23,37 @@ int main(int argc, String argv[])
 
     //Message Structure
     xPL_MessageType msgType = xPL_MESSAGE_COMMAND;
-    String msgSchemaClass = "config";
-    String msgSchemaType = "basic";
+    String msgSchemaClass = "bull";
+    String msgSchemaType = "crap";
     //String msgSchemaClass = NULL;
     //String msgSchemaType = NULL;
+
+
+    /**** Test Code ****/
+    testMsg.addMember("Fruit", "Dealer");
+    testMsg.addMember("SK", "MC");
+    testMsg.setHops(5);
+    testMsg.setSource("Pin", "Tin", "Sin");
+    testMsg.setMsgType("Command");
+
+    testMsg2 = testMsg.copyMessage();
+    testMsg2.addMember("StarTale", "July");
+    testMsg2.setMsgType("Status");
+
+    testMsg.setSource("Poop", "Scoop", "Loop");
+    testMsg.setHops(8);
+
+    cout << "------Comparing Message created through copyMessage() function -------\n";
+    cout << testMsg2.getSource().device << " -- " << testMsg.getSource().device << "\n";
+    cout << testMsg2.getHops() << " -- " << testMsg.getHops() << "\n";
+    cout << testMsg2.getMsgType() << " -- " << testMsg.getMsgType() << "\n";
+
+    if (!testMsg.findMember("StarTale").empty())
+        cout << "Whoops: " << testMsg.findMember("StarTale") << "\n";
+    if (!testMsg2.findMember("StarTale").empty())
+        cout << "Yay: " << testMsg2.findMember("StarTale") << "\n";
+
+    cout << "-----------------------------------------------------------------------\n\n";
 
     /* Start xPL up */
     if (!xPL_initialize(xPL_getParsedConnectionType())) {
