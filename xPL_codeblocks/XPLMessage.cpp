@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "XPLHal.h"
+#include "XPLMessage.h"
 
 using namespace std;
 

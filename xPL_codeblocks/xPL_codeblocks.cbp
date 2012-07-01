@@ -34,6 +34,7 @@
 		</Compiler>
 		<Unit filename="XPLHal.h" />
 		<Unit filename="XPLMessage.cpp" />
+		<Unit filename="XPLMessage.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />

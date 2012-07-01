@@ -27,8 +27,8 @@ typedef char * String;
 
 /* Some helpful constants */
 #ifndef TRUE
-#define TRUE 1
-#define FALSE 0
+//#define TRUE 1
+//#define FALSE 0
 #endif
 
 #ifndef NULL
@@ -171,7 +171,7 @@ struct _xPL_Service {
   Bool reportOwnMessages;
   int listenerCount;
   int listenerAllocCount;
-  xPL_ServiceListenerDefPtr serviceListenerList; 
+  xPL_ServiceListenerDefPtr serviceListenerList;
 };
 
 /* xPL Service Support */
