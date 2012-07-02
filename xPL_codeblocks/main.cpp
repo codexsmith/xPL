@@ -44,10 +44,20 @@ int sendMsg(XPLMessage msg)
 //        fprintf(stderr, "Unable to create broadcast message\n");
 //        return FALSE;
 //    }
-    if ((theMessage = xPL_createTargetedMessage(theService, msgType, msg.getDestination().vendor.c_str(),
-            msg.getDestination().device.c_str(), msg.getDestination().instance.c_str())) == NULL) {
-        fprintf(stderr, "Unable to create broadcast message\n");
-        return FALSE;
+    if (msg.isBroadcast())
+    {
+        if ((theMessage = xPL_createBroadcastMessage(theService, msgType)) == NULL) {
+            fprintf(stderr, "Unable to create broadcast message\n");
+            return FALSE;
+        }
+    }
+    else
+    {
+        if ((theMessage = xPL_createTargetedMessage(theService, msgType, msg.getDestination().vendor.c_str(),
+                msg.getDestination().device.c_str(), msg.getDestination().instance.c_str())) == NULL) {
+            fprintf(stderr, "Unable to create broadcast message\n");
+            return FALSE;
+        }
     }
 
     //Setup the schema in the message
