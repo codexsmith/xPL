@@ -4,6 +4,8 @@
 #include "XPLHal.h"
 #include "XPLMessage.h"
 
+using namespace std;
+
 class XPLCondition {
 	public:
 		explicit XPLCondition(vector<XPLValuePair> attributes);

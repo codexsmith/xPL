@@ -1,10 +1,8 @@
-// xPL Linux Hal Server
+// xPL Linux Hal Server basic types
 
 #ifndef XPLHal_H
 #define XPLHal_H
 
-#include <iostream>
-#include <stdio.h>
 #include <string>
 #include <vector>
 

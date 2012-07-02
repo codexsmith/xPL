@@ -3,9 +3,11 @@
 
 #include "XPLMessage.h"
 
+using namespace std;
+
 class XPLAction {
 	public:
-		XPLAction(vector<XPLMessage> responses);
+		explicit XPLAction(vector<XPLMessage> responses);
 		~XPLAction();
 		vector<XPLMessage> execute();
 
