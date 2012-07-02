@@ -55,7 +55,7 @@ int sendMsg(XPLMessage msg)
     {
         if ((theMessage = xPL_createTargetedMessage(theService, msgType, msg.getDestination().vendor.c_str(),
                 msg.getDestination().device.c_str(), msg.getDestination().instance.c_str())) == NULL) {
-            fprintf(stderr, "Unable to create broadcast message\n");
+            fprintf(stderr, "Unable to create targeted message\n");
             return FALSE;
         }
     }
