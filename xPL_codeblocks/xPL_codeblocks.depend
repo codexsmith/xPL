@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1341193985 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
 	<stdio.h>
 	"XPLHal.h"
 	"XPLMessage.h"
 	"xPLLib/xPL.h"
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
 	<stdio.h>
 	"xPL.h"
 	"xPL_priv.h"
 
-1341193100 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
+1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
 	<errno.h>
 	<unistd.h>
 	<stdlib.h>
@@ -19,9 +19,9 @@
 	<sys/time.h>
 	<time.h>
 
-1339714386 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL_priv.h
+1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL_priv.h
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-hub.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-hub.c
 	<stdio.h>
 	<time.h>
 	<signal.h>
@@ -42,7 +42,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-io.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-io.c
 	<errno.h>
 	<unistd.h>
 	<stdio.h>
@@ -64,27 +64,27 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-listeners.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-listeners.c
 	"xPL.h"
 	"xPL_priv.h"
 	<stdarg.h>
 
-1341193110 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
 	<stdarg.h>
 	<sys/socket.h>
 	"xPL.h"
 	"xPL_priv.h"
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-service.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-service.c
 	"xPL.h"
 	"xPL_priv.h"
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-store.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-store.c
 	"xPL.h"
 	"xPL_priv.h"
 	<stdlib.h>
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-utils.c
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-utils.c
 	<stdio.h>
 	<stdarg.h>
 	"xPL.h"
@@ -179,7 +179,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1341191095 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
+1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
 	<iostream>
 	<stdio.h>
 	<string>
@@ -188,12 +188,35 @@
 	"XPLHal.h"
 	"XPLMessage.h"
 
-1341180548 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLHal.h
-	<iostream>
-	<stdio.h>
+1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLHal.h
 	<string>
 	<vector>
 
-1341190877 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
+1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
 	"XPLHal.h"
+
+1341268272 source:/home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.cpp
+	"Determinator.h"
+	"XPLCondition.h"
+	"XPLAction.h"
+
+1341268238 /home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.h
+	"XPLAction.h"
+	"XPLCondition.h"
+	"XPLMessage.h"
+
+1341268135 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.h
+	"XPLMessage.h"
+
+1341268078 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.h
+	"XPLHal.h"
+	"XPLMessage.h"
+
+1341268120 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.cpp
+	<vector>
+	"XPLAction.h"
+	"XPLMessage.h"
+
+1341268058 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
+	"XPLCondition.h"
 

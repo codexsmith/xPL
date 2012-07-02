@@ -8,12 +8,13 @@ using namespace std;
 
 class XPLCondition {
 	public:
+        XPLCondition();
 		explicit XPLCondition(vector<XPLValuePair> attributes);
 		~XPLCondition();
 		bool match(XPLMessage);
 
 	private:
-		vector<XPLValuePair> attributes_;		
+		vector<XPLValuePair> attributes_;
 };
 
 #endif //XPLAction_H

@@ -5,8 +5,8 @@
 Determinator::Determinator(XPLCondition condition, XPLAction action)
 {
 	XPLCondition condition_ = condition;
-	XPLAction action_ = action;	
-	enabled_ = true; 
+	XPLAction action_ = action;
+	enabled_ = true;
 }
 
 Determinator::Determinator(Determinator* determinator)

@@ -5,13 +5,18 @@
 
 using namespace std;
 
+XPLAction::XPLAction()
+{
+}
+
+
 XPLAction::XPLAction(vector<XPLMessage> responses)
 {
-	responses_ = responses;	
+	responses_ = responses;
 }
 
 XPLAction::~XPLAction()
-{	
+{
 }
 
 vector<XPLMessage> XPLAction::execute()
