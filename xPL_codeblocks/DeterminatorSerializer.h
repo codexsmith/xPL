@@ -3,6 +3,10 @@
 
 #include <string>
 #include "Determinator.h"
+#include "DeterminatorWriter.h"
+#include "DeterminatorReader.h"
+
+using namespace std;
 
 class DeterminatorSerializer {
 	public:
@@ -15,6 +19,8 @@ class DeterminatorSerializer {
 		DeterminatorSerializer(const DeterminatorSerializer&);
 		void operator=(const DeterminatorSerializer&);
 		string xmlFile_;
+		DeterminatorReader reader_;
+		DeterminatorWriter writer_;
 };
 
-#endif //DeterminatorSerializer.h
+#endif //DeterminatorSerializer_H
