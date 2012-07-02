@@ -32,10 +32,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Determinator.cpp" />
+		<Unit filename="Determinator.h" />
+		<Unit filename="DeterminatorReader.h" />
+		<Unit filename="DeterminatorSerializer.h" />
+		<Unit filename="DeterminatorWriter.h" />
+		<Unit filename="XPLAction.cpp" />
+		<Unit filename="XPLAction.h" />
+		<Unit filename="XPLCondition.cpp" />
+		<Unit filename="XPLCondition.h" />
 		<Unit filename="XPLHal.h" />
 		<Unit filename="XPLMessage.cpp" />
 		<Unit filename="XPLMessage.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="storage.h" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
 		</Unit>

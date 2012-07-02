@@ -1,46 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="XPLHal.h" open="1" top="0" tabpos="21">
+	<File name="Determinator.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="76" topLine="0" />
+	</File>
+	<File name="Determinator.h" open="1" top="0" tabpos="9">
+		<Cursor position="411" topLine="6" />
+	</File>
+	<File name="XPLAction.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="89" topLine="0" />
+	</File>
+	<File name="XPLAction.h" open="1" top="0" tabpos="8">
+		<Cursor position="123" topLine="0" />
+	</File>
+	<File name="XPLCondition.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="49" topLine="0" />
+	</File>
+	<File name="XPLCondition.h" open="1" top="0" tabpos="5">
+		<Cursor position="167" topLine="0" />
+	</File>
+	<File name="XPLHal.h" open="1" top="1" tabpos="1">
 		<Cursor position="42" topLine="0" />
 	</File>
-	<File name="XPLMessage.cpp" open="1" top="0" tabpos="23">
-		<Cursor position="163" topLine="12" />
+	<File name="XPLMessage.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="163" topLine="0" />
 	</File>
-	<File name="XPLMessage.h" open="1" top="0" tabpos="22">
+	<File name="XPLMessage.h" open="1" top="0" tabpos="2">
 		<Cursor position="62" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="20">
+	<File name="main.cpp" open="0" top="0" tabpos="20">
 		<Cursor position="4838" topLine="118" />
 	</File>
-	<File name="xPLLib/xPL-config.c" open="1" top="0" tabpos="4">
+	<File name="xPLLib/xPL-config.c" open="0" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-hub.c" open="1" top="0" tabpos="6">
+	<File name="xPLLib/xPL-hub.c" open="0" top="0" tabpos="6">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-io.c" open="1" top="0" tabpos="1">
+	<File name="xPLLib/xPL-io.c" open="0" top="0" tabpos="1">
 		<Cursor position="157" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-listeners.c" open="1" top="0" tabpos="5">
+	<File name="xPLLib/xPL-listeners.c" open="0" top="0" tabpos="5">
 		<Cursor position="156" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-message.c" open="1" top="0" tabpos="2">
+	<File name="xPLLib/xPL-message.c" open="0" top="0" tabpos="2">
 		<Cursor position="12290" topLine="350" />
 	</File>
-	<File name="xPLLib/xPL-service.c" open="1" top="0" tabpos="8">
+	<File name="xPLLib/xPL-service.c" open="0" top="0" tabpos="8">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-store.c" open="1" top="0" tabpos="9">
+	<File name="xPLLib/xPL-store.c" open="0" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-utils.c" open="1" top="0" tabpos="10">
+	<File name="xPLLib/xPL-utils.c" open="0" top="0" tabpos="10">
 		<Cursor position="14559" topLine="454" />
 	</File>
-	<File name="xPLLib/xPL.h" open="1" top="1" tabpos="3">
+	<File name="xPLLib/xPL.h" open="0" top="0" tabpos="3">
 		<Cursor position="522" topLine="251" />
 	</File>
-	<File name="xPLLib/xPL_priv.h" open="1" top="0" tabpos="7">
+	<File name="xPLLib/xPL_priv.h" open="0" top="0" tabpos="7">
 		<Cursor position="581" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
