@@ -19,6 +19,9 @@ class XPLMessage
 	//returns value of a specified parameter name
 	string findMember(string memberName);
 
+	//returns entire vector of members
+    vector<XPLValuePair> getMembers();
+
 	//adds member to list
 	void addMember(string member, string value);
 
@@ -33,6 +36,12 @@ class XPLMessage
 
 	//sets source address
 	void setSource(string sourceVendor, string sourceDevice, string sourceInstance);
+
+    //returns wether or not the message was a broadcast
+    bool isBroadcast();
+
+    //sets the broadcast flag
+    void setBroadcast(bool broadcast);
 
 	//returns destination/target (vendor-device.instance)
 	XPLAddress getDestination();
@@ -81,7 +90,7 @@ class XPLMessage
 
     XPLAddress source;
 
-	bool isTarget;
+	bool broadcast;
 
 //	string destinationVendor;
 //	string destinationDevice;

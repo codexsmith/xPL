@@ -66,7 +66,7 @@ static Bool appendText(String theText) {
 static Bool writeBinaryValue(String theData, int dataLen) {
   int dataIndex;
 
-  for (dataIndex = 0; dataIndex < dataLen; dataIndex++) 
+  for (dataIndex = 0; dataIndex < dataLen; dataIndex++)
     WRITE_TEXT(xPL_intToHex(theData[dataIndex]));
 
   return TRUE;
@@ -228,7 +228,7 @@ String xPL_getSourceInstanceID(xPL_MessagePtr theMessage) {
 void xPL_setSource(xPL_MessagePtr theMessage, String theVendor, String theDeviceID, String theInstanceID) {
   /* Skip unless this is a received message (can't change sendable messages) */
   if (!theMessage->receivedMessage) return;
-  
+
   xPL_setSourceVendor(theMessage, theVendor);
   xPL_setSourceDeviceID(theMessage, theDeviceID);
   xPL_setSourceInstanceID(theMessage, theInstanceID);
@@ -260,7 +260,7 @@ String xPL_getSchemaType(xPL_MessagePtr theMessage) {
   return theMessage->schemaType;
 }
 
-void xPL_setSchema(xPL_MessagePtr theMessage, String theSchemaClass, String theSchemaType) {
+void xPL_setSchema(xPL_MessagePtr theMessage, const char* theSchemaClass, const char* theSchemaType) {
   xPL_setSchemaClass(theMessage, theSchemaClass);
   xPL_setSchemaType(theMessage, theSchemaType);
 }
@@ -284,7 +284,7 @@ String xPL_getMessageNamedValue(xPL_MessagePtr theMessage, String theName) {
   return xPL_getNamedValue(theMessage->messageBody, theName);
 }
 
-void xPL_addMessageNamedValue(xPL_MessagePtr theMessage, String theName, String theValue) {
+void xPL_addMessageNamedValue(xPL_MessagePtr theMessage, const char* theName, const char* theValue) {
   if (theMessage->messageBody == NULL) theMessage->messageBody = xPL_newNamedValueList();
   xPL_addNamedValue(theMessage->messageBody, theName, theValue);
 }
@@ -311,7 +311,7 @@ void xPL_setMessageNamedValues(xPL_MessagePtr theMessage, ...) {
 
     /* Get the value */
     theValue = va_arg(argPtr, String);
-    
+
     /* Create a name/value pair */
     xPL_setMessageNamedValue(theMessage, theName, theValue);
   }
@@ -322,7 +322,7 @@ void xPL_setMessageNamedValues(xPL_MessagePtr theMessage, ...) {
 /* Create a new message based on a service */
 static xPL_MessagePtr createSendableMessage(xPL_ServicePtr theService, xPL_MessageType messageType) {
   xPL_MessagePtr theMessage;
-  
+
   /* Allocate the message */
   theMessage = xPL_AllocMessage();
 
@@ -334,7 +334,7 @@ static xPL_MessagePtr createSendableMessage(xPL_ServicePtr theService, xPL_Messa
   theMessage->sourceVendor = xPL_getServiceVendor(theService);
   theMessage->sourceDeviceID = xPL_getServiceDeviceID(theService);
   theMessage->sourceInstanceID = xPL_getServiceInstanceID(theService);
-  
+
   /* And we are done */
   return theMessage;
 }
@@ -342,7 +342,7 @@ static xPL_MessagePtr createSendableMessage(xPL_ServicePtr theService, xPL_Messa
 /* Create a new message based on a service */
 static xPL_MessagePtr createReceivedMessage(xPL_MessageType messageType) {
   xPL_MessagePtr theMessage;
-  
+
   /* Allocate the message */
   theMessage = xPL_AllocMessage();
 
@@ -358,14 +358,14 @@ static xPL_MessagePtr createReceivedMessage(xPL_MessageType messageType) {
 }
 
 /* Create a message suitable for sending to a specific receiver */
-xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr theService, xPL_MessageType messageType, 
-					 String theVendor, String theDevice, String theInstance) {
+xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr theService, xPL_MessageType messageType,
+					 const char* theVendor, const char* theDevice, const char* theInstance) {
 
   xPL_MessagePtr theMessage = createSendableMessage(theService, messageType);
   xPL_setTarget(theMessage, theVendor, theDevice, theInstance);
   return theMessage;
 }
- 
+
 /* Create a message suitable for sending to a group */
 xPL_MessagePtr xPL_createGroupTargetedMessage(xPL_ServicePtr theService, xPL_MessageType messageType, String theGroup) {
   xPL_MessagePtr theMessage = createSendableMessage(theService, messageType);
@@ -379,7 +379,7 @@ xPL_MessagePtr xPL_createBroadcastMessage(xPL_ServicePtr theService, xPL_Message
   xPL_setBroadcastMessage(theMessage, TRUE);
   return theMessage;
 }
-  
+
 /* Release a message and all it's resources */
 void xPL_releaseMessage(xPL_MessagePtr theMessage) {
   xPL_Debug("Releasing message, TYPE=%d, RECEIVED=%d", theMessage->messageType, theMessage->receivedMessage);
@@ -396,7 +396,7 @@ void xPL_releaseMessage(xPL_MessagePtr theMessage) {
     theMessage->sourceInstanceID = NULL;
     xPL_Debug("NULLing out transmitted messages SOURCE parameters");
   }
-    
+
   theMessage->isBroadcastMessage = FALSE;
   STR_FREE(theMessage->targetVendor);
   STR_FREE(theMessage->targetDeviceID);
@@ -486,7 +486,7 @@ String xPL_formatMessage(xPL_MessagePtr theMessage) {
 
     /* Write data content out */
     if (nvPair->itemValue != NULL) {
-      if (nvPair->isBinary) 
+      if (nvPair->isBinary)
 	writeBinaryValue(nvPair->itemValue, nvPair->binaryLength);
       else
 	WRITE_TEXT(nvPair->itemValue);
@@ -540,7 +540,7 @@ static int parseBlock(String theText, String *blockHeader, xPL_NameValueListPtr 
     /* Convert identifiers to upper case */
     /* if (((curState != 4) || forceUpperCase) && (theChar >= 97) && (theChar <= 122)) theChar -= 32; */
     if (forceUpperCase && (theChar >= 97) && (theChar <= 122)) theChar -= 32;
-    
+
     switch(curState) {
     case 0:
       /* Handle an LF transition */
@@ -564,7 +564,7 @@ static int parseBlock(String theText, String *blockHeader, xPL_NameValueListPtr 
       /* Handle error */
       xPL_Debug("Got invalid character parsing block header - %c at position %d", theChar, curIndex);
       return -curIndex;
-    
+
     case 1:
       /* Advance */
       if (theChar == '{') {
@@ -575,7 +575,7 @@ static int parseBlock(String theText, String *blockHeader, xPL_NameValueListPtr 
       /* Crapola */
       xPL_Debug("Got invalid character parsing start of block - %c at position %d (wanted a {)", theChar, curIndex);
       return -curIndex;
-      
+
 
     case 2:
       /* Advance */
@@ -664,7 +664,7 @@ static int parseBlock(String theText, String *blockHeader, xPL_NameValueListPtr 
       if (theChar == '\n') {
 	/* Copy off block header */
 	*blockHeader = xPL_StrDup(blockHeaderBuff);
-	
+
 	/* And we are done */
 	return curIndex + 1;
       }
@@ -678,7 +678,7 @@ static int parseBlock(String theText, String *blockHeader, xPL_NameValueListPtr 
 
   /* If we didn't start a block, then it's just end of the stream */
   if (!blockStarted) return 0;
-  
+
   /* If we got here, we ran out of characters - this is an error too */
   xPL_Debug("Ran out of characters parsing block");
   return -theLength;
@@ -742,7 +742,7 @@ static Bool parseMessageHeader(xPL_MessagePtr theMessage, xPL_NameValueListPtr n
   /* Parse the target */
   dashPtr = NULL;
   periodPtr = NULL;
-  
+
   /* Check for a wildcard */
   if (!strcmp(theNameValue->itemValue, "*")) {
     xPL_setBroadcastMessage(theMessage, TRUE);
@@ -791,7 +791,7 @@ xPL_MessagePtr parseMessage(String theText) {
   String blockHeaderKeyword;
   String blockDelimPtr, periodPtr = NULL;
   xPL_MessagePtr theMessage;
-  
+
   /* Allocate a message */
   theMessage = createReceivedMessage(xPL_MESSAGE_ANY);
 
@@ -818,7 +818,7 @@ xPL_MessagePtr parseMessage(String theText) {
   }
 
   /* We are done with this now - drop it while we are still thinking about it */
-  STR_FREE(blockHeaderKeyword);  
+  STR_FREE(blockHeaderKeyword);
 
   /* Parse the name/values into the message */
   if (!parseMessageHeader(theMessage, theMessage->messageBody)) {
@@ -837,21 +837,21 @@ xPL_MessagePtr parseMessage(String theText) {
     if ((parsedThisTime = parseBlock(&(theText[parsedChars]), &blockHeaderKeyword, theMessage->messageBody, FALSE)) < 0) {
       xPL_Debug("Error parsing message block");
       xPL_releaseMessage(theMessage);
-      STR_FREE(blockHeaderKeyword);  
+      STR_FREE(blockHeaderKeyword);
       return NULL;
     }
-    
+
     /* If we ran out of characters, no more blocks */
     if (parsedThisTime == 0) break;
 
     /* Up Parsed count */
     parsedChars += parsedThisTime;
-    
+
     /* Parse the block header */
     if ((blockDelimPtr = strchr(blockHeaderKeyword, '.')) == NULL) {
       xPL_Debug("Malformed message block header - %s", blockHeaderKeyword);
       xPL_releaseMessage(theMessage);
-      STR_FREE(blockHeaderKeyword);  
+      STR_FREE(blockHeaderKeyword);
       return NULL;
     }
     periodPtr = blockDelimPtr;
@@ -866,7 +866,7 @@ xPL_MessagePtr parseMessage(String theText) {
     STR_FREE(blockHeaderKeyword);
     break;
   }
-  
+
   /* Return the message */
   return theMessage;
 }
@@ -878,9 +878,9 @@ static Bool isHubEcho(xPL_MessagePtr theMessage) {
   if (theMessage == NULL) return FALSE;
 
   /* If this is not a heartbeat, ignore it */
-  if (!(!xPL_strcmpIgnoreCase(theMessage->schemaClass, "hbeat") 
+  if (!(!xPL_strcmpIgnoreCase(theMessage->schemaClass, "hbeat")
      || !xPL_strcmpIgnoreCase(theMessage->schemaClass, "config"))) return FALSE;
-  
+
   /* Insure it has an IP address and port */
   if ((remoteIP = xPL_getMessageNamedValue(theMessage, "remote-ip")) == NULL) return FALSE;
   if ((thePort = xPL_getMessageNamedValue(theMessage, "port")) == NULL) return FALSE;
@@ -903,7 +903,7 @@ void xPL_receiveMessage(int theFD, int thePollInfo, int userValue) {
     if ((bytesRead = recvfrom(xPLFD, &messageBuff, MSG_BUFF_SIZE - 1, 0, NULL, NULL)) < 0) {
       /* Expected response when queue is empty */
       if (errno == EAGAIN) return;
-      
+
       /* Note the error and bail */
       xPL_Debug("Error reading xPL message from network - %s (%d)", strerror(errno), errno);
       return;
@@ -912,7 +912,7 @@ void xPL_receiveMessage(int theFD, int thePollInfo, int userValue) {
     /* We receive a message - clean it up */
     messageBuff[bytesRead] = '\0';
     xPL_Debug("Just read %d bytes as packet [%s]", bytesRead, messageBuff);
-    
+
     /* Send the raw message to any raw message listeners */
     xPL_dispatchRawEvent(messageBuff, bytesRead);
 

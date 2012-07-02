@@ -287,18 +287,19 @@ extern void xPL_setSchemaClass(xPL_MessagePtr, String);
 extern String xPL_getSchemaClass(xPL_MessagePtr);
 extern void xPL_setSchemaType(xPL_MessagePtr, String);
 extern String xPL_getSchemaType(xPL_MessagePtr);
-extern void xPL_setSchema(xPL_MessagePtr, String, String);
+//extern void xPL_setSchema(xPL_MessagePtr, String, String);
+extern void xPL_setSchema(xPL_MessagePtr, const char*, const char*);
 
 extern xPL_NameValueListPtr xPL_getMessageBody(xPL_MessagePtr);
 extern Bool xPL_doesMessageNamedValueExist(xPL_MessagePtr, String);
 extern String xPL_getMessageNamedValue(xPL_MessagePtr, String);
 
 extern void xPL_clearMessageNamedValues(xPL_MessagePtr);
-extern void xPL_addMessageNamedValue(xPL_MessagePtr, String, String);
+extern void xPL_addMessageNamedValue(xPL_MessagePtr, const char*, const char*);
 extern void xPL_setMessageNamedValue(xPL_MessagePtr, String, String);
 extern void xPL_setMessageNamedValues(xPL_MessagePtr, ...);
 
-extern xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr, xPL_MessageType, String, String, String);
+extern xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr, xPL_MessageType, const char*, const char*, const char*);
 extern xPL_MessagePtr xPL_createGroupTargetedMessage(xPL_ServicePtr, xPL_MessageType, String);
 extern xPL_MessagePtr xPL_createBroadcastMessage(xPL_ServicePtr, xPL_MessageType);
 extern void xPL_releaseMessage(xPL_MessagePtr);

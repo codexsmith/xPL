@@ -13,128 +13,120 @@ extern "C" {
 //#include <boost/asio.hpp>
 
 //Prototypes
-int sendMsg(xPL_ServicePtr xPLService, int command);
+int sendMsg(XPLMessage msg);
 void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
 
 static xPL_ServicePtr theService = NULL;
 
-int sendMsg(xPL_ServicePtr xPLService, int command)
+int sendMsg(XPLMessage msg)
 {
-    int delays[] = {600, 300, 600, 200, 600, 100, 600, 100, 600, 100, 600, 100, 600, 100, 600, 300, 600, 200, 600, 100, 600, 100, 600, 100, 600, 100, 600, 100, 50};
-    int delaysSize = sizeof(delays) / sizeof(int);
-    int x = 0;
-    xPL_MessagePtr theMessage = NULL;
-    String delimPtr;
-    //Message Structure
-    xPL_MessageType msgType = xPL_MESSAGE_COMMAND;
-    String msgSchemaClass = "control";
-    String msgSchemaType = "basic";
+    vector<XPLValuePair> members = msg.getMembers();
 
-    if ((theMessage = xPL_createTargetedMessage(xPLService, msgType, "smgpoe", "lamp", "1")) == NULL) {
+    //xpllib message ptr
+    xPL_MessagePtr theMessage = NULL;
+
+    //Message type for old xpllib object
+    xPL_MessageType msgType = xPL_MESSAGE_COMMAND;
+
+    //Set the message type
+    if (msg.getMsgType().compare("xpl-cmnd") == 0)
+        msgType = xPL_MESSAGE_COMMAND;
+    else if (msg.getMsgType().compare("xpl-stat") == 0)
+        msgType = xPL_MESSAGE_STATUS;
+    else if (msg.getMsgType().compare("xpl-trig") == 0)
+        msgType = xPL_MESSAGE_TRIGGER;
+    else
+        msgType = xPL_MESSAGE_ANY;
+
+    //Create a new message
+//    if ((theMessage = xPL_createTargetedMessage(theService, msgType, "temp",
+//            "temp", "temp")) == NULL) {
+//        fprintf(stderr, "Unable to create broadcast message\n");
+//        return FALSE;
+//    }
+    if ((theMessage = xPL_createTargetedMessage(theService, msgType, msg.getDestination().vendor.c_str(),
+            msg.getDestination().device.c_str(), msg.getDestination().instance.c_str())) == NULL) {
         fprintf(stderr, "Unable to create broadcast message\n");
         return FALSE;
     }
 
-    /* Install the schema */
-    printf("(msgSchemaClass, msgSchemaType) = (%s, %s)\n\n", msgSchemaClass, msgSchemaType);
-    xPL_setSchema(theMessage, msgSchemaClass, msgSchemaType);
+    //Setup the schema in the message
+    const char* schemaClass = msg.getSchema().schema.c_str();
+    const char* schemaType = msg.getSchema().type.c_str();
+    xPL_setSchema(theMessage, schemaClass, schemaType);
 
-    if (command==0)
+    //Add members to the message
+    for (int i = 0; i < members.size(); i++)
     {
-        /* Install named values */
-        xPL_addMessageNamedValue(theMessage, "device", "pwm");
-        xPL_addMessageNamedValue(theMessage, "type", "variable");
-        xPL_addMessageNamedValue(theMessage, "current", "0");
-
-        /* Send the message */
-        if (!xPL_sendMessage(theMessage)) {
-            fprintf(stderr, "Unable to send xPL message\n");
-            return FALSE;
-        }
-    }
-    else
-    {
-        for (int i = 0; i < delaysSize; i++)
-        {
-            //Create a new message each iteration
-            if ((theMessage = xPL_createTargetedMessage(xPLService, msgType, "smgpoe", "lamp", "1")) == NULL) {
-                fprintf(stderr, "Unable to create broadcast message\n");
-                return FALSE;
-            }
-            /* Install the schema */
-            printf("(msgSchemaClass, msgSchemaType) = (%s, %s)\n\n", msgSchemaClass, msgSchemaType);
-            xPL_setSchema(theMessage, msgSchemaClass, msgSchemaType);
-
-            /* Install named values */
-            if (x == 0)
-            {
-                printf("test\n");
-                xPL_addMessageNamedValue(theMessage, "device", "pwm");
-                xPL_addMessageNamedValue(theMessage, "type", "variable");
-                xPL_addMessageNamedValue(theMessage, "current", "50");
-            }
-            else
-            {
-                printf("test2\n");
-                xPL_addMessageNamedValue(theMessage, "device", "pwm");
-                xPL_addMessageNamedValue(theMessage, "type", "variable");
-                xPL_addMessageNamedValue(theMessage, "current", "0");
-            }
-
-            /* Send the message */
-            if (!xPL_sendMessage(theMessage)) {
-                fprintf(stderr, "Unable to send xPL message\n");
-                return FALSE;
-            }
-            printf("%d\n", x);
-            x = (x+1)%2;
-            usleep(1000*delays[i]);
-        }
+        xPL_addMessageNamedValue(theMessage, members[i].member.c_str(), members[i].value.c_str());
     }
 
-    printf("Message Sent!!\n");
+    //Send the message
+    if (!xPL_sendMessage(theMessage)) {
+        fprintf(stderr, "Unable to send xPL message\n");
+        return FALSE;
+    }
+
+    usleep(2000);
 }
 
 void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 {
-    //We should see this!!
-    printf("Receiving a Message\n");
+    XPLMessage msg;
+    xPL_NameValueListPtr memberList;
+    xPL_NameValuePairPtr member;
 
-    if (strcmp(xPL_getSourceVendor(theMessage), "smgpoe") == 0 &&
-        strcmp(xPL_getSourceDeviceID(theMessage), "lamp") == 0 &&
-        strcmp(xPL_getSourceInstanceID(theMessage), "3") == 0)
+
+    //Set the message type
+    switch(xPL_getMessageType(theMessage))
     {
-        if (xPL_doesMessageNamedValueExist(theMessage, "device") && strcmp(xPL_getMessageNamedValue(theMessage, "device"), "button2") == 0)
-        {
-            if (xPL_doesMessageNamedValueExist(theMessage, "current") && strcmp(xPL_getMessageNamedValue(theMessage, "current"), "HIGH") == 0)
-            {
-                if (!sendMsg(theService, 1))
-                {
-                    fprintf(stderr, "Unable to send xPL message.");
-                    exit(1);
-                }
-            }
-        }
+        case xPL_MESSAGE_COMMAND:
+            msg.setMsgType("xpl-cmnd");
+            break;
+        case xPL_MESSAGE_STATUS:
+            msg.setMsgType("xpl-stat");
+            break;
+        case xPL_MESSAGE_TRIGGER:
+            msg.setMsgType("xpl-trig");
+            break;
+        default:
+            msg.setMsgType("!UNKNOWN!");
+            break;
     }
 
-    if (strcmp(xPL_getSourceVendor(theMessage), "smgpoe") == 0 &&
-        strcmp(xPL_getSourceDeviceID(theMessage), "lamp") == 0 &&
-        strcmp(xPL_getSourceInstanceID(theMessage), "3") == 0)
+    //Set the hop count
+    msg.setHops(xPL_getHopCount(theMessage));
+
+    //Set the source address
+    msg.setSource(xPL_getSourceVendor(theMessage), xPL_getSourceDeviceID(theMessage), xPL_getSourceInstanceID(theMessage));
+
+    //Set the broadcast flag
+    if (xPL_isBroadcastMessage(theMessage))
     {
-        String temp1 = "device";
-        String temp2 = "button2";
-        if (xPL_doesMessageNamedValueExist(theMessage, "device") && strcmp(xPL_getMessageNamedValue(theMessage, "device"), "button1") == 0)
-        {
-            if (xPL_doesMessageNamedValueExist(theMessage, "current") && strcmp(xPL_getMessageNamedValue(theMessage, "current"), "HIGH") == 0)
-            {
-                if (!sendMsg(theService, 0))
-                {
-                    fprintf(stderr, "Unable to send xPL message.");
-                    exit(1);
-                }
-            }
-        }
+        msg.setBroadcast(true);
     }
+    else
+    {
+        msg.setBroadcast(false);
+
+        //Set the target/destination address
+        msg.setDestination(xPL_getTargetVendor(theMessage), xPL_getTargetDeviceID(theMessage), xPL_getTargetInstanceID(theMessage));
+    }
+
+    //Set the schema class/type
+    msg.setSchema(xPL_getSchemaClass(theMessage), xPL_getSchemaType(theMessage));
+
+    memberList = xPL_getMessageBody(theMessage);
+    for (int i = 0; i < xPL_getNamedValueCount(memberList); i++)
+    {
+        member = xPL_getNamedValuePairAt(memberList, i);
+        msg.addMember(member->itemName, member->itemValue);
+    }
+
+    /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
+    // XPLMessage sendMe = ruleManager.match(msg);
+    // sendMsg(theService, msg);
+    ///////////////////////////////////////////////////////////////////////////
 }
 
 int main(int argc, String argv[])

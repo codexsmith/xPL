@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="XPLHal.h" open="1" top="0" tabpos="21">
+		<Cursor position="42" topLine="0" />
+	</File>
+	<File name="XPLMessage.cpp" open="1" top="0" tabpos="23">
+		<Cursor position="163" topLine="12" />
+	</File>
+	<File name="XPLMessage.h" open="1" top="0" tabpos="22">
+		<Cursor position="62" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="20">
+		<Cursor position="4838" topLine="118" />
+	</File>
 	<File name="xPLLib/xPL-config.c" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
@@ -22,11 +34,11 @@
 	<File name="xPLLib/xPL-store.c" open="1" top="0" tabpos="9">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="xPLLib/xPL-utils.c" open="1" top="1" tabpos="10">
+	<File name="xPLLib/xPL-utils.c" open="1" top="0" tabpos="10">
 		<Cursor position="14559" topLine="454" />
 	</File>
-	<File name="xPLLib/xPL.h" open="1" top="0" tabpos="3">
-		<Cursor position="522" topLine="5" />
+	<File name="xPLLib/xPL.h" open="1" top="1" tabpos="3">
+		<Cursor position="522" topLine="251" />
 	</File>
 	<File name="xPLLib/xPL_priv.h" open="1" top="0" tabpos="7">
 		<Cursor position="581" topLine="0" />

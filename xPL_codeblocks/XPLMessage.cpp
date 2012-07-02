@@ -20,7 +20,7 @@ XPLMessage::XPLMessage()
     timeReceived = asctime(time);
 
     //initialize target boolean
-    isTarget = false;
+    broadcast = true;
 
     //Test code here
 //    addMember("Wee1", "Poop1");
@@ -49,6 +49,12 @@ string XPLMessage::findMember(string member)
             return members[i].value;
     }
     return "";
+}
+
+//returns entire vector of members
+vector<XPLValuePair> XPLMessage::getMembers()
+{
+    return members;
 }
 
 void XPLMessage::addMember(string member, string value)
@@ -93,7 +99,7 @@ void XPLMessage::setDestination(string vendor, string device, string instance)
     destination.instance = instance;
 
     //destination exists
-    isTarget = true;
+    broadcast = false;
 }
 
 int XPLMessage::getHops()
@@ -134,4 +140,16 @@ XPLMessage XPLMessage::copyMessage()
     msg.setSchema(schema.schema, schema.type);
 
     return msg;
+}
+
+//returns wether or not the message was a broadcast
+bool XPLMessage::isBroadcast()
+{
+    return broadcast;
+}
+
+//sets the broadcast flag
+void XPLMessage::setBroadcast(bool broadcast)
+{
+    this->broadcast = broadcast;
 }

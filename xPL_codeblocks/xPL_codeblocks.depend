@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1340930320 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
+1341193262 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
 	<stdio.h>
 	"XPLHal.h"
+	"XPLMessage.h"
 	"xPLLib/xPL.h"
-	<boost/asio.hpp>
 
 1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
 	<stdio.h>
 	"xPL.h"
 	"xPL_priv.h"
 
-1340923232 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
+1341193100 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
 	<errno.h>
 	<unistd.h>
 	<stdlib.h>
@@ -69,7 +69,7 @@
 	"xPL_priv.h"
 	<stdarg.h>
 
-1339714386 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
+1341193110 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
 	<stdarg.h>
 	<sys/socket.h>
 	"xPL.h"
@@ -179,7 +179,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1341180551 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
+1341191095 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
 	<iostream>
 	<stdio.h>
 	<string>
@@ -194,6 +194,6 @@
 	<string>
 	<vector>
 
-1341180572 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
+1341190877 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
 	"XPLHal.h"
 
