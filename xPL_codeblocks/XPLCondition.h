@@ -9,6 +9,7 @@ using namespace std;
 class XPLCondition {
 	public:
 		explicit XPLCondition(vector<XPLValuePair> attributes);
+		XPLCondition(XPLCondition condition);
 		~XPLCondition();
 		bool match(XPLMessage);
 

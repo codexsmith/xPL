@@ -1,6 +1,7 @@
 #ifndef XPLAction_H
 #define XPLAction_H
 
+#include <vector>
 #include "XPLMessage.h"
 
 using namespace std;
@@ -12,6 +13,7 @@ class XPLAction {
 		vector<XPLMessage> execute();
 
 	private:
+		void operator=(const XPLAction&);
 		vector<XPLMessage> responses_;
 };
 
