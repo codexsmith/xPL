@@ -8,6 +8,7 @@ using namespace std;
 
 class XPLAction {
 	public:
+        XPLAction();
 		explicit XPLAction(vector<XPLMessage> responses);
 		~XPLAction();
 		vector<XPLMessage> execute();
