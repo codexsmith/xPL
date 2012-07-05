@@ -3,6 +3,8 @@
 
 #include "XPLHal.h"
 
+using namespace std;
+
 class XPLMessage
 {
     //PUBLIC//
