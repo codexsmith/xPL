@@ -9,13 +9,13 @@ using namespace std;
 class XPLAction {
 	public:
         XPLAction();
-		explicit XPLAction(vector<XPLMessage> responses);
+		explicit XPLAction(vector<XPLMessage>* responses);
 		~XPLAction();
 		vector<XPLMessage> execute();
 
 	private:
 		void operator=(const XPLAction&);
-		vector<XPLMessage> responses_;
+		vector<XPLMessage>* responses_;
 };
 
 #endif //XPLAction_H
