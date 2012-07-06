@@ -8,11 +8,10 @@ using namespace std;
 
 class XPLCondition {
 	public:
-        XPLCondition();
-		explicit XPLCondition(vector<XPLValuePair> attributes);
-		XPLCondition(XPLCondition condition);
+		explicit XPLCondition(vector<XPLValuePair>* attributes);
+		XPLCondition(const XPLCondition& condition);
 		~XPLCondition();
-		bool match(XPLMessage);
+		bool match(XPLMessage* message);
 
 	private:
 		vector<XPLValuePair> attributes_;

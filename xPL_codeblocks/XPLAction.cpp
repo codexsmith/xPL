@@ -9,8 +9,7 @@ XPLAction::XPLAction()
 {
 }
 
-
-XPLAction::XPLAction(vector<XPLMessage> responses)
+XPLAction::XPLAction(vector<XPLMessage>* responses)
 {
 	responses_ = responses;
 }

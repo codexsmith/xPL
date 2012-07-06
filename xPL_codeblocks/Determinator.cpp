@@ -2,10 +2,10 @@
 #include "XPLCondition.h"
 #include "XPLAction.h"
 
-Determinator::Determinator(XPLCondition condition, XPLAction action)
+Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 {
-	XPLCondition condition_ = condition;
-	XPLAction action_ = action;
+	condition_ = condition;
+	action_ = action;
 	enabled_ = true;
 }
 
@@ -19,24 +19,24 @@ Determinator::~Determinator()
 {
 }
 
-XPLAction Determinator::getAction()
+XPLAction* Determinator::getAction()
 {
 	return action_;
 }
 
-XPLCondition Determinator::getCondition()
+XPLCondition* Determinator::getCondition()
 {
 	return condition_;
 }
 
-bool Determinator::match(XPLMessage message)
+bool Determinator::match(XPLMessage* message)
 {
-	return condition_.match(message);
+	return condition_->match(message);
 }
 
 vector<XPLMessage> Determinator::execute()
 {
-	action_.execute();
+	action_->execute();
 }
 
 void Determinator::setEnabled(bool enable)
