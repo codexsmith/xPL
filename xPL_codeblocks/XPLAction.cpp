@@ -20,6 +20,6 @@ XPLAction::~XPLAction()
 
 vector<XPLMessage> XPLAction::execute()
 {
-	return responses_;
+	//return responses_;
 }
 

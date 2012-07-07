@@ -1,16 +1,17 @@
 # depslib dependency file v1.0
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
+1341681249 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
 	<stdio.h>
 	"XPLHal.h"
 	"XPLMessage.h"
+	"XPLParser.h"
 	"xPLLib/xPL.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
 	<stdio.h>
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
+1341680435 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL.h
 	<errno.h>
 	<unistd.h>
 	<stdlib.h>
@@ -19,9 +20,9 @@
 	<sys/time.h>
 	<time.h>
 
-1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL_priv.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL_priv.h
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-hub.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-hub.c
 	<stdio.h>
 	<time.h>
 	<signal.h>
@@ -42,7 +43,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-io.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-io.c
 	<errno.h>
 	<unistd.h>
 	<stdio.h>
@@ -64,27 +65,27 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-listeners.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-listeners.c
 	"xPL.h"
 	"xPL_priv.h"
 	<stdarg.h>
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-message.c
 	<stdarg.h>
 	<sys/socket.h>
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-service.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-service.c
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-store.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-store.c
 	"xPL.h"
 	"xPL_priv.h"
 	<stdlib.h>
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-utils.c
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-utils.c
 	<stdio.h>
 	<stdarg.h>
 	"xPL.h"
@@ -179,7 +180,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1341267356 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
 	<iostream>
 	<stdio.h>
 	<string>
@@ -188,35 +189,45 @@
 	"XPLHal.h"
 	"XPLMessage.h"
 
-1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLHal.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLHal.h
 	<string>
 	<vector>
 
-1341267356 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLMessage.h
 	"XPLHal.h"
 
-1341268272 source:/home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.cpp
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.cpp
 	"Determinator.h"
 	"XPLCondition.h"
 	"XPLAction.h"
 
-1341268238 /home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.h
 	"XPLAction.h"
 	"XPLCondition.h"
 	"XPLMessage.h"
 
-1341268135 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.h
+	<vector>
 	"XPLMessage.h"
 
-1341268078 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.h
+1341679139 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.h
 	"XPLHal.h"
 	"XPLMessage.h"
 
-1341268120 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.cpp
+1341679508 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLAction.cpp
 	<vector>
 	"XPLAction.h"
 	"XPLMessage.h"
 
-1341268058 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
+1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
 	"XPLCondition.h"
+
+1341681487 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.cpp
+	<stdio.h>
+	<stdlib.h>
+	"XPLParser.h"
+	"XPLMessage.h"
+
+1341680680 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.h
+	"xPLLib/xPL.h"
 

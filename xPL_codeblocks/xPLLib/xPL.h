@@ -1,5 +1,7 @@
 /* xPL.h - xPL Public API */
 /* Copyright 2004 (c), Gerald R Duprey Jr */
+#ifndef xPL_H
+#define xPL_H
 
 #include <errno.h>
 #include <unistd.h>
@@ -416,3 +418,4 @@ extern Bool xPL_startHub();
 extern void xPL_stopHub();
 extern Bool xPL_isHubRunning();
 
+#endif

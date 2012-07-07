@@ -3,7 +3,8 @@
 
 #include <stdio.h>
 #include "XPLHal.h";
-#include "XPLMessage.h";
+#include "XPLMessage.h"
+#include "XPLParser.h"
 
 extern "C" {
 
@@ -16,7 +17,7 @@ extern "C" {
 int sendMsg(XPLMessage msg);
 void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
 
-static xPL_ServicePtr theService = NULL;
+xPL_ServicePtr theService = NULL;
 
 int sendMsg(XPLMessage msg)
 {
@@ -169,7 +170,7 @@ int main(int argc, String argv[])
     }
 
     /* And a listener for all xPL messages */
-    xPL_addMessageListener(recvMsg, NULL);
+    xPL_addMessageListener(XPLParser::recvMsg, NULL);
 
     /* Create a service so the hubs know to send things to us        */
     /* While we are not relaly using he service, xPL hubs will not   */
