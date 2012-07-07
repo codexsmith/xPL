@@ -24,15 +24,26 @@ void resultCompare(int memberCompare, int valueCompare)
 
 int main()
 {
-	XPLValuePair pairOne, pairTwo, pairThree;
-	pairOne.member = "nameOne";
-	pairOne.value  = "valueOne";
-	pairTwo.member = "nameTwo";
-	pairTwo.value  = "valueTwo";
+	XPLValuePair* pairOne, pairTwo, pairThree;
+	pairOne = new XPLValuePair;
+	
+	pairOne->member = "nameOne";
+	pairOne->value  = "valueOne";
+	pairTwo->member = "nameTwo";
+	pairTwo->value  = "valueTwo";
+	pairThree->member = "nameThree";
+	pairThree->value = "nameThree";
 
-	int memberCompare = pairOne.member.compare("name");
-	int valueCompare = pairOne.value.compare("value");
+	int memberCompare = pairOne->member.compare("nameOne");
+	int valueCompare = pairOne->value.compare("valueOne");
+	resultCompare(memberCompare, valueCompare);
 
+	int memberCompare = pairTwo->member.compare("nameTwo");
+	int valueCompare = pairTwo->value.compare("valueTwo");
+	resultCompare(memberCompare, valueCompare);
+
+	int memberCompare = pairThree->member.compare("nameThree");
+	int valueCompare = pairThree->value.compare("valueThree");
 	resultCompare(memberCompare, valueCompare);
 
 	return 0;		

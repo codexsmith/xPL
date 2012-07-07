@@ -11,7 +11,7 @@ class XPLAction {
         XPLAction();
 		explicit XPLAction(vector<XPLMessage>* responses);
 		~XPLAction();
-		vector<XPLMessage> execute();
+		vector<XPLMessage>* execute();
 
 	private:
 		void operator=(const XPLAction&);
