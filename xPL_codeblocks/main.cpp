@@ -13,10 +13,6 @@ extern "C" {
 }
 //#include <boost/asio.hpp>
 
-//Prototypes
-int sendMsg(XPLMessage msg);
-void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
-
 xPL_ServicePtr theService = NULL;
 
 int main(int argc, String argv[])
