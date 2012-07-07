@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1341681249 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
+1341684360 source:/home/gremio/Desktop/xPL/xPL_codeblocks/main.cpp
 	<stdio.h>
 	"XPLHal.h"
 	"XPLMessage.h"
@@ -222,12 +222,13 @@
 1341679139 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
 	"XPLCondition.h"
 
-1341681487 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.cpp
+1341684275 source:/home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.cpp
 	<stdio.h>
 	<stdlib.h>
 	"XPLParser.h"
 	"XPLMessage.h"
 
-1341680680 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.h
+1341684321 /home/gremio/Desktop/xPL/xPL_codeblocks/XPLParser.h
+	"XPLMessage.h"
 	"xPLLib/xPL.h"
 
