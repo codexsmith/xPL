@@ -23,6 +23,7 @@ class XPLSchema
 class XPLValuePair
 {
     public:
+	XPLValuePair();
     string member, value;
 };
 
