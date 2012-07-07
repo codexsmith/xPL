@@ -1,0 +1,10 @@
+#This is a make file used to compile things via the command line
+
+determinator: XPLAction.h XPLAction.cpp XPLCondition.h XPLCondition.cpp Determinator.h Determinator.cpp
+	g++ -c XPLAction.h XPLAction.cpp XPLCondition.h XPLCondition.cpp Determinator.h Determinator.cpp
+
+storageTest: XPLConditionTest.cpp
+	g++ XPLConditionTest.cpp
+
+clean:
+	rm -rf *o server
