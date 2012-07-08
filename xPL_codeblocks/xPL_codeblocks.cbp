@@ -46,6 +46,8 @@
 		<Unit filename="XPLMessage.h" />
 		<Unit filename="XPLParser.cpp" />
 		<Unit filename="XPLParser.h" />
+		<Unit filename="XPLRuleManager.cpp" />
+		<Unit filename="XPLRuleManager.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="storage.h" />
 		<Unit filename="xPLLib/xPL-config.c">

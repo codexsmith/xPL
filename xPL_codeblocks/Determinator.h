@@ -13,16 +13,16 @@ class Determinator {
 		Determinator(Determinator* determinator);
 		~Determinator();
 		bool match(XPLMessage* message);
-		vector<XPLMessage> execute();	
+		vector<XPLMessage> execute();
 		void setEnabled(bool enable);
 		bool isEnabled();
+		//void operator=(const Determinator&);
 
 	protected:
 		XPLCondition* getCondition();
 		XPLAction* getAction();
 
 	private:
-		void operator=(const Determinator&);
 		XPLCondition* condition_;
 		XPLAction* action_;
 		bool enabled_;
