@@ -2,6 +2,8 @@
 #include "XPLCondition.h"
 #include "XPLAction.h"
 
+#include <vector>
+
 Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 {
 	condition_ = condition;

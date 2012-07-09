@@ -5,6 +5,8 @@
 #include "XPLCondition.h"
 #include "XPLMessage.h"
 
+#include <vector>
+
 using namespace std;
 
 class Determinator {

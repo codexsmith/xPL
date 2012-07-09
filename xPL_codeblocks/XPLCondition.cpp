@@ -1,5 +1,6 @@
 #include "XPLCondition.h"
 #include "XPLHal.h"
+#include "XPLMessage.h"
 
 #include <string>
 #include <iostream>
