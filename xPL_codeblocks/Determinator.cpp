@@ -31,12 +31,14 @@ XPLCondition* Determinator::getCondition()
 
 bool Determinator::match(XPLMessage* message)
 {
-	return condition_->match(message);
+	if(enabled_)
+		return condition_->match(message);
+	return false;
 }
 
 vector<XPLMessage> Determinator::execute()
 {
-	action_->execute();
+	return action_->execute();
 }
 
 void Determinator::setEnabled(bool enable)
