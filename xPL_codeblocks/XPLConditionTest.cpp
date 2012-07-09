@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "XPLCondition.h"
+#include "XPLMessage.h"
 
 void resultCompare(int memberCompare, int valueCompare)
 {
@@ -76,6 +77,16 @@ int main()
 		printf("Conditions equal!\n");
 	else
 		printf("Conditions not equal\n");
+
+	XPLMessage messageOne;
+	messageOne.addMember("nameOne", "valueOne");
+	messageOne.addMember("nameTwo", "valueTwo");
+	messageOne.addMember("nameThree", "valueThree");
+
+	if(conditionOne->match(&messageOne))
+		printf("Matched message!\n");
+	else
+		printf("Message not matched!\n");
 
 	return 0;		
 }

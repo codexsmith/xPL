@@ -1,6 +1,9 @@
 #include "XPLCondition.h"
 #include "XPLHal.h"
 
+#include <string>
+#include <iostream>
+
 using namespace std;
 
 XPLCondition::XPLCondition(vector<XPLValuePair>* attributes)
@@ -19,7 +22,17 @@ XPLCondition::~XPLCondition()
 
 bool XPLCondition::match(XPLMessage* message)
 {
-
+	for(int i = 0; i < attributes_->size(); i++)
+	{
+		XPLValuePair memberToFind = attributes_->at(i);
+//		cout << "Searching for: " << memberToFind.member << "\n";
+		string value = message->findMember(memberToFind.member);		
+//		cout << "Found: " << value << "\n";
+//		cout << "Comparing to " << memberToFind.value << "\n";
+		if(memberToFind.value.compare(value) != 0)
+			return false;
+	}
+	return true;
 }
 
 bool XPLCondition::equals(XPLCondition* condition)
