@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "XPLParser.h"
 #include "XPLMessage.h"
-#include "XPLHal.h"
 #include "XPLRuleManager.h"
 
 
