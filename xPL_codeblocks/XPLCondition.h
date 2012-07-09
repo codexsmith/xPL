@@ -11,6 +11,10 @@ class XPLCondition {
 		explicit XPLCondition(vector<XPLValuePair>* attributes);
 		~XPLCondition();
 		bool match(XPLMessage* message);
+		bool equals(XPLCondition* condition);
+
+	protected:
+		vector<XPLValuePair>* getAttributes();
 
 	private:
 		vector<XPLValuePair>* attributes_;
