@@ -8,13 +8,15 @@ using namespace std;
 
 class XPLAction {
 	public:
-        XPLAction();
 		explicit XPLAction(vector<XPLMessage>* responses);
 		~XPLAction();
-		vector<XPLMessage>* execute();
+		vector<XPLMessage> execute();
+		bool equals(XPLAction* action);
+
+	protected:
+		vector<XPLMessage>* getResponses();
 
 	private:
-		void operator=(const XPLAction&);
 		vector<XPLMessage>* responses_;
 };
 

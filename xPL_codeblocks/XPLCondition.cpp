@@ -12,7 +12,7 @@ XPLCondition::~XPLCondition()
 {
 	for(int i = 0; i < attributes_->size(); i++)
 	{
-		attributes_[i].pop_back();
+		attributes_->pop_back();
 	}
 	delete attributes_;
 }

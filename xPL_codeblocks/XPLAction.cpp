@@ -5,10 +5,6 @@
 
 using namespace std;
 
-XPLAction::XPLAction()
-{
-}
-
 XPLAction::XPLAction(vector<XPLMessage>* responses)
 {
 	responses_ = responses;
@@ -16,10 +12,18 @@ XPLAction::XPLAction(vector<XPLMessage>* responses)
 
 XPLAction::~XPLAction()
 {
+	delete responses_;
 }
 
-vector<XPLMessage>* XPLAction::execute()
+vector<XPLMessage> XPLAction::execute()
 {
-	return responses_;
+	return *responses_;
 }
 
+bool XPLAction::equals(XPLAction* action)
+{
+	for(int i = 0; i < responses_->size(); i++)
+	{
+			
+	}
+}

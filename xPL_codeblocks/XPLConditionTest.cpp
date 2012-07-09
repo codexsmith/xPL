@@ -63,7 +63,6 @@ int main()
 	valueCompare = pairThree->value.compare("valueThree");
 	resultCompare(memberCompare, valueCompare);
 
-	
 	vector<XPLValuePair>* pairVector = createVector(pairOne, pairTwo, pairThree);	
 	vector<XPLValuePair>* pairVectorTwo = createVector(pairOne, pairTwo, pairThree);
 
