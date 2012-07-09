@@ -6,6 +6,12 @@
 #include <string>
 #include <vector>
 
+extern "C" {
+
+    #include "xPLLib/xPL.h"
+
+}
+
 using namespace std;
 
 class XPLAddress
@@ -25,5 +31,7 @@ class XPLValuePair
     public:
     string member, value;
 };
+
+extern xPL_ServicePtr  theService;
 
 #endif // XPLHal_H
