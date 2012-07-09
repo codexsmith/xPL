@@ -260,7 +260,8 @@ String xPL_getSchemaType(xPL_MessagePtr theMessage) {
   return theMessage->schemaType;
 }
 
-void xPL_setSchema(xPL_MessagePtr theMessage, const char* theSchemaClass, const char* theSchemaType) {
+//void xPL_setSchema(xPL_MessagePtr theMessage, const char* theSchemaClass, const char* theSchemaType) {
+void xPL_setSchema(xPL_MessagePtr theMessage, String theSchemaClass, String theSchemaType) {
   xPL_setSchemaClass(theMessage, theSchemaClass);
   xPL_setSchemaType(theMessage, theSchemaType);
 }
@@ -284,7 +285,8 @@ String xPL_getMessageNamedValue(xPL_MessagePtr theMessage, String theName) {
   return xPL_getNamedValue(theMessage->messageBody, theName);
 }
 
-void xPL_addMessageNamedValue(xPL_MessagePtr theMessage, const char* theName, const char* theValue) {
+//void xPL_addMessageNamedValue(xPL_MessagePtr theMessage, const char* theName, const char* theValue) {
+void xPL_addMessageNamedValue(xPL_MessagePtr theMessage, String theName, String theValue) {
   if (theMessage->messageBody == NULL) theMessage->messageBody = xPL_newNamedValueList();
   xPL_addNamedValue(theMessage->messageBody, theName, theValue);
 }
@@ -358,8 +360,10 @@ static xPL_MessagePtr createReceivedMessage(xPL_MessageType messageType) {
 }
 
 /* Create a message suitable for sending to a specific receiver */
+//xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr theService, xPL_MessageType messageType,
+//					 const char* theVendor, const char* theDevice, const char* theInstance) {
 xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr theService, xPL_MessageType messageType,
-					 const char* theVendor, const char* theDevice, const char* theInstance) {
+					 String theVendor, String theDevice, String theInstance) {
 
   xPL_MessagePtr theMessage = createSendableMessage(theService, messageType);
   xPL_setTarget(theMessage, theVendor, theDevice, theInstance);

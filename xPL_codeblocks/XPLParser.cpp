@@ -14,6 +14,15 @@ XPLParser::XPLParser()
 {
 }
 
+char* uc(string str)
+{
+    char *newChar=new char[str.size()+1];
+    newChar[str.size()]=0;
+    memcpy(newChar,str.c_str(),str.size());
+
+    return newChar;
+}
+
 int XPLParser::sendMsg(XPLMessage msg)
 {
     vector<XPLValuePair> members = msg.getMembers();
@@ -49,22 +58,31 @@ int XPLParser::sendMsg(XPLMessage msg)
     }
     else
     {
-        if ((theMessage = xPL_createTargetedMessage(theService, msgType, msg.getDestination().vendor.c_str(),
-                msg.getDestination().device.c_str(), msg.getDestination().instance.c_str())) == NULL) {
+        if ((theMessage = xPL_createTargetedMessage(theService, msgType, uc(msg.getDestination().vendor),
+                uc(msg.getDestination().device), uc(msg.getDestination().instance))) == NULL) {
             fprintf(stderr, "Unable to create targeted message\n");
             return FALSE;
         }
     }
 
     //Setup the schema in the message
-    const char* schemaClass = msg.getSchema().schema.c_str();
-    const char* schemaType = msg.getSchema().type.c_str();
+    char *schemaType=new char[msg.getSchema().type.size()+1];
+    schemaType[msg.getSchema().type.size()]=0;
+    memcpy(schemaType,msg.getSchema().type.c_str(),msg.getSchema().type.size());
+
+    char *schemaClass=new char[msg.getSchema().schema.size()+1];
+    schemaClass[msg.getSchema().schema.size()]=0;
+    memcpy(schemaClass,msg.getSchema().schema.c_str(),msg.getSchema().schema.size());
+
+
+//    const char* schemaClass = msg.getSchema().schema.c_str();
+//    const char* schemaType = msg.getSchema().type.c_str();
     xPL_setSchema(theMessage, schemaClass, schemaType);
 
     //Add members to the message
     for (int i = 0; i < members.size(); i++)
     {
-        xPL_addMessageNamedValue(theMessage, members[i].member.c_str(), members[i].value.c_str());
+        xPL_addMessageNamedValue(theMessage, uc(members[i].member), uc(members[i].value));
     }
 
     //Send the message

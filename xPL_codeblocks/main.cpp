@@ -5,6 +5,7 @@
 #include "XPLHal.h";
 #include "XPLMessage.h"
 #include "XPLParser.h"
+#include "XPLRuleManager.h"
 
 extern "C" {
 
@@ -14,6 +15,7 @@ extern "C" {
 //#include <boost/asio.hpp>
 
 xPL_ServicePtr theService = NULL;
+XPLRuleManager ruleMgr;
 
 int main(int argc, String argv[])
 {
@@ -32,6 +34,9 @@ int main(int argc, String argv[])
     testMsg.setSource("Poop", "Scoop", "Loop");
     testMsg.setHops(8);
 
+    //Load XML document
+
+    //Initialize RuleManager object with returned vector of determinators
 
     //Source Address
     String srcVendor = "Test";
