@@ -1,7 +1,7 @@
 #include "XPLRuleManager.h"
 #include <vector>
 
-XPLRuleManager::XPLRuleManager(vector<Determinator> determinators)
+XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
 {
     this->determinators = determinators;
 }
@@ -19,11 +19,11 @@ vector<XPLMessage> XPLRuleManager::match(XPLMessage msg)
     vector<XPLMessage> messagesToSend, messagesFromDeterminator;
 
     //match stuff
-    for (int i = 0; i < determinators.size(); i++)
+    for (int i = 0; i < determinators->size(); i++)
     {
-        if (determinators[i].match(&msg))
+        if (determinators->at(i).match(&msg))
         {
-            messagesFromDeterminator = determinators[i].execute();
+            messagesFromDeterminator = determinators->at(i).execute();
             messagesToSend.insert(messagesToSend.end(), messagesFromDeterminator.begin(), messagesFromDeterminator.end());
         }
     }

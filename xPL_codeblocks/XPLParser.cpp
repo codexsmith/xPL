@@ -6,7 +6,7 @@
 #include "XPLRuleManager.h"
 
 
-extern XPLRuleManager ruleMgr;
+extern XPLRuleManager* ruleMgr;
 
 
 int level = 0;
@@ -149,7 +149,7 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     }
 
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
-    vector<XPLMessage> messagesToSend = ruleMgr.match(msg);
+    vector<XPLMessage> messagesToSend = ruleMgr->match(msg);
 
     for (int i = 0; i < messagesToSend.size(); i++)
     {

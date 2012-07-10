@@ -15,7 +15,7 @@ extern "C" {
 //#include <boost/asio.hpp>
 
 xPL_ServicePtr theService = NULL;
-XPLRuleManager ruleMgr;
+XPLRuleManager* ruleMgr;
 
 int main(int argc, String argv[])
 {

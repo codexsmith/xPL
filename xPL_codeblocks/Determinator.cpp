@@ -14,12 +14,12 @@ Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 	cout << enabled_ << "\n";
 }
 
-Determinator::Determinator(Determinator& determinator)
-{
-	condition_ = determinator.getCondition();
-	action_ = determinator.getAction();
-	cout << "The copy constructor got called!";
-}
+//Determinator::Determinator(const Determinator& determinator)
+//{
+//	condition_ = determinator.getCondition();
+//	action_ = determinator.getAction();
+//	cout << "The copy constructor got called!";
+//}
 
 Determinator::~Determinator()
 {
@@ -40,7 +40,7 @@ bool Determinator::match(XPLMessage* message)
 	if(enabled_)
 	{
 		cout << "Determinator is enabled and called match\n";
-		return condition_->match(message);		
+		return condition_->match(message);
 	}
 	cout << "Determinator is not enabled but did call match\n";
 	return false;
