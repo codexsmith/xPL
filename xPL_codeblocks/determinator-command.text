@@ -1,0 +1,19 @@
+-determinator -condition name=value name=value name=value ... -action -message messageType schemaclass.schematype destinationAddress name=value name=value ...
+
+To define a determinator you need to specify the attributes of the determinator's
+condition and the message that it will send as a response action.
+
+-determinator starts a new determinator definition. It MUST be followed by both 
+condition and -action in order to be valid.
+
+-condition begins the list of name=value pairs. They must be specified in the form
+name=value. That is how they will be copied into the determinator defintion. You can
+define any number of conditions, including 0. A determinator with no conditions will
+match all incoming messages.
+
+-action begins the Action definition. An action MUST define at least one message and
+each message must have a messageType, schemaclass.schematype and destinationAddress.
+Begin a message definition with -message 
+messageType is xpl-cmnd, xpl-stat, or xpl-trig, nothing else is valid.
+schemaclass.schematype can be any two strings paired with a . 
+destinationAddress takes the form vendorId.deviceId.instanceId. This can be any three strings deliminated by a period. The final string is also optional.

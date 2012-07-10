@@ -8,18 +8,24 @@
 
 using namespace std;
 
-const int startOfPairs = 2;
+//Following the format of the determinator command, the third item
+//will be the first valuePair to be defined in its condition
+
+const int startOfPairs = 2; 
+
 class DeterminatorFactory {
 	public:
 		DeterminatorFactory();
 		~DeterminatorFactory();
 		Determinator* createDeterminator(string defintions[]);
 
-	private:
 		XPLCondition* createCondition(string definitions[]);
 		XPLAction* createAction(string defintions[]);
 		string getMember(string definition);
 		string getValue(string definition);
+
+	private:
+		
 };
 
 #endif //DeterminatorFactory_H

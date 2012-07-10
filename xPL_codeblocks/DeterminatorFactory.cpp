@@ -15,7 +15,7 @@ DeterminatorFactory::~DeterminatorFactory()
 string getMember(string definition)
 {
 	int splitIndex = definition.find_first_of("=");
-	definition = definition.substr(0, splitIndex+1);
+	definition = definition.substr(0, splitIndex);
 	return definition;
 }
 
@@ -23,16 +23,17 @@ string getValue(string definition)
 {
 	int splitIndex = definition.find_first_of("=");
 	definition = definition.substr(splitIndex, definition.length());
-	return definition;
-	
+	return definition;	
 }
 
 Determinator* DeterminatorFactory::createDeterminator(string definitions[])
 {
 	Determinator* determinator;	
-	XPLCondition* condition;
-	XPLAction* action;
-
+	if(definitions[0].compare("-determinator") == 0)
+	{	
+		XPLCondition* condition;
+		XPLAction* action;
+	}
 	return determinator;
 }
 
@@ -49,7 +50,7 @@ XPLCondition* createCondition(string definitions[])
 
 XPLAction* createAction(string definitions[])
 {
-
+	
 }
 
 
