@@ -1,4 +1,4 @@
-#ifndef DeterminatorSeriallizer_H
+#ifndef DeterminatorSerializer_H
 #define DeterminatorSerializer_H
 
 #include <string>
@@ -9,7 +9,7 @@
 using namespace std;
 
 class DeterminatorSerializer {
-	public:
+	public:tor()
 		explicit DeterminatorSerializer(string xmlFile);
 		~DeterminatorSerializer();
 		Determinator read();
