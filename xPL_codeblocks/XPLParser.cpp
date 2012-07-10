@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include "XPLParser.h"
 #include "XPLMessage.h"
+#include "XPLRuleManager.h"
 
 
+extern XPLRuleManager ruleMgr;
 
 
 int level = 0;
-extern xPL_ServicePtr  theService;
 
 XPLParser::XPLParser()
 {
@@ -148,8 +149,12 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     }
 
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
-    // XPLMessage sendMe = ruleManager.match(msg);
-    // sendMsg(theService, msg);
+    vector<XPLMessage> messagesToSend = ruleMgr.match(msg);
+
+    for (int i = 0; i < messagesToSend.size(); i++)
+    {
+        sendMsg(messagesToSend[i]);
+    }
     ///////////////////////////////////////////////////////////////////////////
 
         ////////// PLACE TEST CODE HERE ///////////////////////////////////////////

@@ -1,8 +1,8 @@
 #ifndef XPLRuleManager_H
 #define XPLRuleManager_H
 
-#include <vector>
 #include "XPLMessage.h"
+#include <vector>
 #include "Determinator.h"
 
 using namespace std;
