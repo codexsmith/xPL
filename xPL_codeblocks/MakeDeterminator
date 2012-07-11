@@ -1,0 +1,6 @@
+DF = DeterminatorFactory
+
+all: g++ $(DF)Test.cpp $(DF).cpp XPLCondition.cpp XPLAction.cpp Determinator.cpp XPLMessage.cpp -o Determinator-Factory-Test
+
+clean: rm Determinator-Factory-Test
+
