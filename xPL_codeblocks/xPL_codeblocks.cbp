@@ -48,7 +48,7 @@
 		<Unit filename="XPLParser.h" />
 		<Unit filename="XPLRuleManager.cpp" />
 		<Unit filename="XPLRuleManager.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="determinator-main.cpp" />
 		<Unit filename="storage.h" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />

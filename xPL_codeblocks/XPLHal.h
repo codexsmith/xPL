@@ -32,6 +32,6 @@ class XPLValuePair
     string member, value;
 };
 
-extern xPL_ServicePtr  theService;
+extern xPL_ServicePtr theService;
 
 #endif // XPLHal_H

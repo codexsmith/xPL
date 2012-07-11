@@ -159,71 +159,71 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 
         ////////// PLACE TEST CODE HERE ///////////////////////////////////////////
 
-    char temp[50];
-
-    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
-        msg.getSource().device.compare("lamp") == 0 &&
-        msg.getSource().instance.compare("3") == 0 &&
-        msg.findMember("device").compare("button2") == 0 &&
-        msg.findMember("current").compare("HIGH") == 0)
-    {
-        if (level < 60)
-            level += 10;
-
-        if (level < 0)
-            level = 0;
-        else if (level > 60)
-            level = 60;
-
-        sprintf(temp,"%d",level);
-
-        XPLMessage turnLampOn;
-        turnLampOn.setMsgType("xpl-cmnd");
-        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
-        turnLampOn.setDestination("smgpoe", "lamp", "1");
-        turnLampOn.setSchema("control", "basic");
-        turnLampOn.setHops(5);
-        turnLampOn.setBroadcast(false);
-        turnLampOn.addMember("device", "pwm");
-        turnLampOn.addMember("type", "variable");
-        turnLampOn.addMember("current", temp);
-        sendMsg(turnLampOn);
-
-        turnLampOn.setDestination("smgpoe", "lamp", "3");
-        sendMsg(turnLampOn);
-    }
-
-    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
-        msg.getSource().device.compare("lamp") == 0 &&
-        msg.getSource().instance.compare("3") == 0 &&
-        msg.findMember("device").compare("button1") == 0 &&
-        msg.findMember("current").compare("HIGH") == 0)
-    {
-        if (level >= 10)
-            level -= 10;
-
-        if (level < 0)
-            level = 0;
-        else if (level > 60)
-            level = 60;
-
-        sprintf(temp,"%d",level);
-
-        XPLMessage turnLampOn;
-        turnLampOn.setMsgType("xpl-cmnd");
-        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
-        turnLampOn.setDestination("smgpoe", "lamp", "1");
-        turnLampOn.setSchema("control", "basic");
-        turnLampOn.setHops(5);
-        turnLampOn.setBroadcast(false);
-        turnLampOn.addMember("device", "pwm");
-        turnLampOn.addMember("type", "variable");
-        turnLampOn.addMember("current", temp);
-        sendMsg(turnLampOn);
-
-        turnLampOn.setDestination("smgpoe", "lamp", "3");
-        sendMsg(turnLampOn);
-    }
+//    char temp[50];
+//
+//    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
+//        msg.getSource().device.compare("lamp") == 0 &&
+//        msg.getSource().instance.compare("3") == 0 &&
+//        msg.findMember("device").compare("button2") == 0 &&
+//        msg.findMember("current").compare("HIGH") == 0)
+//    {
+//        if (level < 60)
+//            level += 10;
+//
+//        if (level < 0)
+//            level = 0;
+//        else if (level > 60)
+//            level = 60;
+//
+//        sprintf(temp,"%d",level);
+//
+//        XPLMessage turnLampOn;
+//        turnLampOn.setMsgType("xpl-cmnd");
+//        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
+//        turnLampOn.setDestination("smgpoe", "lamp", "1");
+//        turnLampOn.setSchema("control", "basic");
+//        turnLampOn.setHops(5);
+//        turnLampOn.setBroadcast(false);
+//        turnLampOn.addMember("device", "pwm");
+//        turnLampOn.addMember("type", "variable");
+//        turnLampOn.addMember("current", temp);
+//        sendMsg(turnLampOn);
+//
+//        turnLampOn.setDestination("smgpoe", "lamp", "3");
+//        sendMsg(turnLampOn);
+//    }
+//
+//    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
+//        msg.getSource().device.compare("lamp") == 0 &&
+//        msg.getSource().instance.compare("3") == 0 &&
+//        msg.findMember("device").compare("button1") == 0 &&
+//        msg.findMember("current").compare("HIGH") == 0)
+//    {
+//        if (level >= 10)
+//            level -= 10;
+//
+//        if (level < 0)
+//            level = 0;
+//        else if (level > 60)
+//            level = 60;
+//
+//        sprintf(temp,"%d",level);
+//
+//        XPLMessage turnLampOn;
+//        turnLampOn.setMsgType("xpl-cmnd");
+//        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
+//        turnLampOn.setDestination("smgpoe", "lamp", "1");
+//        turnLampOn.setSchema("control", "basic");
+//        turnLampOn.setHops(5);
+//        turnLampOn.setBroadcast(false);
+//        turnLampOn.addMember("device", "pwm");
+//        turnLampOn.addMember("type", "variable");
+//        turnLampOn.addMember("current", temp);
+//        sendMsg(turnLampOn);
+//
+//        turnLampOn.setDestination("smgpoe", "lamp", "3");
+//        sendMsg(turnLampOn);
+//    }
 
     ///////////////////////////////////////////////////////////////////////////
 }
