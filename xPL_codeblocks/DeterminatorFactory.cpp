@@ -12,17 +12,17 @@ DeterminatorFactory::~DeterminatorFactory()
 {
 }
 
-string getMember(string definition)
+string DeterminatorFactory::getMember(string definition)
 {
 	int splitIndex = definition.find_first_of("=");
 	definition = definition.substr(0, splitIndex);
 	return definition;
 }
 
-string getValue(string definition)
+string DeterminatorFactory::getValue(string definition)
 {
 	int splitIndex = definition.find_first_of("=");
-	definition = definition.substr(splitIndex, definition.length());
+	definition = definition.substr(splitIndex+1, definition.length());
 	return definition;	
 }
 
@@ -37,7 +37,7 @@ Determinator* DeterminatorFactory::createDeterminator(string definitions[])
 	return determinator;
 }
 
-XPLCondition* createCondition(string definitions[])
+XPLCondition* DeterminatorFactory::createCondition(string definitions[])
 {
 	int index = startOfPairs;
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
@@ -48,7 +48,7 @@ XPLCondition* createCondition(string definitions[])
 	}
 }
 
-XPLAction* createAction(string definitions[])
+XPLAction* DeterminatorFactory::createAction(string definitions[])
 {
 	
 }
