@@ -41,11 +41,14 @@ XPLCondition* DeterminatorFactory::createCondition(string definitions[])
 {
 	int index = startOfPairs;
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
-	while(!definitions[index].compare("action"))
+	while(!definitions[index].compare("-action"))
 	{
 		XPLValuePair* valuePair = new XPLValuePair(); 
 		valuePair->member = getMember(definitions[index]);
+		valuePair->value = getValue(definitions[index]);
+		conditionVector->push_back(*valuePair);
 	}
+	return new XPLCondition(conditionVector);
 }
 
 XPLAction* DeterminatorFactory::createAction(string definitions[])
