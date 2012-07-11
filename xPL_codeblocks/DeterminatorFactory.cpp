@@ -37,9 +37,8 @@ Determinator* DeterminatorFactory::createDeterminator(string definitions[])
 	return determinator;
 }
 
-XPLCondition* DeterminatorFactory::createCondition(string definitions[])
+XPLCondition* DeterminatorFactory::createCondition(string definitions[], int index)
 {
-	int index = startOfPairs;
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	while(!definitions[index].compare("-action"))
 	{
@@ -48,10 +47,11 @@ XPLCondition* DeterminatorFactory::createCondition(string definitions[])
 		valuePair->value = getValue(definitions[index]);
 		conditionVector->push_back(*valuePair);
 	}
-	return new XPLCondition(conditionVector);
+	XPLCondition* condition = new XPLCondition(conditionVector);
+	return condition;
 }
 
-XPLAction* DeterminatorFactory::createAction(string definitions[])
+XPLAction* DeterminatorFactory::createAction(string definitions[], int index)
 {
 	
 }
