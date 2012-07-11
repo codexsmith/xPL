@@ -17,7 +17,7 @@ extern "C" {
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
 
-int main(int argc, String argv[])
+int main2(int argc, String argv[])
 {
     /**** Test Code ****/
     XPLMessage testMsg, testMsg2;
