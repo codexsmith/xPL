@@ -1,6 +1,7 @@
 #include "DeterminatorFactory.h"
 #include "XPLAction.h"
 #include "XPLCondition.h"
+#include "XPLMessage.h"
 #include <string>
 #include <vector>
 
@@ -10,6 +11,51 @@ DeterminatorFactory::DeterminatorFactory()
 
 DeterminatorFactory::~DeterminatorFactory()
 {
+}
+
+Determinator* DeterminatorFactory::createDeterminator(vector<string> determinatorDefintion, vector<string> conditionDefinition, vector<string> actionDefintion)
+{
+	Determinator* determinator;
+	XPLCondition* condition;
+	XPLAction* action;
+	
+	return determinator;
+}
+
+XPLCondition* DeterminatorFactory::createCondition(vector<string> conditions)
+{
+	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
+	for(int i = 0; i<conditions.size(); i++)
+	{
+		XPLValuePair* valuePair = new XPLValuePair(); 
+		valuePair->member = getMember(conditions.at(i));
+		valuePair->value = getValue(conditions.at(i));
+		conditionVector->push_back(*valuePair);
+	}
+	XPLCondition* condition = new XPLCondition(conditionVector);
+	return condition;
+}
+
+XPLAction* DeterminatorFactory::createXPLAction(vector<XPLMessage>* messages)
+{
+	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
+	for(int i = 0; i<messages->size(); i++)
+	{
+		actionVector->push_back(messages->at(i));
+	}
+	XPLAction* action = new XPLAction(actionVector);
+	return action;	
+}
+
+//TODO: Error checking for individuals fields
+XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters)
+{
+	XPLMessage* message = new XPLMessage();
+	message->setMsgType(msgType);
+	vector<string> addressParameters = getAddressParameters(sourceAddress);
+	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);
+	addressParameters = getAddressParameters(destinationAddress);
+	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);	
 }
 
 string DeterminatorFactory::getMember(string definition)
@@ -26,34 +72,15 @@ string DeterminatorFactory::getValue(string definition)
 	return definition;	
 }
 
-Determinator* DeterminatorFactory::createDeterminator(string definitions[])
+vector<string> DeterminatorFactory::getAddressParameters(string address)
 {
-	Determinator* determinator;	
-	if(definitions[0].compare("-determinator") == 0)
-	{	
-		XPLCondition* condition;
-		XPLAction* action;
-	}
-	return determinator;
-}
-
-XPLCondition* DeterminatorFactory::createCondition(string definitions[], int index)
-{
-	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
-	while(!definitions[index].compare("-action"))
+	vector<string> parameters;
+	int position;
+	while(parameters.size()<3)
 	{
-		XPLValuePair* valuePair = new XPLValuePair(); 
-		valuePair->member = getMember(definitions[index]);
-		valuePair->value = getValue(definitions[index]);
-		conditionVector->push_back(*valuePair);
+		position = address.find_first_of(".");
+		parameters.push_back(address.substr(0,position));
+		address = address.substr(position+1, address.length());			
 	}
-	XPLCondition* condition = new XPLCondition(conditionVector);
-	return condition;
+	return parameters;
 }
-
-XPLAction* DeterminatorFactory::createAction(string definitions[], int index)
-{
-	
-}
-
-
