@@ -13,52 +13,49 @@ DeterminatorFactory::~DeterminatorFactory()
 {
 }
 
-Determinator* DeterminatorFactory::createDeterminator(string definitions[])
+Determinator* DeterminatorFactory::createDeterminator(vector<string> determinatorDefintion, vector<string> conditionDefinition, vector<string> actionDefintion)
 {
-	Determinator* determinator;	
-	if(definitions[0].compare("-determinator") == 0)
-	{	
-		XPLCondition* condition;
-		XPLAction* action;
-	}
+	Determinator* determinator;
+	XPLCondition* condition;
+	XPLAction* action;
+	
 	return determinator;
 }
 
-XPLCondition* DeterminatorFactory::createCondition(string definitions[])
+XPLCondition* DeterminatorFactory::createCondition(vector<string> conditions)
 {
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
-	for(int i = 0; i<definitions->length; i++)
+	for(int i = 0; i<conditions.size(); i++)
 	{
 		XPLValuePair* valuePair = new XPLValuePair(); 
-		valuePair->member = getMember(definitions[index]);
-		valuePair->value = getValue(definitions[index]);
+		valuePair->member = getMember(conditions.at(i));
+		valuePair->value = getValue(conditions.at(i));
 		conditionVector->push_back(*valuePair);
 	}
 	XPLCondition* condition = new XPLCondition(conditionVector);
 	return condition;
 }
 
-XPLAction* DeterminatorFactory::createAction(xPLMessage messages[])
+XPLAction* DeterminatorFactory::createXPLAction(vector<XPLMessage>* messages)
 {
 	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
-	for(int i = 0; i<messages.length; i++)
+	for(int i = 0; i<messages->size(); i++)
 	{
-		actionVector.push_back(messages[i]);
+		actionVector->push_back(messages->at(i));
 	}
 	XPLAction* action = new XPLAction(actionVector);
 	return action;	
 }
 
 //TODO: Error checking for individuals fields
-XPLMessage* DeterminatorFactory::createsXPLMessage(string msgType, string sourceAddress, string destinationAddress, int hops, string parameters[])
+XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters)
 {
 	XPLMessage* message = new XPLMessage();
 	message->setMsgType(msgType);
-	string addressParameters[] = getAddressParameters(sourceAddress);
+	vector<string> addressParameters = getAddressParameters(sourceAddress);
 	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);
 	addressParameters = getAddressParameters(destinationAddress);
-	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);
-	
+	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);	
 }
 
 string DeterminatorFactory::getMember(string definition)
@@ -75,18 +72,15 @@ string DeterminatorFactory::getValue(string definition)
 	return definition;	
 }
 
-string* DeterminatorFactory::getAddressParameters(string address)
+vector<string> DeterminatorFactory::getAddressParameters(string address)
 {
-	string parameters[3];
-	int paramIndex = 0;
-	for(int i = 0; i<address.length; i++)
+	vector<string> parameters;
+	int position;
+	while(parameters.size()<3)
 	{
-		if(address.at(i) == ".")
-		{
-			parameters[0] = address.substr(0, i);
-			paramIndex++;
-			address = address.substr(i+1, address.length);	
-		}	
+		position = address.find_first_of(".");
+		parameters.push_back(address.substr(0,position));
+		address = address.substr(position+1, address.length());			
 	}
 	return parameters;
 }

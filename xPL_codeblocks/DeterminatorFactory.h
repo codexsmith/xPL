@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 #include "XPLHal.h"
 #include "Determinator.h"
 #include "XPLMessage.h"
@@ -16,14 +17,14 @@ class DeterminatorFactory {
 	public:
 		DeterminatorFactory();
 		~DeterminatorFactory();
-		Determinator* createDeterminator(string defintions[]);
-		XPLMessage* createXPLMessage(string msgType, string destinationAddress, string sourceAddress, string schema, int hops, string parameters[]);
+		Determinator* createDeterminator(vector<string> determinator, vector<string> condition, vector<string> action);
+		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters);
 
-		XPLCondition* createCondition(string definitions[]);
-		XPLAction* createAction(XPLMessage messages[]);
+		XPLCondition* createCondition(vector<string> definitions);
+		XPLAction* createXPLAction(vector<XPLMessage>* messages);
 		string getMember(string definition);
 		string getValue(string definition);
-		string* getAddressParameters(string address);
+		vector<string> getAddressParameters(string address);
 
 	private:
 		
