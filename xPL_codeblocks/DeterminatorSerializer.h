@@ -9,18 +9,17 @@
 using namespace std;
 
 class DeterminatorSerializer {
-	public:tor()
+	public:
 		explicit DeterminatorSerializer(string xmlFile);
 		~DeterminatorSerializer();
-		Determinator read();
-		void write(Determinator determinator);
+		string read();
+		Determinator* readDeterminator();
+		void writeDeterminator(string xmlString);
+        Determinator* write();
 
 	private:
-		DeterminatorSerializer(const DeterminatorSerializer&);
-		void operator=(const DeterminatorSerializer&);
 		string xmlFile_;
-		DeterminatorReader reader_;
-		DeterminatorWriter writer_;
+
 };
 
 #endif //DeterminatorSerializer_H
