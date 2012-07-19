@@ -15,10 +15,11 @@ class DeterminatorSerializer {
 		string read();
 		Determinator* readDeterminator();
 		void writeDeterminator(string xmlString);
-        Determinator* write();
+        Determinator* write(string xmlString);
 
 	private:
 		string xmlFile_;
+        static int currentLine_;
 
 };
 
