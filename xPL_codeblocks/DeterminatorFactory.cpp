@@ -55,7 +55,11 @@ XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceA
 	vector<string> addressParameters = getAddressParameters(sourceAddress);
 	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);
 	addressParameters = getAddressParameters(destinationAddress);
-	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);	
+	message->setSource(addressParameters[0], addressParameters[1], addressParameters[2]);
+	int schemaSplit = schema.find(".");
+	string schemaClass = schema.substr(0, schemaSplit);
+	string schemaType = schema.substr(schemaSplit+1, schema.length() - schemaSplit);
+	message->setSchema(schemaClass, schemaType);
 }
 
 string DeterminatorFactory::getMember(string definition)
