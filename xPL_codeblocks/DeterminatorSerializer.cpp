@@ -1,31 +1,36 @@
 #include <iostream>
 #include <fstream>
-#include <errno>
+#include <string>
+#include <stdio.h>
+#include <errno.h>
 #include <string>
 #include "DeterminatorSerializer.h"
 #include "Determinator.h"
 
 using namespace std;
 
-DeterminatorSerializer::DeterminatorSerializer(string xmlFile)
+DeterminatorSerializer::DeterminatorSerializer(char* xmlFile)
 {
     xmlFile_ = xmlFile;
     currentLine_ = 0; //static
 
 }
 
-void DeterminatorSerializer::writeDeterminator(string xmlString)
+int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
 
 }
 
 //takes an entire determinator, as a single \n delimited string
-Determinator* DeterminatorSerializer::write(string xmlString)
+int DeterminatorSerializer::write(char* xmlString)
 {
 
     fstream ruleFile;
     string line;
-    ruleFile.open (xmlFile_, ios::in);
+    int lineCheck;
+    string openingLine = "<determinator";
+
+    ruleFile.open (xmlFile_, ios::out | ios::app); //APPEND!
 
     if (ruleFile.is_open() and ruleFile.good())
     {
@@ -35,10 +40,11 @@ Determinator* DeterminatorSerializer::write(string xmlString)
 
         if (lineCheck == 0)
         { //yes this is an opening determinator tag
-
+            ruleFile.write(xmlString,strlen(xmlString));
+            return 0;
         }
     }
-
+    return 1;
 }
 
 Determinator* DeterminatorSerializer::readDeterminator()
@@ -94,11 +100,12 @@ string DeterminatorSerializer::read()
                     end = true; //end of a determinator
                 }
             }
-            else
-            {
-                 printf ("Error opening file, not formatted correctly. First line is not a determinator tag.: %s\n",strerror(errno));
-            }
         }
+        else
+        {
+             perror ("Error opening file, not formatted correctly. First line is not a determinator tag.: %s\n");
+        }
+
         currentLine_ = ruleFile.tellg();
         ruleFile.flush();
         ruleFile.close();

@@ -10,15 +10,15 @@ using namespace std;
 
 class DeterminatorSerializer {
 	public:
-		explicit DeterminatorSerializer(string xmlFile);
+		explicit DeterminatorSerializer(char* xmlFile);
 		~DeterminatorSerializer();
 		string read();
 		Determinator* readDeterminator();
-		void writeDeterminator(string xmlString);
-        Determinator* write(string xmlString);
+		int writeDeterminator(char* xmlString);
+        int write(char* xmlString);
 
 	private:
-		string xmlFile_;
+		char* xmlFile_;
         static int currentLine_;
 
 };
