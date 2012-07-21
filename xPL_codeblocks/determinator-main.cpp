@@ -42,6 +42,8 @@ int main(int argc, String argv[])
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
 
+    syslog(LOG_INFO, "Main Thread Created.");
+
     /**** Test Code ****/
     XPLMessage testMsg, testMsg2;
     testMsg.addMember("Fruit", "Dealer");
@@ -92,13 +94,11 @@ int main(int argc, String argv[])
     xPL_setServiceEnabled(theService, TRUE);
 
     /* Hand control over to xPLLib */
-    for (;;)
-    {
-        //Parse my xPL message(s)
-        xPL_processMessages(-1);
+    /* Main thread is processing xPL messages */
+    /* xHCP_thread is processing xHCP messages */
+    xPL_processMessages(-1);
 
-        //Parse my xHCP message(s)
-    }
+    pthread_join(xHCP_thread,NULL);
 
 	closelog();
     return TRUE;
