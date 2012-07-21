@@ -69,18 +69,25 @@ Condition   Deamon::condSignal;
 /*    SIGTERM - Terminate ST-Gen, sets bKillFlag.                             */
 /*    SIGINT  - Same as SIGTERM.                                              */
 /*    SIGHUP  - Restart ST-Gen, sets bRestart.                                */
+/*         Unsure why HUP was overloaded here...causes safe termination of    */
+/*         process to fail.                                                   */
 /******************************************************************************/
 void
 Deamon::SignalHandler(int iSig)
 {
-    condSignal.LockMutEx();
+    //condSignal.LockMutEx();
+    syslog(LOG_INFO, "SignalHandler() Called: %d", iSig);
     switch (iSig)
     {
         case SIGINT:
         case SIGTERM:   bKillFlag = true; break;
-        case SIGHUP:    bRestartFlag = true; break;
+        //case SIGHUP:    bRestartFlag = true; break;
+        //delete pcTheServer in Stop() crashes leaving the thread hung/blocked
+        //So removing overload entirely.
+        //case SIGHUP:    bKillFlag = true; break;
+
     }
-    condSignal.UnlockMutEx();
+    //condSignal.UnlockMutEx();
     condSignal.Signal();
 }
 
@@ -273,6 +280,7 @@ Deamon::Start()
 void
 Deamon::Stop()
 {
+    syslog(LOG_INFO, "Daemon::Stop() attempting to delete pcTheServer...");
     delete pcTheServer;
     syslog(LOG_INFO, "Daemon Terminated");
 }
@@ -293,7 +301,7 @@ Deamon::Deamon(const char *pcConfigFile)
 
     signal(SIGINT, &SignalHandler);
     signal(SIGTERM, &SignalHandler);
-    signal(SIGHUP, &SignalHandler);
+    //signal(SIGHUP, &SignalHandler);
 }
 
 /******************************************************************************/
@@ -327,15 +335,17 @@ Deamon::RunDeamon()
     while (!bKillFlag)
     {
         condSignal.Wait();
-        if (bRestartFlag)
-        {
-            Stop();
-            Start();
-            bRestartFlag = false;
-        }
+//        if (bRestartFlag)
+//        {
+//            Stop();
+//            Start();
+//            bRestartFlag = false;
+//        }
+        syslog(LOG_INFO, "condSignal.Signal() received.");
     }
     condSignal.UnlockMutEx();
 
+    syslog(LOG_INFO, "Calling Deamon::Stop().");
     Stop();
 }
 

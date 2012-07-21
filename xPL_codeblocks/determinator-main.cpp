@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <vector>
 #include <pthread.h>
+#include <signal.h>
 #include <syslog.h>
 #include "XPLHal.h";
 #include "XPLMessage.h"
@@ -29,18 +30,36 @@ extern "C" {
 //#include <boost/asio.hpp>
 
 //Prototypes
-void* xHCPService(void*);
+void terminateHandler(int param);
+//void* xHCPService(void*);
 vector<Determinator>* createDeterminator();
 
+pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
 
+
+    void* xHCPService(void*)
+    {
+        printf("weeee");
+        Deamon cDeamon(CONFIG_FILE);
+
+        cDeamon.RunDeamon();
+    }
+
 int main(int argc, String argv[])
 {
+    //set_terminate(terminateHandler);
+    //signal(SIGHUP, terminateHandler);
+//    signal(SIGTERM, terminateHandler);
+//    signal(SIGTSTP, terminateHandler);
+//    signal(SIGQUIT, terminateHandler);
+//    signal(SIGABRT, terminateHandler);
     openlog("my_deamon", LOG_PID, LOG_DAEMON);
-    pthread_t xHCP_thread;
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
+    //throw 0;
+    //throw SIGHUP;
 
     syslog(LOG_INFO, "Main Thread Created.");
 
@@ -101,24 +120,13 @@ int main(int argc, String argv[])
     pthread_join(xHCP_thread,NULL);
 
 	closelog();
-    return TRUE;
+    return 0;
 }
 
-
-void* xHCPService(void*)
+void terminateHandler(int param)
 {
-    Deamon cDeamon(CONFIG_FILE);
-
-    try
-    {
-        cDeamon.RunDeamon();
-    }
-    catch (...)
-    {
-        syslog(LOG_CRIT, "ERROR: Abnormal Daemon Termination");
-    }
+    pthread_kill(xHCP_thread,SIGKILL);
 }
-
 
 
 vector<Determinator>* createDeterminator()
