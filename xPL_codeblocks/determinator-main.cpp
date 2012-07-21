@@ -1,9 +1,13 @@
 // xPL Linux Hal Server
 #define HAL_VERSION "1.0"
 
+#define CONFIG_FILE "xHCP.config"
+
 #include <string>
 #include <stdio.h>
 #include <vector>
+#include <pthread.h>
+#include <syslog.h>
 #include "XPLHal.h";
 #include "XPLMessage.h"
 #include "XPLParser.h"
@@ -12,6 +16,11 @@
 #include "XPLAction.h"
 #include "XPLCondition.h"
 
+/******************************************************************************/
+/* Include header files for TCPServer and StreamerThread classes.             */
+/******************************************************************************/
+#include "deamon.h"
+
 extern "C" {
 
     #include "xPLLib/xPL.h"
@@ -19,8 +28,98 @@ extern "C" {
 }
 //#include <boost/asio.hpp>
 
+//Prototypes
+void* xHCPService(void*);
+vector<Determinator>* createDeterminator();
+
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
+
+int main(int argc, String argv[])
+{
+    openlog("my_deamon", LOG_PID, LOG_DAEMON);
+    pthread_t xHCP_thread;
+
+    pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
+
+    /**** Test Code ****/
+    XPLMessage testMsg, testMsg2;
+    testMsg.addMember("Fruit", "Dealer");
+    testMsg.addMember("SK", "MC");
+    testMsg.setHops(5);
+    testMsg.setSource("Pin", "Tin", "Sin");
+    testMsg.setMsgType("Command");
+
+    testMsg2 = testMsg.copyMessage();
+    testMsg2.addMember("StarTale", "July");
+    testMsg2.setMsgType("Status");
+
+    testMsg.setSource("Poop", "Scoop", "Loop");
+    testMsg.setHops(8);
+
+    //Load XML document
+
+    //Initialize RuleManager object with returned vector of determinators
+//	vector<Determinator>* determinators = new vector<Determinator>();
+//	Determinator* determinator = createDeterminator();
+//	determinators->push_back(*determinator);
+    vector<Determinator>* determinators = createDeterminator();
+
+	ruleMgr = new XPLRuleManager(determinators);
+
+    //Source Address
+    String srcVendor = "Test";
+    String srcDeviceID = "hal";
+    String srcInstanceID = "322F";
+
+    /* Start xPL up */
+    if (!xPL_initialize(xPL_getParsedConnectionType())) {
+        fprintf(stderr, "Unable to start xPL");
+        exit(1);
+    }
+
+    /* And a listener for all xPL messages */
+    xPL_addMessageListener(XPLParser::recvMsg, NULL);
+
+    /* Create a service so the hubs know to send things to us        */
+    /* While we are not relaly using he service, xPL hubs will not   */
+    /* forward messages to us until they have seen a xPL-looking     */
+    /* device on the end of a hub connection, so this just gets us a */
+    /* place at the table, so to speak                               */
+    theService = xPL_createConfigurableService(srcVendor, srcDeviceID, "Test.hal");
+    xPL_setServiceVersion(theService, HAL_VERSION);
+
+    xPL_setServiceEnabled(theService, TRUE);
+
+    /* Hand control over to xPLLib */
+    for (;;)
+    {
+        //Parse my xPL message(s)
+        xPL_processMessages(-1);
+
+        //Parse my xHCP message(s)
+    }
+
+	closelog();
+    return TRUE;
+}
+
+
+void* xHCPService(void*)
+{
+    Deamon cDeamon(CONFIG_FILE);
+
+    try
+    {
+        cDeamon.RunDeamon();
+    }
+    catch (...)
+    {
+        syslog(LOG_CRIT, "ERROR: Abnormal Daemon Termination");
+    }
+}
+
+
 
 vector<Determinator>* createDeterminator()
 {
@@ -117,67 +216,4 @@ vector<Determinator>* createDeterminator()
 	determinators->push_back(*determinator2);
 
 	return determinators;
-}
-
-int main(int argc, String argv[])
-{
-    /**** Test Code ****/
-    XPLMessage testMsg, testMsg2;
-    testMsg.addMember("Fruit", "Dealer");
-    testMsg.addMember("SK", "MC");
-    testMsg.setHops(5);
-    testMsg.setSource("Pin", "Tin", "Sin");
-    testMsg.setMsgType("Command");
-
-    testMsg2 = testMsg.copyMessage();
-    testMsg2.addMember("StarTale", "July");
-    testMsg2.setMsgType("Status");
-
-    testMsg.setSource("Poop", "Scoop", "Loop");
-    testMsg.setHops(8);
-
-    //Load XML document
-
-    //Initialize RuleManager object with returned vector of determinators
-//	vector<Determinator>* determinators = new vector<Determinator>();
-//	Determinator* determinator = createDeterminator();
-//	determinators->push_back(*determinator);
-    vector<Determinator>* determinators = createDeterminator();
-
-	ruleMgr = new XPLRuleManager(determinators);
-
-    //Source Address
-    String srcVendor = "Test";
-    String srcDeviceID = "hal";
-    String srcInstanceID = "322F";
-
-    /* Start xPL up */
-    if (!xPL_initialize(xPL_getParsedConnectionType())) {
-        fprintf(stderr, "Unable to start xPL");
-        exit(1);
-    }
-
-    /* And a listener for all xPL messages */
-    xPL_addMessageListener(XPLParser::recvMsg, NULL);
-
-    /* Create a service so the hubs know to send things to us        */
-    /* While we are not relaly using he service, xPL hubs will not   */
-    /* forward messages to us until they have seen a xPL-looking     */
-    /* device on the end of a hub connection, so this just gets us a */
-    /* place at the table, so to speak                               */
-    theService = xPL_createConfigurableService(srcVendor, srcDeviceID, "Test.hal");
-    xPL_setServiceVersion(theService, HAL_VERSION);
-
-    xPL_setServiceEnabled(theService, TRUE);
-
-    /* Hand control over to xPLLib */
-    for (;;)
-    {
-        //Parse my xPL message(s)
-        xPL_processMessages(-1);
-
-        //Parse my xHCP message(s)
-    }
-
-    return TRUE;
 }

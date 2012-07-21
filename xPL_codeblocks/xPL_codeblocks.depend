@@ -240,3 +240,19 @@
 	"pthreadcc/pthreadcc.h"
 	"socketcc/socketcc.h"
 
+1342897477 source:/home/xpl/Desktop/xPL/xPL_codeblocks/deamon.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<signal.h>
+	<syslog.h>
+	"socketcc/socketcc.h"
+	"pthreadcc/pthreadcc.h"
+	"tcpserver.h"
+	"deamon.h"
+
+1342890110 /home/xpl/Desktop/xPL/xPL_codeblocks/deamon.h
+	"tcpserver.h"
+	"pthreadcc/pthreadcc.h"
+
