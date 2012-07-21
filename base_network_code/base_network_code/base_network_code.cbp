@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="base_network_code" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/base_network_code" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/base_network_code" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../deamon.h" />
+		<Unit filename="../myecho.cpp" />
+		<Unit filename="../pthreadcc/condition.cpp" />
+		<Unit filename="../pthreadcc/mutualexclusion.cpp" />
+		<Unit filename="../pthreadcc/pthreadcc.h" />
+		<Unit filename="../pthreadcc/semaphore.cpp" />
+		<Unit filename="../pthreadcc/threadbase.cpp" />
+		<Unit filename="../pthreadcc/threadexception.cpp" />
+		<Unit filename="../socketcc/ipaddress.cpp" />
+		<Unit filename="../socketcc/socketbase.cpp" />
+		<Unit filename="../socketcc/socketcc.h" />
+		<Unit filename="../socketcc/socketexception.cpp" />
+		<Unit filename="../socketcc/tcpsockets.cpp" />
+		<Unit filename="../socketcc/udpsockets.cpp" />
+		<Unit filename="../tcpserver.cpp" />
+		<Unit filename="../tcpserver.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

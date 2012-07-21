@@ -1,0 +1,101 @@
+# depslib dependency file v1.0
+1046737278 source:/home/gremio/Desktop/base_network_code/application.cpp
+	<stdio.h>
+	<syslog.h>
+	"deamon.h"
+
+1342887530 /home/gremio/Desktop/base_network_code/deamon.h
+	"tcpserver.h"
+	"pthreadcc/pthreadcc.h"
+
+1342887492 /home/gremio/Desktop/base_network_code/tcpserver.h
+	"pthreadcc/pthreadcc.h"
+	"socketcc/socketcc.h"
+
+1031106474 /home/gremio/Desktop/base_network_code/pthreadcc/pthreadcc.h
+	<pthread.h>
+	<semaphore.h>
+
+1342888012 /home/gremio/Desktop/base_network_code/socketcc/socketcc.h
+	<unistd.h>
+	<netinet/in.h>
+	<sys/socket.h>
+	<string.h>
+	"../pthreadcc/pthreadcc.h"
+	<string>
+
+1342887550 source:/home/gremio/Desktop/base_network_code/deamon.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<signal.h>
+	<syslog.h>
+	"socketcc/socketcc.h"
+	"pthreadcc/pthreadcc.h"
+	"tcpserver.h"
+	"deamon.h"
+
+1342887558 source:/home/gremio/Desktop/base_network_code/myecho.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"socketcc/socketcc.h"
+
+1033446440 source:/home/gremio/Desktop/base_network_code/pthreadcc/condition.cpp
+	<errno.h>
+	"pthreadcc.h"
+
+1033446375 source:/home/gremio/Desktop/base_network_code/pthreadcc/mutualexclusion.cpp
+	<errno.h>
+	"pthreadcc.h"
+
+1031106448 source:/home/gremio/Desktop/base_network_code/pthreadcc/semaphore.cpp
+	<unistd.h>
+	<semaphore.h>
+	<errno.h>
+	"pthreadcc.h"
+
+1031106448 source:/home/gremio/Desktop/base_network_code/pthreadcc/threadbase.cpp
+	"pthreadcc.h"
+
+1024358840 source:/home/gremio/Desktop/base_network_code/pthreadcc/threadexception.cpp
+	<string.h>
+	"pthreadcc.h"
+
+1049759566 source:/home/gremio/Desktop/base_network_code/socketcc/socketbase.cpp
+	<stdio.h>
+	<errno.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<unistd.h>
+	<string.h>
+	<strings.h>
+	<signal.h>
+	<fcntl.h>
+	"socketcc.h"
+
+1034041427 source:/home/gremio/Desktop/base_network_code/socketcc/socketexception.cpp
+	<stdio.h>
+	<string.h>
+	"socketcc.h"
+
+1342888013 source:/home/gremio/Desktop/base_network_code/socketcc/ipaddress.cpp
+	<errno.h>
+	<netdb.h>
+	<arpa/inet.h>
+	"socketcc.h"
+
+1049759490 source:/home/gremio/Desktop/base_network_code/socketcc/tcpsockets.cpp
+	"socketcc.h"
+
+1049759494 source:/home/gremio/Desktop/base_network_code/socketcc/udpsockets.cpp
+	"socketcc.h"
+
+1342888177 source:/home/gremio/Desktop/base_network_code/tcpserver.cpp
+	<stdio.h>
+	<signal.h>
+	<unistd.h>
+	<syslog.h>
+	"tcpserver.h"
+
