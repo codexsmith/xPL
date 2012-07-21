@@ -19,8 +19,8 @@ class DeterminatorFactory {
 		~DeterminatorFactory();
 		Determinator* createDeterminator(string defintions[]);
 
-		XPLCondition* createCondition(string definitions[]);
-		XPLAction* createAction(string defintions[]);
+		XPLCondition* createCondition(string definitions[], int index);
+		XPLAction* createAction(string defintions[], int index);
 		string getMember(string definition);
 		string getValue(string definition);
 
