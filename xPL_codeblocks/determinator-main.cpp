@@ -195,7 +195,7 @@ vector<Determinator>* createDeterminator()
     XPLMessage turnLampOn2;
     turnLampOn2.setMsgType("xpl-cmnd");
     turnLampOn2.setSource("XPLHal", "XPLHal", "XPLHal");
-    turnLampOn2.setDestination("smgpoe", "lamp", "3");
+    turnLampOn2.setDestination("smgpoe", "lamp", "1");
     turnLampOn2.setSchema("control", "basic");
     turnLampOn2.setHops(5);
     turnLampOn2.setBroadcast(false);
