@@ -60,13 +60,13 @@ vector<Determinator>* createDeterminator()
     XPLMessage turnLampOn;
     turnLampOn.setMsgType("xpl-cmnd");
     turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
-    turnLampOn.setDestination("smgpoe", "lamp", "3");
+    turnLampOn.setDestination("smgpoe", "lamp", "1");
     turnLampOn.setSchema("control", "basic");
     turnLampOn.setHops(5);
     turnLampOn.setBroadcast(false);
     turnLampOn.addMember("device", "pwm");
     turnLampOn.addMember("type", "variable");
-    turnLampOn.addMember("current", "50");
+    turnLampOn.addMember("current", "200");
 
 	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
 	actionVector->push_back(messageOne);
