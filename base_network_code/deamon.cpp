@@ -248,6 +248,7 @@ Deamon::Start()
                                     iMaxSleepingThreads,
                                     ((iMaxSleepingThreads - iMinSleepingThreads) >> 1),
                                     new TCPServerThread, bUseIPv6);
+        printf("wee");
 
         syslog(LOG_INFO, "Daemon Started");
     }

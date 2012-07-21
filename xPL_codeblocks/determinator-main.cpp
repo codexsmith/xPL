@@ -171,7 +171,13 @@ int main(int argc, String argv[])
     xPL_setServiceEnabled(theService, TRUE);
 
     /* Hand control over to xPLLib */
-    xPL_processMessages(-1);
+    for (;;)
+    {
+        //Parse my xPL message(s)
+        xPL_processMessages(-1);
+
+        //Parse my xHCP message(s)
+    }
 
     return TRUE;
 }

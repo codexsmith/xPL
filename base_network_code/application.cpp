@@ -17,6 +17,7 @@
 /******************************************************************************/
 #include <stdio.h>
 #include <syslog.h>
+#include <pthread.h>
 
 /******************************************************************************/
 /* Include header files for TCPServer and StreamerThread classes.             */
@@ -39,10 +40,23 @@
 /* a try block, if any errors occur a string exception will be thrown which   */
 /* is then printed before the application terminates.                         */
 /******************************************************************************/
-int
+void* f1(void*);
+
 main(int iArgC, char *ppcArgV[])
 {
     openlog("my_deamon", LOG_PID, LOG_DAEMON);
+
+    pthread_t f1_thread;
+
+    pthread_create(&f1_thread,NULL,&f1, NULL);
+
+    syslog(LOG_INFO, "Main Thread Created.");
+
+    pthread_join(f1_thread,NULL);
+    return (0);
+}
+
+void* f1(void*){
 
     printf("===================================\n");
     printf("          My Echo Deamon.\n");
@@ -52,24 +66,19 @@ main(int iArgC, char *ppcArgV[])
     printf(" Copyright    : 2001-2003\n");
     printf("===================================\n");
 
-    Deamon       cDeamon((iArgC == 1)?CONFIG_FILE:(ppcArgV[1]));
+    Deamon cDeamon(CONFIG_FILE);
 
     try
     {
-        if (iArgC > 2)
-        {
-            printf("Error: Illegal number of arguments - Usage:\n\tdeamon [config_file]\n");
-            printf("===================================\n");
-            throw 1;
-        }
-
         cDeamon.RunDeamon();
     }
     catch (...)
     {
         syslog(LOG_CRIT, "ERROR: Abnormal Daemon Termination");
     }
+
 	closelog();
+
 }
 
 /******************************************************************************/

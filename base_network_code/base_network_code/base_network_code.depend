@@ -99,3 +99,104 @@
 	<syslog.h>
 	"tcpserver.h"
 
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/myecho.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"socketcc/socketcc.h"
+
+1342890110 /home/xpl/Desktop/xPL/base_network_code/socketcc/socketcc.h
+	<unistd.h>
+	<netinet/in.h>
+	<sys/socket.h>
+	<string.h>
+	"../pthreadcc/pthreadcc.h"
+	<string>
+
+1342890110 /home/xpl/Desktop/xPL/base_network_code/pthreadcc/pthreadcc.h
+	<pthread.h>
+	<semaphore.h>
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/pthreadcc/condition.cpp
+	<errno.h>
+	"pthreadcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/pthreadcc/mutualexclusion.cpp
+	<errno.h>
+	"pthreadcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/pthreadcc/semaphore.cpp
+	<unistd.h>
+	<semaphore.h>
+	<errno.h>
+	"pthreadcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/pthreadcc/threadbase.cpp
+	"pthreadcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/pthreadcc/threadexception.cpp
+	<string.h>
+	"pthreadcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/socketcc/ipaddress.cpp
+	<errno.h>
+	<netdb.h>
+	<arpa/inet.h>
+	"socketcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/socketcc/socketbase.cpp
+	<stdio.h>
+	<errno.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<unistd.h>
+	<string.h>
+	<strings.h>
+	<signal.h>
+	<fcntl.h>
+	"socketcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/socketcc/socketexception.cpp
+	<stdio.h>
+	<string.h>
+	"socketcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/socketcc/tcpsockets.cpp
+	"socketcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/socketcc/udpsockets.cpp
+	"socketcc.h"
+
+1342890110 source:/home/xpl/Desktop/xPL/base_network_code/tcpserver.cpp
+	<stdio.h>
+	<signal.h>
+	<unistd.h>
+	<syslog.h>
+	"tcpserver.h"
+
+1342890110 /home/xpl/Desktop/xPL/base_network_code/tcpserver.h
+	"pthreadcc/pthreadcc.h"
+	"socketcc/socketcc.h"
+
+1342897477 source:/home/xpl/Desktop/xPL/base_network_code/deamon.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<signal.h>
+	<syslog.h>
+	"socketcc/socketcc.h"
+	"pthreadcc/pthreadcc.h"
+	"tcpserver.h"
+	"deamon.h"
+
+1342890110 /home/xpl/Desktop/xPL/base_network_code/deamon.h
+	"tcpserver.h"
+	"pthreadcc/pthreadcc.h"
+
+1342899793 source:/home/xpl/Desktop/xPL/base_network_code/application.cpp
+	<stdio.h>
+	<syslog.h>
+	<pthread.h>
+	"deamon.h"
+
