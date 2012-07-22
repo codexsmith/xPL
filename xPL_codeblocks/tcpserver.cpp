@@ -26,6 +26,7 @@
 /* Include class header file.                                                 */
 /******************************************************************************/
 #include "tcpserver.h"
+#include "XHCP_Parser.h"
 
 /******************************************************************************/
 /* TCPServer Class.                                                           */
@@ -484,6 +485,9 @@ TCPServerThread::AcceptClient()
             TCPSocket   *pcClientSocket;
 
             pcClientSocket = pcListeningSocket->AcceptClient();
+
+            XHCP_Parser::acceptMsg(pcClientSocket);
+
             mutexAccept.Unlock();
             return pcClientSocket;
         }
@@ -519,13 +523,15 @@ TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)
         {
             iBytesTransferred = pcClientSocket->RecvData(pcBuffer, 65535);
 
+            XHCP_Parser::recvMsg(pcClientSocket, pcBuffer, iBytesTransferred);
+
             pcBuffer[iBytesTransferred] = 0;
 
-            syslog(LOG_INFO, "Received %d bytes [%s] from, %s:%d", iBytesTransferred,
-                   pcBuffer, (pcClientSocket->RemoteIPAddress()).GetAddressString(),
-                   pcClientSocket->RemotePortNumber());
-
-            iBytesTransferred = pcClientSocket->SendData(pcBuffer, iBytesTransferred);
+//            syslog(LOG_INFO, "Received %d bytes [%s] from, %s:%d", iBytesTransferred,
+//                   pcBuffer, (pcClientSocket->RemoteIPAddress()).GetAddressString(),
+//                   pcClientSocket->RemotePortNumber());
+//
+//            iBytesTransferred = pcClientSocket->SendData(pcBuffer, iBytesTransferred);
         }
         catch (SocketException &excep)
         {

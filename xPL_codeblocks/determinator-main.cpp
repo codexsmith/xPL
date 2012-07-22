@@ -118,7 +118,6 @@ int main(int argc, String argv[])
 
 void* xHCPService(void*)
 {
-    printf("weeee");
     Deamon cDeamon(CONFIG_FILE);
 
     cDeamon.RunDeamon();
