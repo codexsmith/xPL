@@ -31,26 +31,17 @@ extern "C" {
 
 //Prototypes
 void terminateHandler(int param);
-//void* xHCPService(void*);
+void* xHCPService(void*);
 vector<Determinator>* createDeterminator();
 
 pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
 
-
-    void* xHCPService(void*)
-    {
-        printf("weeee");
-        Deamon cDeamon(CONFIG_FILE);
-
-        cDeamon.RunDeamon();
-    }
-
 int main(int argc, String argv[])
 {
     //set_terminate(terminateHandler);
-    //signal(SIGHUP, terminateHandler);
+//    signal(SIGHUP, terminateHandler);
 //    signal(SIGTERM, terminateHandler);
 //    signal(SIGTSTP, terminateHandler);
 //    signal(SIGQUIT, terminateHandler);
@@ -123,11 +114,15 @@ int main(int argc, String argv[])
     return 0;
 }
 
-void terminateHandler(int param)
-{
-    pthread_kill(xHCP_thread,SIGKILL);
-}
 
+
+void* xHCPService(void*)
+{
+    printf("weeee");
+    Deamon cDeamon(CONFIG_FILE);
+
+    cDeamon.RunDeamon();
+}
 
 vector<Determinator>* createDeterminator()
 {

@@ -82,9 +82,7 @@ Deamon::SignalHandler(int iSig)
         case SIGINT:
         case SIGTERM:   bKillFlag = true; break;
         //case SIGHUP:    bRestartFlag = true; break;
-        //delete pcTheServer in Stop() crashes leaving the thread hung/blocked
-        //So removing overload entirely.
-        //case SIGHUP:    bKillFlag = true; break;
+        case SIGHUP:    bKillFlag = true; break;
 
     }
     //condSignal.UnlockMutEx();
@@ -299,8 +297,9 @@ Deamon::Deamon(const char *pcConfigFile)
     pcConfigFileName = strdup(pcConfigFile);
     pcTheServer = NULL;
 
-    signal(SIGINT, &SignalHandler);
-    signal(SIGTERM, &SignalHandler);
+    //attempting to clean up the pcTheServer object causes the application to crash
+    //signal(SIGINT, &SignalHandler);
+    //signal(SIGTERM, &SignalHandler);
     //signal(SIGHUP, &SignalHandler);
 }
 
@@ -345,7 +344,8 @@ Deamon::RunDeamon()
     }
     condSignal.UnlockMutEx();
 
-    syslog(LOG_INFO, "Calling Deamon::Stop().");
+    pthread_exit(NULL);
+    syslog(LOG_INFO, "End of Deamon::RunDeamon() reached.");
     Stop();
 }
 
