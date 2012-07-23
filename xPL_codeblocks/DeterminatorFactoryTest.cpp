@@ -1,7 +1,6 @@
 #include "DeterminatorFactory.h"
 #include "XPLHal.h"
 #include "Determinator.h"
-#include "DeterminatorFactory.h"
 #include "XPLCondition.h"
 #include "XPLMessage.h"
 #include "XPLAction.h"
@@ -9,6 +8,54 @@
 #include <iostream>
 #include <string>
 
+
+bool compareValuePair(XPLValuePair pairOne, XPLValuePair pairTwo)
+{
+	bool memberEqual = pairOne.member.compare(pairTwo.member) == 0;
+	bool valueEqual = pairOne.value.compare(pairTwo.value) == 0;
+	return memberEqual && valueEqual;
+}
+
+void setMessageWithTestValues(XPLMessage* message)
+{
+	message->setMsgType("xpl-cmd");
+	message->setHops(5);
+	message->setDestination("vendorIdOne", "deviceIdOne", "instanceIdOne");
+	message->setSource("vendorIdTwo", "deviceIdTwo", "instanceIdTwo");
+	message->setSchema("schemaClass", "schemaType");
+	message->addMember("nameOne", "valueOne");
+	message->addMember("nameTwo", "valueTwo");
+	message->addMember("nameThree", "valueThree");
+}
+
+bool compareXPLMessage(XPLMessage* messageOne, XPLMessage* messageTwo)
+{
+    bool msgTypeEqual = (messageOne->getMsgType().compare(messageTwo->getMsgType()) == 0);
+    XPLAddress destinationOne = messageOne->getDestination();
+    XPLAddress destinationTwo = messageTwo->getDestination();
+    bool destinationEqual = (destinationOne.vendor.compare(destinationTwo.vendor) == 0) && (destinationOne.device.compare(destinationTwo.device) == 0) && (destinationOne.instance.compare(destinationTwo.instance) == 0);
+    XPLAddress sourceOne = messageOne->getSource();
+    XPLAddress sourceTwo = messageTwo->getSource();
+    bool sourceEqual = (sourceOne.vendor.compare(sourceTwo.vendor) == 0) && (sourceOne.device.compare(sourceTwo.device) == 0) && (sourceOne.instance.compare(sourceTwo.instance) == 0);
+    bool hopsEqual = messageOne->getHops() == messageTwo->getHops();
+    XPLSchema schemaOne = messageOne->getSchema();
+    XPLSchema schemaTwo = messageTwo->getSchema();
+    bool schemaEqual = (schemaOne.schema.compare(schemaTwo.schema) == 0) && (schemaOne.type.compare(schemaTwo.type) == 0);
+    vector<XPLValuePair> pairsOne = messageOne->getMembers();
+    vector<XPLValuePair> pairsTwo = messageOne->getMembers();
+    bool pairsEqual = pairsOne.size() == pairsTwo.size();
+    if(pairsEqual)
+    {
+    	int i = 0;
+    	while(pairsEqual && i<pairsOne.size())
+    	{
+    		pairsEqual = compareValuePair(pairsOne[i], pairsTwo[i]);
+    		i++;
+    	}
+    }
+
+    return msgTypeEqual && destinationEqual && sourceEqual && hopsEqual && schemaEqual && pairsEqual;
+}
 
 void assertSuccess(string functionName, bool result, string value)
 {
@@ -99,30 +146,86 @@ void testCreateMessage(DeterminatorFactory* factory)
 
 void testCreateCondition(DeterminatorFactory* factory)
 {	
-	bool result = false;
 	vector<string> definitions;
 	definitions.push_back("nameOne=valueOne");
 	definitions.push_back("nameTwo=valueTwo");
 	definitions.push_back("nameThree=valueThree");
-	XPLCondition* condition = factory->createCondition(definitions);
+	XPLCondition* condition = factory->createXPLCondition(definitions);
 
 	XPLMessage* message = new XPLMessage();
-	condition->match(message);
+	message->addMember("nameOne", "valueOne");
+	message->addMember("nameTwo", "valueTwo");
+	message->addMember("nameThree", "valueThree");
+	bool matched = condition->match(message);
 
-	assertSuccess("testCreateMessage", result, "");
+	string memberOneValue = message->findMember("nameOne");
+	string memberTwoValue = message->findMember("nameTwo");
+	string memberThreeValue = message->findMember("nameThree");
+	string resultString = "";
+	resultString.append(" " + memberOneValue);
+	resultString.append(" " + memberTwoValue);
+	resultString.append(" " + memberThreeValue);
+
+	bool result = (memberOneValue.compare("valueOne") == 0) && (memberTwoValue.compare("valueTwo") == 0) && (memberThreeValue.compare("valueThree") == 0) && matched;
+	assertSuccess("testCreateCondition", result, resultString);
+	delete condition;
 }
 
 
 void testCreateAction(DeterminatorFactory* factory)
 {
 	bool result = false;
+	XPLMessage* testMessage = new XPLMessage();
+	setMessageWithTestValues(testMessage);
+	XPLMessage* addedMessage = new XPLMessage();
+	setMessageWithTestValues(addedMessage);
+	vector<XPLMessage>* messages = new vector<XPLMessage>();
+	messages->push_back(*testMessage);
+	XPLAction* action = factory->createXPLAction(messages);
+
+	XPLMessage executedMessage = action->execute()[0];
+	result = compareXPLMessage(testMessage, &executedMessage);
+
 	assertSuccess("testCreateAction", result, "");
 }
 
 void testCreateDeterminator(DeterminatorFactory* factory)
 {
 	bool result = false;
-	assertSuccess("testCreateDeterminator", result, "");
+	vector<string> definitions;
+	definitions.push_back("nameOne=valueOne");
+	definitions.push_back("nameTwo=valueTwo");
+	definitions.push_back("nameThree=valueThree");
+	XPLCondition* condition = factory->createXPLCondition(definitions);
+
+	XPLMessage* testMessage = new XPLMessage();
+	setMessageWithTestValues(testMessage);
+	XPLMessage* addedMessage = new XPLMessage();
+	setMessageWithTestValues(addedMessage);
+	vector<XPLMessage>* messages = new vector<XPLMessage>();
+	messages->push_back(*testMessage);
+	XPLAction* action = factory->createXPLAction(messages);
+
+	Determinator* determinator = factory->createDeterminator(condition, action);
+
+	string resultString = "";
+	bool matched = determinator->match(testMessage);
+	if(!matched)
+		resultString.append("Message failed to matched. \n");
+
+	XPLMessage matchedMessge = determinator->execute()[0];
+	bool executedCorrectMessage = compareXPLMessage(testMessage, &matchedMessge);
+	if(!executedCorrectMessage)
+		resultString.append("Failed to execute correct message.\n");
+
+	testMessage->setMsgType("xpl-stat");
+	bool notMatched = determinator->match(testMessage);
+	if(!notMatched)
+		resultString.append("Message matched incorrectly. \n");
+		
+	result = matched && notMatched && executedCorrectMessage;
+
+	assertSuccess("testCreateDeterminator", result, resultString);
 }
 
 int main()

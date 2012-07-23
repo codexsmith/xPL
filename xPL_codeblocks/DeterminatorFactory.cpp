@@ -22,7 +22,13 @@ Determinator* DeterminatorFactory::createDeterminator(vector<string> determinato
 	return determinator;
 }
 
-XPLCondition* DeterminatorFactory::createCondition(vector<string> conditions)
+Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, XPLAction* action)
+{
+	Determinator* determinator = new Determinator(condition, action);
+	return determinator;
+}
+
+XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions)
 {
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	for(int i = 0; i<conditions.size(); i++)
