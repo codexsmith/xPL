@@ -22,9 +22,10 @@ Determinator* DeterminatorFactory::createDeterminator(vector<string> determinato
 	return determinator;
 }
 
-Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, XPLAction* action)
+Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled)
 {
 	Determinator* determinator = new Determinator(condition, action);
+	determinator->setEnabled(enabled);
 	return determinator;
 }
 

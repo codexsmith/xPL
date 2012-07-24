@@ -91,7 +91,7 @@ public:
 		else
 		{
 			printf("Test XPLCondition::match() failed!\n");
-			cout << "\tMatched Result: " << matched << "\n\t Not Matchd Result: " << notMatched << "\n";
+			cout << "\tMatched Result: " << matched << "\n\t Not Matched Result: " << notMatched << "\n";
 		}
 	}
 
@@ -116,6 +116,7 @@ public:
 
 	void runTests()
 	{
-		testMatch();		
+		testMatch();
+		testEquals();		
 	}
 };

@@ -18,7 +18,7 @@ class DeterminatorFactory {
 		DeterminatorFactory();
 		~DeterminatorFactory();
 		Determinator* createDeterminator(vector<string> determinator, vector<string> condition, vector<string> action);
-		Determinator* createDeterminator(XPLCondition* condition, XPLAction* action);
+		Determinator* createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled);
 		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters);
 
 		XPLCondition* createXPLCondition(vector<string> definitions);
