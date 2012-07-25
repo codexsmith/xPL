@@ -40,6 +40,9 @@
 		<Unit filename="DeterminatorReader.h" />
 		<Unit filename="DeterminatorSerializer.h" />
 		<Unit filename="DeterminatorWriter.h" />
+		<Unit filename="TestRunner.cpp" />
+		<Unit filename="XHCP_Parser.cpp" />
+		<Unit filename="XHCP_Parser.h" />
 		<Unit filename="XPLAction.cpp" />
 		<Unit filename="XPLAction.h" />
 		<Unit filename="XPLCondition.cpp" />
@@ -47,13 +50,13 @@
 		<Unit filename="XPLHal.h" />
 		<Unit filename="XPLMessage.cpp" />
 		<Unit filename="XPLMessage.h" />
+		<Unit filename="XPLMessageTest.cpp" />
 		<Unit filename="XPLParser.cpp" />
 		<Unit filename="XPLParser.h" />
 		<Unit filename="XPLRuleManager.cpp" />
 		<Unit filename="XPLRuleManager.h" />
 		<Unit filename="deamon.cpp" />
 		<Unit filename="deamon.h" />
-		<Unit filename="determinator-main.cpp" />
 		<Unit filename="pthreadcc/condition.cpp" />
 		<Unit filename="pthreadcc/mutualexclusion.cpp" />
 		<Unit filename="pthreadcc/pthreadcc.h" />
