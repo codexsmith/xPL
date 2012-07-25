@@ -6,70 +6,106 @@
 #include <string>
 #include <iostream>
 
-int main()
-{
-	//First, let's create the condition
-	XPLValuePair pairOne, pairTwo, pairThree;
-	pairOne.member = "oneMember";
-	pairOne.value = "oneValue";	
-	pairTwo.member = "twoMember";
-	pairTwo.value = "twoValue";
-	pairThree.member = "threeMember";
-	pairThree.value = "threeValue";	
+class DeterminatorTest {
 
-	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
-	conditionVector->push_back(pairOne);
-	conditionVector->push_back(pairTwo);
-	conditionVector->push_back(pairThree);
+public:
 
-	XPLCondition* condition = new XPLCondition(conditionVector);
+	XPLCondition* createCondition()
+	{
+		//First, let's create the condition
+		XPLValuePair pairOne, pairTwo, pairThree;
+		pairOne.member = "oneMember";
+		pairOne.value = "oneValue";	
+		pairTwo.member = "twoMember";
+		pairTwo.value = "twoValue";
+		pairThree.member = "threeMember";
+		pairThree.value = "threeValue";	
 
-	XPLMessage messageOne, messageTwo;
+		vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
+		conditionVector->push_back(pairOne);
+		conditionVector->push_back(pairTwo);
+		conditionVector->push_back(pairThree);
 
-	messageOne.addMember("firstResponseMemberOne", "firstResponeValueOne");
-	messageOne.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
-	messageOne.setMsgType("firstMessageType");
-	messageOne.setBroadcast(false);
-	messageOne.setSchema("firstResponseSchemaClass", "firstResponseSchemaType");
-	messageOne.setHops(2);
-	messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
-	messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
-	
-	messageTwo.addMember("secondResponseMemberOne", "secondResponseValueOne");
-	messageTwo.addMember("secondResponseMemberTwo", "secondResponseValueTwo");
-	messageTwo.setMsgType("secondMessageType");
-	messageTwo.setSchema("secondResponseSchemaClass", "secondResponseSchemaType");
-	messageTwo.setBroadcast(true);
-	messageTwo.setHops(5);
-	messageTwo.setSource("messageTwoSourceVendor", "messageTwoSourceDevice", "messageTwoSourceInstance");
+		return new XPLCondition(conditionVector);
+	}
 
-	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
-	actionVector->push_back(messageOne);
-	actionVector->push_back(messageTwo);
+	XPLAction* createAction()
+	{
+		XPLMessage messageOne, messageTwo;
 
-	XPLAction* action = new XPLAction(actionVector);
-	
-	Determinator determinator(condition, action);
-	if(determinator.match(&messageOne))
-		cout << "It matches!\n";
-	else
-		cout << "Message didn't match\n";
-
-	XPLMessage triggerMessage;
-	triggerMessage.addMember(pairOne.member, pairOne.value);
-	triggerMessage.addMember(pairTwo.member, pairTwo.value);
-	triggerMessage.addMember(pairThree.member, pairThree.value);
+		messageOne.addMember("firstResponseMemberOne", "firstResponeValueOne");
+		messageOne.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
+		messageOne.setMsgType("firstMessageType");
+		messageOne.setBroadcast(false);
+		messageOne.setSchema("firstResponseSchemaClass", "firstResponseSchemaType");
+		messageOne.setHops(2);
+		messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
+		messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
 		
-	if(determinator.match(&triggerMessage))
-		cout << "It matches!\n";
-	else
-		cout << "Message didn't match\n";
+		messageTwo.addMember("secondResponseMemberOne", "secondResponseValueOne");
+		messageTwo.addMember("secondResponseMemberTwo", "secondResponseValueTwo");
+		messageTwo.setMsgType("secondMessageType");
+		messageTwo.setSchema("secondResponseSchemaClass", "secondResponseSchemaType");
+		messageTwo.setBroadcast(true);
+		messageTwo.setHops(5);
+		messageTwo.setSource("messageTwoSourceVendor", "messageTwoSourceDevice", "messageTwoSourceInstance");
 
-	vector<XPLMessage> responses = determinator.execute();
-	if(responses.size() == 2)
-		cout << "I probably got the same two messages back\n";	
-	else
-		cout << "You done goofed";
+		vector<XPLMessage>* actionVector = new vector<XPLMessage>();
+		actionVector->push_back(messageOne);
+		actionVector->push_back(messageTwo);
 
-	return 0;
-}
+		return new XPLAction(actionVector);
+	}
+
+	void testMatch()
+	{
+		XPLMessage messageOne;
+		messageOne.addMember("firstResponseMemberOne", "firstResponeValueOne");
+		messageOne.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
+		messageOne.setMsgType("firstMessageType");
+		messageOne.setBroadcast(false);
+		messageOne.setSchema("firstResponseSchemaClass", "firstResponseSchemaType");
+		messageOne.setHops(2);
+		messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
+		messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
+
+		XPLCondition* condition = createCondition();
+		XPLAction* action = createAction();
+		Determinator determinator(condition, action);
+		bool failedMatched = determinator.match(&messageOne);
+
+		XPLValuePair pairOne, pairTwo, pairThree;
+		pairOne.member = "oneMember";
+		pairOne.value = "oneValue";	
+		pairTwo.member = "twoMember";
+		pairTwo.value = "twoValue";
+		pairThree.member = "threeMember";
+		pairThree.value = "threeValue";	
+		
+		XPLMessage triggerMessage;
+		triggerMessage.addMember(pairOne.member, pairOne.value);
+		triggerMessage.addMember(pairTwo.member, pairTwo.value);
+		triggerMessage.addMember(pairThree.member, pairThree.value);
+		bool matched = determinator.match(&triggerMessage);
+		if(!failedMatched && matched)
+			cout << "Test Determinator::match() success!\n";
+		else
+			cout << "Test Determinator::match() failed!\n";
+	}
+
+	void testExecute()
+	{
+		Determinator determinator(createCondition(), createAction());
+		vector<XPLMessage> responses = determinator.execute();
+		if(responses.size() == 2)
+			cout << "Test Determinator::execute() success!\n";	
+		else
+			cout << "Test Determinator::execute() failed!\n";
+	}
+
+	void runTests()
+	{
+		testMatch();
+		testExecute();
+	}
+};

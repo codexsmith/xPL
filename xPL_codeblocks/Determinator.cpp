@@ -9,9 +9,9 @@ Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 {
 	condition_ = condition;
 	action_ = action;
-	cout << "Setting enabled to true!\n";
+	// cout << "Setting enabled to true!\n";
 	enabled_ = true;
-	cout << enabled_ << "\n";
+	// cout << enabled_ << "\n";
 }
 
 //Determinator::Determinator(const Determinator& determinator)
@@ -39,10 +39,10 @@ bool Determinator::match(XPLMessage* message)
 {
 	if(enabled_)
 	{
-		cout << "Determinator is enabled and called match\n";
+		// cout << "Determinator is enabled and called match\n";
 		return condition_->match(message);
 	}
-	cout << "Determinator is not enabled but did call match\n";
+	// cout << "Determinator is not enabled but did call match\n";
 	return false;
 }
 
