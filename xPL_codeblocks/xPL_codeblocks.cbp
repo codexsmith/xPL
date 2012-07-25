@@ -37,16 +37,22 @@
 		</Compiler>
 		<Unit filename="Determinator.cpp" />
 		<Unit filename="Determinator.h" />
+		<Unit filename="DeterminatorFactory.cpp" />
+		<Unit filename="DeterminatorFactory.h" />
+		<Unit filename="DeterminatorFactoryTest.cpp" />
 		<Unit filename="DeterminatorReader.h" />
 		<Unit filename="DeterminatorSerializer.h" />
+		<Unit filename="DeterminatorTest.cpp" />
 		<Unit filename="DeterminatorWriter.h" />
 		<Unit filename="TestRunner.cpp" />
 		<Unit filename="XHCP_Parser.cpp" />
 		<Unit filename="XHCP_Parser.h" />
 		<Unit filename="XPLAction.cpp" />
 		<Unit filename="XPLAction.h" />
+		<Unit filename="XPLActionTest.cpp" />
 		<Unit filename="XPLCondition.cpp" />
 		<Unit filename="XPLCondition.h" />
+		<Unit filename="XPLConditionTest.cpp" />
 		<Unit filename="XPLHal.h" />
 		<Unit filename="XPLMessage.cpp" />
 		<Unit filename="XPLMessage.h" />
