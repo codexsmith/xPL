@@ -3,12 +3,13 @@
 
 #include "XPLHal.h"
 #include "XPLMessage.h"
+#include <string>
 
 using namespace std;
 
 class XPLCondition {
 	public:
-		explicit XPLCondition(vector<XPLValuePair>* attributes);
+		explicit XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType)
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);
@@ -18,6 +19,13 @@ class XPLCondition {
 
 	private:
 		vector<XPLValuePair>* attributes_;
+		XPLAddress sourceAddress_;
+		XPLAddress destinationAddress_;
+		XPLSchema schema_;
+		string msgType_;
+		int hops_;
+
+
 };
 
 #endif //XPLAction_H

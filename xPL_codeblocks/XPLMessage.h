@@ -7,102 +7,45 @@ using namespace std;
 
 class XPLMessage
 {
-    //PUBLIC//
-    public:
+	public:
+	    XPLMessage();
+	    ~XPLMessage();
 
-	//FUNCTION PROTOTYPES
+		string findMember(string memberName);
+	    vector<XPLValuePair> getMembers();
+		void addMember(string member, string value);
 
-    //Constructor
-    XPLMessage();
+		string getMsgType();
+		void setMsgType(string messageType);
 
-    //Destructor
-    ~XPLMessage();
+		XPLAddress getSource();
+		void setSource(string sourceVendor, string sourceDevice, string sourceInstance);
 
-	//returns value of a specified parameter name
-	string findMember(string memberName);
+	    bool isBroadcast();
+	    void setBroadcast(bool broadcast);
 
-	//returns entire vector of members
-    vector<XPLValuePair> getMembers();
+		XPLAddress getDestination();
+		void setDestination(string destinationVendor, string destinationDevice, string destinationInstance);
 
-	//adds member to list
-	void addMember(string member, string value);
+		int getHops();
+		void setHops(int hops);
 
-	//returns message type (cmnd, status, trigger)
-	string getMsgType();
+		XPLSchema getSchema();
+		void setSchema(string schemaClass, string schemaType);
 
-	//sets message type
-	void setMsgType(string messageType);
+		XPLMessage copyMessage();
 
-	//returns source address (vendor-device.instance)
-	XPLAddress getSource();
+	private:
+	    string timeReceived;
+		string messageType;
+		int hops;
+	    XPLSchema schema;
 
-	//sets source address
-	void setSource(string sourceVendor, string sourceDevice, string sourceInstance);
+	    XPLAddress source;
+	    XPLAddress destination;
+	    bool broadcast;
 
-    //returns wether or not the message was a broadcast
-    bool isBroadcast();
-
-    //sets the broadcast flag
-    void setBroadcast(bool broadcast);
-
-	//returns destination/target (vendor-device.instance)
-	XPLAddress getDestination();
-
-	//sets destination address
-	void setDestination(string destinationVendor, string destinationDevice, string destinationInstance);
-
-	//returns number of hops allowed set in message
-	int getHops();
-
-	//sets number of hops allowed
-	void setHops(int hops);
-
-	//returns schema (class.type)
-	XPLSchema getSchema();
-
-	//sets schema
-	void setSchema(string schemaClass, string schemaType);
-
-	//returns struct of all parameters maybe?
-	//someStruct getParameters();
-
-	//creates decoupled copy of message object
-	XPLMessage copyMessage();
-
-	//PRIVATE//
-    private:
-
-    //VARIABLES
-
-	//Statistics
-    string timeReceived;
-
-	//Message Data
-	string messageType;
-	int hops;
-
-//	string schemaClass;
-//	string schemaType;
-
-    XPLSchema schema;
-
-//	string sourceVendor;
-//	string sourceDevice;
-//	string sourceInstance;
-
-    XPLAddress source;
-
-	bool broadcast;
-
-//	string destinationVendor;
-//	string destinationDevice;
-//	string destinationInstance;
-
-    XPLAddress destination;
-
-//	vector<string> members;
-//	vector<string> values;
-    vector<XPLValuePair> members;
+	    vector<XPLValuePair> members;
 };
 
 #endif // XPLMessage_H
