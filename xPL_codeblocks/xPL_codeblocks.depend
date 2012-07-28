@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1341780269 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLMessage.cpp
 	<iostream>
 	<stdio.h>
 	<string>
@@ -22,7 +22,7 @@
 	<sys/time.h>
 	<time.h>
 
-1341780269 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLMessage.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLMessage.h
 	"XPLHal.h"
 
 1341780269 source:/home/xpl/Desktop/xPL/xPL_codeblocks/xPLLib/xPL-config.c
@@ -101,7 +101,7 @@
 	"xPL.h"
 	"xPL_priv.h"
 
-1342890102 source:/home/xpl/Desktop/xPL/xPL_codeblocks/Determinator.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/Determinator.cpp
 	"Determinator.h"
 	"XPLCondition.h"
 	"XPLAction.h"
@@ -127,14 +127,14 @@
 	"XPLAction.h"
 	"XPLMessage.h"
 
-1342890102 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
 	"XPLCondition.h"
 	"XPLHal.h"
 	"XPLMessage.h"
 	<string>
 	<iostream>
 
-1342890102 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLParser.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLParser.cpp
 	<stdio.h>
 	<stdlib.h>
 	"XPLParser.h"
@@ -145,7 +145,7 @@
 	"XPLMessage.h"
 	"xPLLib/xPL.h"
 
-1342890102 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.h
 	"XPLMessage.h"
 	<vector>
 	"Determinator.h"
@@ -175,7 +175,7 @@
 	<errno.h>
 	"pthreadcc.h"
 
-1342890110 /home/xpl/Desktop/xPL/xPL_codeblocks/pthreadcc/pthreadcc.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/pthreadcc/pthreadcc.h
 	<pthread.h>
 	<semaphore.h>
 
@@ -202,7 +202,7 @@
 	<arpa/inet.h>
 	"socketcc.h"
 
-1342890110 /home/xpl/Desktop/xPL/xPL_codeblocks/socketcc/socketcc.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/socketcc/socketcc.h
 	<unistd.h>
 	<netinet/in.h>
 	<sys/socket.h>
@@ -241,7 +241,7 @@
 	"tcpserver.h"
 	"XHCP_Parser.h"
 
-1342890110 /home/xpl/Desktop/xPL/xPL_codeblocks/tcpserver.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/tcpserver.h
 	"pthreadcc/pthreadcc.h"
 	"socketcc/socketcc.h"
 
@@ -261,10 +261,10 @@
 	"tcpserver.h"
 	"pthreadcc/pthreadcc.h"
 
-1342978777 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
 	"XHCP_Parser.h"
 
-1342978771 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
 	"tcpserver.h"
 
 1343257851 source:/home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.cpp
@@ -639,4 +639,60 @@
 	<vector>
 	"XPLCondition.h"
 	"XPLMessage.h"
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/DeterminatorFactory.cpp
+	"DeterminatorFactory.h"
+	"XPLAction.h"
+	"XPLCondition.h"
+	"XPLMessage.h"
+	<string>
+	<vector>
+
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/DeterminatorFactory.h
+	<string>
+	<iostream>
+	<vector>
+	"XPLHal.h"
+	"Determinator.h"
+	"XPLMessage.h"
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/DeterminatorFactoryTest.cpp
+	"DeterminatorFactory.h"
+	"XPLHal.h"
+	"Determinator.h"
+	"XPLCondition.h"
+	"XPLMessage.h"
+	"XPLAction.h"
+	<iostream>
+	<string>
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/DeterminatorTest.cpp
+	"Determinator.h"
+	"XPLAction.h"
+	"XPLCondition.h"
+	"XPLHal.h"
+	<string>
+	<iostream>
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLActionTest.cpp
+	"XPLAction.h"
+	"XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLConditionTest.cpp
+	<stdio.h>
+	<iostream>
+	<string>
+	<vector>
+	"XPLCondition.h"
+	"XPLMessage.h"
+
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLMessageTest.cpp
+	"XPLHal.h"
+	"XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
 
