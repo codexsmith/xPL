@@ -1,8 +1,9 @@
 #ifndef XHCP_PARSER_H
 #define XHCP_PARSER_H
+#include <map>
 #include "tcpserver.h"
 #include "Dispatcher.h"
-#include "RuleManager.h"
+#include "XPLRuleManager.h"
 
 typedef std::string (Dispatcher::*pt2Member)(std::string);
 class XHCP_Parser
@@ -11,10 +12,11 @@ class XHCP_Parser
         XHCP_Parser();
         virtual ~XHCP_Parser();
         static void recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize);
-        static void acceptMSG(TCPSocket *pcClientSocket, char *msg, int msgSize);
+        static void acceptMsg(TCPSocket *pcClientSocket);
+        static std::map<std::string,pt2Member> theMap;
     protected:
     private:
-        static std::map<std::string,pt2Member> theMap;
+        void run();
 };
 
 

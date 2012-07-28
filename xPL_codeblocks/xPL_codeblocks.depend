@@ -127,7 +127,7 @@
 	"XPLAction.h"
 	"XPLMessage.h"
 
-1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
+1343513782 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLCondition.cpp
 	"XPLCondition.h"
 	"XPLHal.h"
 	"XPLMessage.h"
@@ -145,16 +145,16 @@
 	"XPLMessage.h"
 	"xPLLib/xPL.h"
 
-1343513426 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.h
+1343513782 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.h
 	"XPLMessage.h"
 	<vector>
 	"Determinator.h"
 
-1342890102 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.cpp
+1343513782 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.cpp
 	"XPLRuleManager.h"
 	<vector>
 
-1342979086 source:/home/xpl/Desktop/xPL/xPL_codeblocks/determinator-main.cpp
+1343513485 source:/home/xpl/Desktop/xPL/xPL_codeblocks/determinator-main.cpp
 	<string>
 	<stdio.h>
 	<vector>
@@ -261,13 +261,14 @@
 	"tcpserver.h"
 	"pthreadcc/pthreadcc.h"
 
-1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
+1343514283 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
 	"XHCP_Parser.h"
 
-1343513442 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
+1343514217 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
+	<map>
 	"tcpserver.h"
 	"Dispatcher.h"
-	"RuleManager.h"
+	"XPLRuleManager.h"
 
 1343257851 source:/home/gremio/Desktop/xPL/xPL_codeblocks/Determinator.cpp
 	"Determinator.h"
@@ -698,7 +699,7 @@
 	<iostream>
 	<string>
 
-1343513559 /home/xpl/Desktop/xPL/xPL_codeblocks/Dispatcher.h
+1343513782 /home/xpl/Desktop/xPL/xPL_codeblocks/Dispatcher.h
 
 1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/RuleManager.h
 	"xPL.h"
