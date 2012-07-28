@@ -80,6 +80,11 @@ XPLAddress XPLMessage::getSource()
     return source;
 }
 
+void XPLMessage::setSource(XPLAddress address)
+{
+    source = address;
+}
+
 void XPLMessage::setSource(string vendor, string device, string instance)
 {
     source.vendor = vendor;
@@ -90,6 +95,11 @@ void XPLMessage::setSource(string vendor, string device, string instance)
 XPLAddress XPLMessage::getDestination()
 {
     return destination;
+}
+
+void XPLMessage::setDestination(XPLAddress address)
+{
+    destination = address;
 }
 
 void XPLMessage::setDestination(string vendor, string device, string instance)
@@ -111,9 +121,15 @@ void XPLMessage::setHops(int hops)
 {
     this->hops = hops;
 }
+
 XPLSchema XPLMessage::getSchema()
 {
     return schema;
+}
+
+void XPLMessage::setSchema(XPLSchema schema)
+{
+    this->schema = schema;
 }
 
 void XPLMessage::setSchema(string schemaClass, string schemaType)

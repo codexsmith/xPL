@@ -1,11 +1,15 @@
 // xPL Linux Hal Server
 #define HAL_VERSION "1.0"
 
+#include <iostream>
+#include <sstream>
 #include <stdio.h>
 #include "XPLHal.h";
 #include "XPLMessage.h"
 #include "XPLParser.h"
 #include "XPLRuleManager.h"
+#include "Determinator.h"
+#include "DeterminatorFactory.h"
 
 extern "C" {
 
@@ -17,8 +21,29 @@ extern "C" {
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
 
-int main2(int argc, String argv[])
+int main(int argc, string argv[])
 {
+    string input;
+    DeterminatorFactory factory;
+    bool more = true;
+    vector<Determinator>* determinators = new vector<Determinator>;
+    Determinator* determinator = factory.createDeterminator(argv);
+    if(*determinator != NULL)
+        determinators->push_back(*determinator);
+
+    cout << "Define more determinators?\n";
+    getline(cin, input);
+    if((input.compare("N") == 0) || (input.compare("n")))
+        more = false;
+
+    while(more)
+    {
+       cout << "Define determinator: ";
+
+    }
+
+
+
     /**** Test Code ****/
     XPLMessage testMsg, testMsg2;
     testMsg.addMember("Fruit", "Dealer");

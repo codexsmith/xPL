@@ -37,6 +37,7 @@ class XPLMessage
 	XPLAddress getSource();
 
 	//sets source address
+	void setSource(XPLAddress address);
 	void setSource(string sourceVendor, string sourceDevice, string sourceInstance);
 
     //returns wether or not the message was a broadcast
@@ -49,6 +50,7 @@ class XPLMessage
 	XPLAddress getDestination();
 
 	//sets destination address
+	void setDestination(XPLAddress address);
 	void setDestination(string destinationVendor, string destinationDevice, string destinationInstance);
 
 	//returns number of hops allowed set in message
@@ -61,6 +63,7 @@ class XPLMessage
 	XPLSchema getSchema();
 
 	//sets schema
+	void setSchema(XPLSchema schema);
 	void setSchema(string schemaClass, string schemaType);
 
 	//returns struct of all parameters maybe?
