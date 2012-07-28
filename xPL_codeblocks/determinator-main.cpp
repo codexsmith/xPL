@@ -139,25 +139,6 @@ vector<Determinator>* createDeterminator()
 	XPLCondition* condition = new XPLCondition(conditionVector);
 
     //Create the actions
-	XPLMessage messageOne, messageTwo;
-
-	messageOne.addMember("firstResponseMemberOne", "firstResponeValueOne");
-	messageOne.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
-	messageOne.setMsgType("firstMessageType");
-	messageOne.setBroadcast(false);
-	messageOne.setSchema("firstResponseSchemaClass", "firstResponseSchemaType");
-	messageOne.setHops(2);
-	messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
-	messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
-
-	messageTwo.addMember("secondResponseMemberOne", "secondResponseValueOne");
-	messageTwo.addMember("secondResponseMemberTwo", "secondResponseValueTwo");
-	messageTwo.setMsgType("secondMessageType");
-	messageTwo.setSchema("secondResponseSchemaClass", "secondResponseSchemaType");
-	messageTwo.setBroadcast(true);
-	messageTwo.setHops(5);
-	messageTwo.setSource("messageTwoSourceVendor", "messageTwoSourceDevice", "messageTwoSourceInstance");
-
     XPLMessage turnLampOn;
     turnLampOn.setMsgType("xpl-cmnd");
     turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
@@ -170,8 +151,6 @@ vector<Determinator>* createDeterminator()
     turnLampOn.addMember("current", "200");
 
 	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
-	actionVector->push_back(messageOne);
-	actionVector->push_back(messageTwo);
 	actionVector->push_back(turnLampOn);
 
 	XPLAction* action = new XPLAction(actionVector);

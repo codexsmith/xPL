@@ -27,7 +27,7 @@ bool XPLCondition::match(XPLMessage* message)
 	{
 		XPLValuePair memberToFind = attributes_->at(i);
 		//cout << "Searching for: " << memberToFind.member << "\n";
-		string value = message->findMember(memberToFind.member);		
+		string value = message->findMember(memberToFind.member);
 		//cout << "Found: " << value << "\n";
 		//cout << "Comparing to " << memberToFind.value << "\n";
 		if(memberToFind.value.compare(value) != 0)
@@ -49,7 +49,7 @@ bool XPLCondition::equals(XPLCondition* condition)
 			return false;
 		if(attribute->value.compare(compare->value) != 0)
 			return false;
-	}	
+	}
 	return true;
 }
 
