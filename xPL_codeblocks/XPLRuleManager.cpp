@@ -16,8 +16,8 @@ XPLRuleManager::~XPLRuleManager()
 std::string XPLRuleManager::detToString(){
     std::string theString;
     for (int i = 0; i < determinators->size();i++){
-        string += determinators -> at(i).getID();
-        string += "\r\n";
+        //string += determinators -> at(i).getID();
+        //string += "\r\n";
     }
     return theString;
 }
