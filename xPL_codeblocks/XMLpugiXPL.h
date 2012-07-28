@@ -1,17 +1,23 @@
-#ifndef DeterminatorSerializer_H
-#define DeterminatorSerializer_H
+#ifndef XMLpugiXPL_H
+#define XMLpugiXPL_H
 
+#include <iostream>
+#include <fstream>
 #include <string>
+#include <stdio.h>
+#include <errno.h>
+#include <string>
+#include "DeterminatorSerializer.h"
 #include "Determinator.h"
-#include "DeterminatorWriter.h"
-#include "DeterminatorReader.h"
+#include "DeterminatorFactory.h"
+#include "pugixml/pugixml.hpp"
 
 using namespace std;
 
-class DeterminatorSerializer {
+class XMLpugiXPL {
 	public:
-		explicit DeterminatorSerializer(char* xmlFile);
-		~DeterminatorSerializer();
+		explicit XMLpugiXPL(char* xmlFile);
+		~XMLpugiXPL();
 		string readFile();
         string read();
 
@@ -26,4 +32,4 @@ class DeterminatorSerializer {
 
 };
 
-#endif //DeterminatorSerializer_H
+#endif //XMLpugiXPL_H

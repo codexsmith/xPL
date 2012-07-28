@@ -6,29 +6,38 @@
 #include <string>
 #include "DeterminatorSerializer.h"
 #include "Determinator.h"
+#include "DeterminatorFactory.h"
+#include "pugixml/pugixml.hpp"
 
 using namespace std;
 
 DeterminatorSerializer::DeterminatorSerializer(char* xmlFile)
 {
     xmlFile_ = xmlFile;
-    currentLine_ = 0; //static
+    currentLine_ = -1; //static
 
+}
+
+void DeterminatorSerializer::setXmlFile(char* xmlFile)
+{
+    xmlFile_ = xmlFile;
 }
 
 int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
+    int success = 0;
 
+
+    return success;
 }
 
 //takes an entire determinator, as a single \n delimited string
 int DeterminatorSerializer::write(char* xmlString)
 {
-
     fstream ruleFile;
     string line;
     int lineCheck;
-    string openingLine = "<determinator";
+    string openingLine = "<xplDeterminator>";
 
     ruleFile.open (xmlFile_, ios::out | ios::app); //APPEND!
 
@@ -36,11 +45,11 @@ int DeterminatorSerializer::write(char* xmlString)
     {
         getline (ruleFile,line);
 
-        lineCheck = line.compare(0,13,openingLine,0,13); //is this a proper opening line?
+        lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
 
         if (lineCheck == 0)
         { //yes this is an opening determinator tag
-            ruleFile.write(xmlString,strlen(xmlString));
+            ruleFile.write(xmlString,strlen(xmlString)); //APPENDS to the end
             return 0;
         }
     }
@@ -53,38 +62,81 @@ Determinator* DeterminatorSerializer::readDeterminator()
     string openingLine = "<determinator";
     string endLine = "</determinator>";
 
-    fstream ruleFile;
-
-    int lineCheck;
     bool end = false;
 
     determinatorIn = read();
 
     //make determinator & return
 
-
+    return NULL;
 }
 
-//returns an entire determinator, with newline characters
-string DeterminatorSerializer::read()
+string DeterminatorSerializer::readFile()
 {
-    string line, lineOut, lineTmp;
-    string openingLine = "<determinator";
-    string endLine = "</determinator>";
     fstream ruleFile;
+    string line, lineOut, lineTmp;
+    string openingLine = "<xplDeterminator>";
+    string endLine = "</xplDeterminator>";
     int lineCheck;
     bool end = false;
 
     ruleFile.open (xmlFile_, ios::in);
-
-    ruleFile.seekg(currentLine_);
 
     if (ruleFile.is_open() and ruleFile.good())
     {
         getline (ruleFile,line);
         lineOut.append(line);
 
-        lineCheck = line.compare(0,13,openingLine,0,13); //is this a proper opening line?
+        lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
+
+        if (lineCheck == 0)
+        { //yes this is an opening determinator file
+            while(!end and ruleFile.good())
+            {
+                lineTmp = read();
+                lineOut.append(lineTmp);
+
+                lineCheck = lineTmp.compare(0,endLine.length(),endLine,0,endLine.length());
+                if (lineCheck == 0){
+                    end = true;
+                }
+            }
+        }//end of determinator file
+        else
+        {
+             perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
+        }
+        currentLine_ = ruleFile.tellg();
+        ruleFile.flush();
+        ruleFile.close();
+    }
+    return lineOut;
+}
+
+//returns an entire determinator, with newline characters
+string DeterminatorSerializer::read()
+{
+
+    mfstream ruleFile;
+    ruleFile.open (xmlFile_, ios::in);
+
+    string line, lineOut, lineTmp;
+    string openingLine = "<xplDeterminator>";
+    string endLine = "</xplDeterminator>";
+    int lineCheck;
+    bool end = false;
+
+    if (currentLine_ != 0)
+    {
+        ruleFile.seekg(currentLine_);
+    }
+
+    if (ruleFile.is_open() and ruleFile.good())
+    {
+        getline (ruleFile,line);
+        lineOut.append(line);
+
+        lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
 
         if (lineCheck == 0)
         { //yes this is an opening determinator tag
@@ -95,7 +147,7 @@ string DeterminatorSerializer::read()
 
                 lineOut.append(lineTmp+"\n"); //adding back in newline delimeters, since getline removes them
 
-                lineCheck = lineTmp.compare(0,15,endLine,0,15);
+                lineCheck = lineTmp.compare(0,endLine.length(),endLine,0,endLine.length());
                 if (lineCheck == 0){
                     end = true; //end of a determinator
                 }
@@ -115,3 +167,11 @@ string DeterminatorSerializer::read()
 
     return lineOut;
 }
+
+Determinator* DeterminatorSerializer::stringToDeterminator(string xmlString, Determinator* blank){
+
+    pugi::doc.load(xmlString);
+
+    return blank;
+}
+
