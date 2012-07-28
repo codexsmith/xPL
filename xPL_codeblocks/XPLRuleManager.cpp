@@ -13,7 +13,14 @@ XPLRuleManager::XPLRuleManager()
 XPLRuleManager::~XPLRuleManager()
 {
 }
-
+std::string XPLRuleManager::detToString(){
+    std::string theString;
+    for (int i = 0; i < determinators->size();i++){
+        string += determinators -> at(i).getID();
+        string += "\r\n";
+    }
+    return theString;
+}
 vector<XPLMessage> XPLRuleManager::match(XPLMessage msg)
 {
     vector<XPLMessage> messagesToSend, messagesFromDeterminator;
