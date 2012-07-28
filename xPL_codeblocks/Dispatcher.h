@@ -4,12 +4,12 @@
 
 class Dispatcher{
 public:
-    
+
     Dispatcher(std::string aName){
         name = aName;
     }
     Dispatcher(){
-        
+
     }
     std::string addRule(std::string aString){
         std::string theString;
@@ -28,3 +28,4 @@ private:
     std::string name;
 };
 
+#endif

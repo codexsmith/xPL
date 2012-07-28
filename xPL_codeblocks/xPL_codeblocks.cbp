@@ -44,6 +44,7 @@
 		<Unit filename="DeterminatorSerializer.h" />
 		<Unit filename="DeterminatorTest.cpp" />
 		<Unit filename="DeterminatorWriter.h" />
+		<Unit filename="Dispatcher.h" />
 		<Unit filename="XHCP_Parser.cpp" />
 		<Unit filename="XHCP_Parser.h" />
 		<Unit filename="XPLAction.cpp" />
