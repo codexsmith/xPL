@@ -5,6 +5,14 @@
 #include <string>
 #include <vector>
 
+string splitString(string* stringToSplit, char delimiter)
+{
+	int splitIndex = stringToSplit->find_first_of(delimiter);
+	string retVal = stringToSplit->substr(0, splitIndex);
+	stringToSplit = stringToSplit->substr(splitIndex+1);
+	return retVal;
+}
+
 DeterminatorFactory::DeterminatorFactory()
 {
 }
@@ -29,8 +37,17 @@ Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, X
 	return determinator;
 }
 
-XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions)
+XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions, string source, string destination, string schema, string hops, string msgType)
 {
+
+	XPLAddress sourceAddress;
+	sourceAddress.vendor = splitString(&source);
+	sourceAddress.device = splitString(&source);
+	sourceAddress.instance = splitString(&source); 
+
+	XPLAddress
+
+	XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType)
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	for(int i = 0; i<conditions.size(); i++)
 	{

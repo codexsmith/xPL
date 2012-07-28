@@ -14,6 +14,9 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add option="-lpthread" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/xPL_codeblocks" prefix_auto="1" extension_auto="1" />
@@ -34,22 +37,47 @@
 		</Compiler>
 		<Unit filename="Determinator.cpp" />
 		<Unit filename="Determinator.h" />
+		<Unit filename="DeterminatorFactory.cpp" />
+		<Unit filename="DeterminatorFactory.h" />
+		<Unit filename="DeterminatorFactoryTest.cpp" />
 		<Unit filename="DeterminatorReader.h" />
 		<Unit filename="DeterminatorSerializer.h" />
+		<Unit filename="DeterminatorTest.cpp" />
 		<Unit filename="DeterminatorWriter.h" />
+		<Unit filename="TestRunner.cpp" />
+		<Unit filename="XHCP_Parser.cpp" />
+		<Unit filename="XHCP_Parser.h" />
 		<Unit filename="XPLAction.cpp" />
 		<Unit filename="XPLAction.h" />
+		<Unit filename="XPLActionTest.cpp" />
 		<Unit filename="XPLCondition.cpp" />
 		<Unit filename="XPLCondition.h" />
+		<Unit filename="XPLConditionTest.cpp" />
 		<Unit filename="XPLHal.h" />
 		<Unit filename="XPLMessage.cpp" />
 		<Unit filename="XPLMessage.h" />
+		<Unit filename="XPLMessageTest.cpp" />
 		<Unit filename="XPLParser.cpp" />
 		<Unit filename="XPLParser.h" />
 		<Unit filename="XPLRuleManager.cpp" />
 		<Unit filename="XPLRuleManager.h" />
-		<Unit filename="determinator-main.cpp" />
+		<Unit filename="deamon.cpp" />
+		<Unit filename="deamon.h" />
+		<Unit filename="pthreadcc/condition.cpp" />
+		<Unit filename="pthreadcc/mutualexclusion.cpp" />
+		<Unit filename="pthreadcc/pthreadcc.h" />
+		<Unit filename="pthreadcc/semaphore.cpp" />
+		<Unit filename="pthreadcc/threadbase.cpp" />
+		<Unit filename="pthreadcc/threadexception.cpp" />
+		<Unit filename="socketcc/ipaddress.cpp" />
+		<Unit filename="socketcc/socketbase.cpp" />
+		<Unit filename="socketcc/socketcc.h" />
+		<Unit filename="socketcc/socketexception.cpp" />
+		<Unit filename="socketcc/tcpsockets.cpp" />
+		<Unit filename="socketcc/udpsockets.cpp" />
 		<Unit filename="storage.h" />
+		<Unit filename="tcpserver.cpp" />
+		<Unit filename="tcpserver.h" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
 		</Unit>

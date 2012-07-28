@@ -9,7 +9,7 @@ using namespace std;
 
 class XPLCondition {
 	public:
-		explicit XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType)
+		explicit XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType);
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);

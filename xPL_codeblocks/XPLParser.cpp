@@ -8,7 +8,6 @@
 
 extern XPLRuleManager* ruleMgr;
 
-
 int level = 0;
 
 XPLParser::XPLParser()

@@ -12,6 +12,19 @@ public:
 
 	XPLCondition* createCondition()
 	{
+		XPLAddress sourceAddressOne;
+		sourceAddressOne.device = "device";
+		sourceAddressOne.vendor = "vendor";
+		sourceAddressOne.instance = "instance";
+		XPLAddress destinationAddressOne;
+		destinationAddressOne.device = "destDevice";
+		destinationAddressOne.vendor = "destVendor";
+		destinationAddressOne.instance = "destInstance";
+		XPLSchema schemaOne;
+		schemaOne.schema = "schema";
+		schemaOne.type = "type";
+		int hopsOne = 5;
+		string msgTypeOne = "xpl-cmd";
 		//First, let's create the condition
 		XPLValuePair pairOne, pairTwo, pairThree;
 		pairOne.member = "oneMember";
@@ -26,7 +39,8 @@ public:
 		conditionVector->push_back(pairTwo);
 		conditionVector->push_back(pairThree);
 
-		return new XPLCondition(conditionVector);
+		conditionOne = new XPLCondition(pairVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
+		return conditionOne;
 	}
 
 	XPLAction* createAction()
