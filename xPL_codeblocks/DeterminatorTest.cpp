@@ -39,7 +39,7 @@ public:
 		conditionVector->push_back(pairTwo);
 		conditionVector->push_back(pairThree);
 
-		conditionOne = new XPLCondition(pairVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
+		XPLCondition* conditionOne = new XPLCondition(conditionVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
 		return conditionOne;
 	}
 
@@ -74,19 +74,20 @@ public:
 	void testMatch()
 	{
 		XPLMessage messageOne;
-		messageOne.addMember("firstResponseMemberOne", "firstResponeValueOne");
-		messageOne.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
-		messageOne.setMsgType("firstMessageType");
-		messageOne.setBroadcast(false);
-		messageOne.setSchema("firstResponseSchemaClass", "firstResponseSchemaType");
-		messageOne.setHops(2);
-		messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
-		messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
 
-		XPLCondition* condition = createCondition();
-		XPLAction* action = createAction();
-		Determinator determinator(condition, action);
-		bool failedMatched = determinator.match(&messageOne);
+		XPLAddress sourceAddressOne;
+		sourceAddressOne.device = "device";
+		sourceAddressOne.vendor = "vendor";
+		sourceAddressOne.instance = "instance";
+		XPLAddress destinationAddressOne;
+		destinationAddressOne.device = "destDevice";
+		destinationAddressOne.vendor = "destVendor";
+		destinationAddressOne.instance = "destInstance";
+		XPLSchema schemaOne;
+		schemaOne.schema = "schema";
+		schemaOne.type = "type";
+		int hopsOne = 5;
+		string msgTypeOne = "xpl-cmd";
 
 		XPLValuePair pairOne, pairTwo, pairThree;
 		pairOne.member = "oneMember";
@@ -95,11 +96,27 @@ public:
 		pairTwo.value = "twoValue";
 		pairThree.member = "threeMember";
 		pairThree.value = "threeValue";	
+
+		vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
+		conditionVector->push_back(pairOne);
+		conditionVector->push_back(pairTwo);
+		conditionVector->push_back(pairThree);
+
+		XPLCondition* condition = new XPLCondition(conditionVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
+		XPLAction* action = createAction();
+		Determinator determinator(condition, action);
+		bool failedMatched = determinator.match(&messageOne);
 		
 		XPLMessage triggerMessage;
-		triggerMessage.addMember(pairOne.member, pairOne.value);
-		triggerMessage.addMember(pairTwo.member, pairTwo.value);
-		triggerMessage.addMember(pairThree.member, pairThree.value);
+		triggerMessage.setSource(sourceAddressOne);
+		triggerMessage.setDestination(destinationAddressOne);
+		triggerMessage.setHops(hopsOne);
+		triggerMessage.setSchema(schemaOne);
+		triggerMessage.setMsgType(msgTypeOne);
+		triggerMessage.addMember("oneMember", "oneValue");
+		triggerMessage.addMember("twoMember", "twoValue");
+
+	
 		bool matched = determinator.match(&triggerMessage);
 		if(!failedMatched && matched)
 			cout << "Test Determinator::match() success!\n";

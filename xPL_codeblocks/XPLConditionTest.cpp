@@ -10,7 +10,7 @@ class XPLConditionTest {
 
 public:
 	
-	void resultCompare(int memberCompare, int valueCompare)
+	static void resultCompare(int memberCompare, int valueCompare)
 	{
 		if(memberCompare != 0 && valueCompare == 0)
 		{
@@ -30,7 +30,7 @@ public:
 		}
 	}
 
-	vector<XPLValuePair>* createVector(XPLValuePair* pairOne, XPLValuePair* pairTwo, XPLValuePair* pairThree)
+	static vector<XPLValuePair>* createVector(XPLValuePair* pairOne, XPLValuePair* pairTwo, XPLValuePair* pairThree)
 	{
 		vector<XPLValuePair>* pairVector;
 		pairVector = new vector<XPLValuePair>();
@@ -41,7 +41,7 @@ public:
 		return pairVector;
 	}
 
-	vector<XPLValuePair>* createPairVector()
+	static vector<XPLValuePair>* createPairVector()
 	{
 		XPLValuePair* pairOne; 
 		XPLValuePair* pairTwo; 
@@ -63,7 +63,7 @@ public:
 		return pairVector;
 	}
 
-	void testMatch()
+	static void testMatch()
 	{
 		vector<XPLValuePair>* pairVector = createPairVector();
 		XPLAddress sourceAddressOne;
@@ -102,21 +102,21 @@ public:
 		conditionTwo = new XPLCondition(pairVectorTwo, sourceAddressTwo, destinationAddressTwo, schemaTwo, hopsTwo, msgTypeTwo);
 
 		XPLMessage messageOne;
-		XPLAddress messageOneSource;
-		messageOneSource.vendor = "vendor";
-		messageOneSource.device = "device";
-		messageOneSource.instance = "instance";
-		messageOne.setSource(messageOneSource);
+		messageOne.setSource(sourceAddressOne);
+		messageOne.setDestination(destinationAddressOne);
+		messageOne.setSchema(schemaOne);
+		messageOne.setHops(hopsOne);
+		messageOne.setMsgType(msgTypeOne);
 		messageOne.addMember("nameOne", "valueOne");
 		messageOne.addMember("nameTwo", "valueTwo");
 		messageOne.addMember("nameThree", "valueThree");
 
 		XPLMessage messageTwo;
-		XPLAddress messageTwoSource;
-		messageTwoSource.vendor = "vendor";
-		messageTwoSource.device = "device";
-		messageTwoSource.instance = "instance";
-		messageTwo.setSource(messageTwoSource);
+		messageTwo.setSource(sourceAddressTwo);
+		messageTwo.setDestination(destinationAddressTwo);
+		messageTwo.setSchema(schemaTwo);
+		messageTwo.setHops(hopsTwo);
+		messageTwo.setMsgType(msgTypeTwo);
 		messageTwo.addMember("nameOne", "valueTwo");
 		messageTwo.addMember("nameTwo", "valueOne");
 
@@ -132,7 +132,7 @@ public:
 		}
 	}
 
-	void testEquals()
+	static void testEquals()
 	{
 		vector<XPLValuePair>* pairVector = createPairVector();
 		XPLAddress sourceAddressOne;
@@ -178,7 +178,7 @@ public:
 		}
 	}
 
-	void runTests()
+	static void runTests()
 	{
 		testMatch();
 		testEquals();		

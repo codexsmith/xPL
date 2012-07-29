@@ -37,13 +37,16 @@ bool XPLCondition::match(XPLMessage* message)
 	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0);
 	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0);
 	
-	bool membersMatch = false;
+	bool membersMatch = true;
 	for(int i = 0; i < attributes_->size(); i++)
 	{
 		XPLValuePair memberToFind = attributes_->at(i);
 		string value = message->findMember(memberToFind.member);		
-		if(memberToFind.value.compare(value) == 0)
-			membersMatch = true;
+		if(!(memberToFind.value.compare(value) == 0))
+		{
+			membersMatch = false;
+			break;
+		}
 	}
 	return msgMatch && membersMatch && msgMatch && sourceMatch && destinationMatch && hopsMatch;
 }

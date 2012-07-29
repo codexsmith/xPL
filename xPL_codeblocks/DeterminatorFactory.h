@@ -21,13 +21,15 @@ class DeterminatorFactory {
 		Determinator* createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled);
 		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters);
 
-		XPLCondition* createXPLCondition(vector<string> definitions);
+		XPLCondition* createXPLCondition(vector<string> definitions, string source, string destination, string schema, string hops, string msgType);
 		XPLAction* createXPLAction(vector<XPLMessage>* messages);
 		string getMember(string definition);
 		string getValue(string definition);
 		vector<string> getAddressParameters(string address);
 
 	private:
+		string getSchemaClass(string definition);
+		string getSchemaType(string definition);
 		
 };
 

@@ -10,16 +10,13 @@ extern "C" {
     #include "xPLLib/xPL.h"
 
 }
-xPL_ServicePtr theService = NULL;
-XPLRuleManager* ruleMgr;
 
 int main()
 {
 	DeterminatorFactoryTest determinatorFactoryTest;
 	determinatorFactoryTest.runTests();
 
-	XPLConditionTest xplConditionTest;
-	xplConditionTest.runTests();
+	XPLConditionTest::runTests();
 
 	DeterminatorTest determinatorTest;
 	determinatorTest.runTests();
@@ -31,3 +28,4 @@ int main()
 
 	return 0;
 }
+

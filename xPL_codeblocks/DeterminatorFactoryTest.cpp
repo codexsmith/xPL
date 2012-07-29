@@ -8,10 +8,45 @@
 #include <iostream>
 #include <string>
 
-
 class DeterminatorFactoryTest {
 
 public:
+
+	XPLCondition* createXPLCondition()
+	{
+		XPLAddress sourceAddress;
+		sourceAddress.vendor = "";
+		sourceAddress.device = "";
+		sourceAddress.instance = "";
+
+		XPLAddress destinationAddress;
+		destinationAddress.vendor = "";
+		destinationAddress.device = "";
+		destinationAddress.instance = "";
+
+		XPLSchema schema;
+		schema.schema = "";
+		schema.type = "";
+
+		int hops = 5;
+
+		string msgType = "xpl-cmd";
+
+		XPLValuePair pairOne, pairTwo, pairThree;
+		pairOne.member = "memberOne";
+		pairOne.value = "valueOne";
+		pairTwo.member = "memberTwo";
+		pairTwo.value = "valueTwo";
+		pairThree.member = "memberThree";
+		pairThree.value = "valueThree"; 
+
+		vector<XPLValuePair>* definitions;
+		definitions->push_back(pairOne);
+		definitions->push_back(pairTwo);
+		definitions->push_back(pairThree);
+		XPLCondition* condition = new XPLCondition(definitions, sourceAddress, destinationAddress, schema, hops, msgType);
+		return condition;
+	}
 
 	bool compareValuePair(XPLValuePair pairOne, XPLValuePair pairTwo)
 	{
@@ -150,27 +185,32 @@ public:
 
 	void testCreateCondition(DeterminatorFactory* factory)
 	{	
+		string sourceAddress = "vendor.device.instance";
+		string destinationAddress = "vendor.device.instance";
+		string schema = "schemaClass.schemaType";
+		string hops = "5";
+		string msgType = "xpl-cmd";
+
 		vector<string> definitions;
 		definitions.push_back("nameOne=valueOne");
 		definitions.push_back("nameTwo=valueTwo");
 		definitions.push_back("nameThree=valueThree");
-		XPLCondition* condition = factory->createXPLCondition(definitions);
+		XPLCondition* condition = factory->createXPLCondition(definitions, sourceAddress, destinationAddress, schema, hops, msgType);
 
 		XPLMessage* message = new XPLMessage();
+		message->setSource("vendor", "device", "instance");
+		message->setDestination("vendor", "device", "instance");
+		message->setHops(5);
+		message->setSchema("schema", "type");
+		message->setMsgType(msgType);
 		message->addMember("nameOne", "valueOne");
 		message->addMember("nameTwo", "valueTwo");
 		message->addMember("nameThree", "valueThree");
 		bool matched = condition->match(message);
 
-		string memberOneValue = message->findMember("nameOne");
-		string memberTwoValue = message->findMember("nameTwo");
-		string memberThreeValue = message->findMember("nameThree");
-		string resultString = "";
-		resultString.append(" " + memberOneValue);
-		resultString.append(" " + memberTwoValue);
-		resultString.append(" " + memberThreeValue);
+		string resultString = ""; 
 
-		bool result = (memberOneValue.compare("valueOne") == 0) && (memberTwoValue.compare("valueTwo") == 0) && (memberThreeValue.compare("valueThree") == 0) && matched;
+		bool result = matched;
 		assertSuccess("testCreateCondition", result, resultString);
 		delete condition;
 	}
@@ -195,19 +235,24 @@ public:
 
 	void testCreateDeterminator(DeterminatorFactory* factory)
 	{
-		bool result = false;
+		string sourceAddress = "vendorIdOne.deviceIdOne.instanceIdOne";
+		string destinationAddress = "vendorIdTwo.deviceIdTwo.instanceIdTwo";
+		string schema = "schema.type";
+		string hops = "5";
+		string msgType = "xpl-stat";
+
 		vector<string> definitions;
 		definitions.push_back("nameOne=valueOne");
 		definitions.push_back("nameTwo=valueTwo");
 		definitions.push_back("nameThree=valueThree");
-		XPLCondition* condition = factory->createXPLCondition(definitions);
+		XPLCondition* condition = factory->createXPLCondition(definitions, sourceAddress, destinationAddress, schema, hops, msgType);
 
 		XPLMessage* testMessage = new XPLMessage();
 		setMessageWithTestValues(testMessage);
 		XPLMessage* addedMessage = new XPLMessage();
 		setMessageWithTestValues(addedMessage);
 		vector<XPLMessage>* messages = new vector<XPLMessage>();
-		messages->push_back(*testMessage);
+		messages->push_back(*addedMessage);
 		XPLAction* action = factory->createXPLAction(messages);
 
 		Determinator* determinator = factory->createDeterminator(condition, action, true);
@@ -217,8 +262,11 @@ public:
 		if(!matched)
 			resultString.append("Message failed to matched. \n");
 
+		if(!determinator->isEnabled())
+			resultString.append("Determinator not enabled\n");
+
 		XPLMessage matchedMessge = determinator->execute()[0];
-		bool executedCorrectMessage = compareXPLMessage(testMessage, &matchedMessge);
+		bool executedCorrectMessage = compareXPLMessage(addedMessage, &matchedMessge);
 		if(!executedCorrectMessage)
 			resultString.append("Failed to execute correct message.\n");
 
@@ -227,7 +275,7 @@ public:
 		if(!notMatched)
 			resultString.append("Message matched incorrectly. \n");
 			
-		result = matched && notMatched && executedCorrectMessage && determinator->isEnabled();
+		bool result = matched && notMatched && executedCorrectMessage && determinator->isEnabled();
 
 		assertSuccess("testCreateDeterminator", result, resultString);
 	}
@@ -238,7 +286,6 @@ public:
 		testGetMember(&factory);
 		testGetValue(&factory);
 		testGetAddressParameters(&factory);
-		//cout << "testGetAddressParameters returned\n";
 		testCreateMessage(&factory);
 		testCreateCondition(&factory);
 		testCreateAction(&factory);

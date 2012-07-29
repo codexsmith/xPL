@@ -2,16 +2,18 @@
 #include "XPLAction.h"
 #include "XPLCondition.h"
 #include "XPLMessage.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <vector>
 
-string splitString(string* stringToSplit, char delimiter)
-{
-	int splitIndex = stringToSplit->find_first_of(delimiter);
-	string retVal = stringToSplit->substr(0, splitIndex);
-	stringToSplit = stringToSplit->substr(splitIndex+1);
-	return retVal;
-}
+// string splitString(string* stringToSplit, char delimiter)
+// {
+// 	int splitIndex = stringToSplit->find_first_of(delimiter);
+// 	string retVal = *(stringToSplit->substr(0, splitIndex));
+// 	stringToSplit = stringToSplit->substr(splitIndex+1);
+// 	return retVal;
+// }
 
 DeterminatorFactory::DeterminatorFactory()
 {
@@ -37,17 +39,27 @@ Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, X
 	return determinator;
 }
 
-XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions, string source, string destination, string schema, string hops, string msgType)
+XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions, string source, string destination, string schemaParam, string hopsParam, string msgType)
 {
 
 	XPLAddress sourceAddress;
-	sourceAddress.vendor = splitString(&source);
-	sourceAddress.device = splitString(&source);
-	sourceAddress.instance = splitString(&source); 
+	vector<string> parameters = getAddressParameters(source);
+	sourceAddress.vendor = parameters[0];
+	sourceAddress.device = parameters[1];
+	sourceAddress.instance = parameters[2];
 
-	XPLAddress
+	XPLAddress destinationAddress; 
+	parameters = getAddressParameters(destination);
+	destinationAddress.vendor = parameters[0];
+	destinationAddress.device = parameters[1];
+	destinationAddress.instance = parameters[2];
 
-	XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType)
+	XPLSchema schema;
+	schema.schema = getSchemaClass(schemaParam);
+	schema.type = getSchemaType(schemaParam);
+
+	int hops = atoi(hopsParam.c_str());
+
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	for(int i = 0; i<conditions.size(); i++)
 	{
@@ -56,7 +68,7 @@ XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions,
 		valuePair->value = getValue(conditions.at(i));
 		conditionVector->push_back(*valuePair);
 	}
-	XPLCondition* condition = new XPLCondition(conditionVector);
+	XPLCondition* condition = new XPLCondition(conditionVector, sourceAddress, destinationAddress, schema, hops, msgType);
 	return condition;
 }
 
@@ -117,4 +129,18 @@ vector<string> DeterminatorFactory::getAddressParameters(string address)
 		address = address.substr(position+1, address.length());			
 	}
 	return parameters;
+}
+
+string DeterminatorFactory::getSchemaClass(string definition)
+{
+	int splitIndex = definition.find_first_of(".");
+	definition = definition.substr(0, splitIndex);
+	return definition;
+}
+
+string DeterminatorFactory::getSchemaType(string definition)
+{
+	int splitIndex = definition.find_first_of(".");
+	definition = definition.substr(splitIndex+1, definition.length());
+	return definition;	
 }
