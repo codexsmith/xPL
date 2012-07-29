@@ -13,7 +13,7 @@ class XPLRuleManager {
         XPLRuleManager(vector<Determinator>*);
 		~XPLRuleManager();
 		vector<XPLMessage> match(XPLMessage);
-
+        std::string detToString();//XHCP support
 	private:
         vector<Determinator>* determinators;
 };

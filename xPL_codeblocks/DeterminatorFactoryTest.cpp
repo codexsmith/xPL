@@ -69,7 +69,7 @@ public:
 	}
 	void testGetMember(DeterminatorFactory* factory)
 	{
-		string member = factory->getMember("member=value");	
+		string member = factory->getMember("member=value");
 		bool result = (member.compare("member") == 0);
 		assertSuccess("testGetMember", result, member);
 	}
@@ -116,7 +116,7 @@ public:
 
 		string resultMsgType = message->getMsgType();
 		XPLAddress destination = message->getDestination();
-		string resultDestination = destination.vendor + "." + destination.device + "." + destination.instance; 
+		string resultDestination = destination.vendor + "." + destination.device + "." + destination.instance;
 		XPLAddress source = message->getSource();
 		string resultSource = source.vendor + "." + source.device + "." + source.instance;
 		int resultHops = message->getHops();
@@ -148,7 +148,7 @@ public:
 	}
 
 	void testCreateCondition(DeterminatorFactory* factory)
-	{	
+	{
 		vector<string> definitions;
 		definitions.push_back("nameOne=valueOne");
 		definitions.push_back("nameTwo=valueTwo");
@@ -225,14 +225,14 @@ public:
 		bool notMatched = determinator->match(testMessage);
 		if(!notMatched)
 			resultString.append("Message matched incorrectly. \n");
-			
+
 		result = matched && notMatched && executedCorrectMessage && determinator->isEnabled();
 
 		assertSuccess("testCreateDeterminator", result, resultString);
 	}
 
 	void runTests()
-	{	
+	{
 		DeterminatorFactory factory;
 		testGetMember(&factory);
 		testGetValue(&factory);
