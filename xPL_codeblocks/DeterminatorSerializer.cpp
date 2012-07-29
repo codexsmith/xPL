@@ -8,6 +8,7 @@
 #include "Determinator.h"
 #include "DeterminatorFactory.h"
 #include "pugixml/pugixml.hpp"
+#include "XMLpugiXPL.h"
 
 using namespace std;
 
@@ -56,15 +57,17 @@ int DeterminatorSerializer::write(char* xmlString)
     return 1;
 }
 
-Determinator* DeterminatorSerializer::readDeterminator()
+Determinator* DeterminatorSerializer::readDeterminator(Determinator* determinator)
 {
-    string determinatorIn;
+    string determinatorString;
     string openingLine = "<determinator";
     string endLine = "</determinator>";
 
     bool end = false;
 
-    determinatorIn = read();
+    determinatorString = read();
+
+    determinator =
 
     //make determinator & return
 
@@ -117,7 +120,7 @@ string DeterminatorSerializer::readFile()
 string DeterminatorSerializer::read()
 {
 
-    mfstream ruleFile;
+    fstream ruleFile;
     ruleFile.open (xmlFile_, ios::in);
 
     string line, lineOut, lineTmp;
@@ -167,11 +170,3 @@ string DeterminatorSerializer::read()
 
     return lineOut;
 }
-
-Determinator* DeterminatorSerializer::stringToDeterminator(string xmlString, Determinator* blank){
-
-    pugi::doc.load(xmlString);
-
-    return blank;
-}
-
