@@ -63,23 +63,13 @@ public:
 		return pairVector;
 	}
 
-	static void testMatch()
+	static void testMatchFails()
 	{
-		vector<XPLValuePair>* pairVector = createPairVector();
-		XPLAddress sourceAddressOne;
-		sourceAddressOne.device = "device";
-		sourceAddressOne.vendor = "vendor";
-		sourceAddressOne.instance = "instance";
-		XPLAddress destinationAddressOne;
-		destinationAddressOne.device = "destDevice";
-		destinationAddressOne.vendor = "destVendor";
-		destinationAddressOne.instance = "destInstance";
-		XPLSchema schemaOne;
-		schemaOne.schema = "schema";
-		schemaOne.type = "type";
-		int hopsOne = 5;
-		string msgTypeOne = "xpl-cmd";
 
+	}
+
+	static void testMatchWithLessParameters()
+	{
 		vector<XPLValuePair>* pairVectorTwo = createPairVector();
 		XPLAddress sourceAddressTwo;
 		sourceAddressTwo.device = "device";
@@ -98,8 +88,35 @@ public:
 		XPLCondition* conditionOne;
 		conditionOne = new XPLCondition(pairVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
 
-		XPLCondition* conditionTwo;
-		conditionTwo = new XPLCondition(pairVectorTwo, sourceAddressTwo, destinationAddressTwo, schemaTwo, hopsTwo, msgTypeTwo);
+		XPLMessage messageOne;
+		messageOne.setSource(sourceAddressOne);
+		messageOne.setDestination(destinationAddressOne);
+		messageOne.setSchema(schemaOne);
+		messageOne.setHops(hopsOne);
+		messageOne.setMsgType(msgTypeOne);
+		messageOne.addMember("nameOne", "valueOne");
+		messageOne.addMember("nameTwo", "valueTwo");
+	}
+
+	static void testMatch()
+	{
+		vector<XPLValuePair>* pairVectorTwo = createPairVector();
+		XPLAddress sourceAddressTwo;
+		sourceAddressTwo.device = "device";
+		sourceAddressTwo.vendor = "vendor";
+		sourceAddressTwo.instance = "instance";
+		XPLAddress destinationAddressTwo;
+		destinationAddressTwo.device = "destDevice";
+		destinationAddressTwo.vendor = "destVendor";
+		destinationAddressTwo.instance = "destInstance";
+		XPLSchema schemaTwo;
+		schemaTwo.schema = "schema";
+		schemaTwo.type = "type";
+		int hopsTwo = 5;
+		string msgTypeTwo = "xpl-cmd";
+
+		XPLCondition* conditionOne;
+		conditionOne = new XPLCondition(pairVector, sourceAddressOne, destinationAddressOne, schemaOne, hopsOne, msgTypeOne);
 
 		XPLMessage messageOne;
 		messageOne.setSource(sourceAddressOne);
@@ -109,21 +126,11 @@ public:
 		messageOne.setMsgType(msgTypeOne);
 		messageOne.addMember("nameOne", "valueOne");
 		messageOne.addMember("nameTwo", "valueTwo");
-		messageOne.addMember("nameThree", "valueThree");
-
-		XPLMessage messageTwo;
-		messageTwo.setSource(sourceAddressTwo);
-		messageTwo.setDestination(destinationAddressTwo);
-		messageTwo.setSchema(schemaTwo);
-		messageTwo.setHops(hopsTwo);
-		messageTwo.setMsgType(msgTypeTwo);
-		messageTwo.addMember("nameOne", "valueTwo");
-		messageTwo.addMember("nameTwo", "valueOne");
 
 		bool matched = conditionOne->match(&messageOne);
 		bool notMatched = conditionTwo->match(&messageTwo);
 
-		if( matched && !notMatched )
+		if( matched )
 			printf("Test XPLCondition::match() success!\n");
 		else
 		{

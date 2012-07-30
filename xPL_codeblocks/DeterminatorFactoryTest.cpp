@@ -239,7 +239,7 @@ public:
 		string destinationAddress = "vendorIdTwo.deviceIdTwo.instanceIdTwo";
 		string schema = "schema.type";
 		string hops = "5";
-		string msgType = "xpl-stat";
+		string msgType = "xpl-cmd";
 
 		vector<string> definitions;
 		definitions.push_back("nameOne=valueOne");
