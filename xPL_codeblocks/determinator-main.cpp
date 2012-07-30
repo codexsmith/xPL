@@ -30,7 +30,6 @@ extern "C" {
 //#include <boost/asio.hpp>
 
 //Prototypes
-void terminateHandler(int param);
 void* xHCPService(void*);
 vector<Determinator>* createDeterminator();
 
@@ -40,34 +39,11 @@ XPLRuleManager* ruleMgr;
 
 int main(int argc, String argv[])
 {
-    //set_terminate(terminateHandler);
-//    signal(SIGHUP, terminateHandler);
-//    signal(SIGTERM, terminateHandler);
-//    signal(SIGTSTP, terminateHandler);
-//    signal(SIGQUIT, terminateHandler);
-//    signal(SIGABRT, terminateHandler);
     openlog("my_deamon", LOG_PID, LOG_DAEMON);
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
-    //throw 0;
-    //throw SIGHUP;
 
     syslog(LOG_INFO, "Main Thread Created.");
-
-    /**** Test Code ****/
-    XPLMessage testMsg, testMsg2;
-    testMsg.addMember("Fruit", "Dealer");
-    testMsg.addMember("SK", "MC");
-    testMsg.setHops(5);
-    testMsg.setSource("Pin", "Tin", "Sin");
-    testMsg.setMsgType("Command");
-
-    testMsg2 = testMsg.copyMessage();
-    testMsg2.addMember("StarTale", "July");
-    testMsg2.setMsgType("Status");
-
-    testMsg.setSource("Poop", "Scoop", "Loop");
-    testMsg.setHops(8);
 
     //Load XML document
 
@@ -80,9 +56,9 @@ int main(int argc, String argv[])
 	ruleMgr = new XPLRuleManager(determinators);
 
     //Source Address
-    String srcVendor = "Test";
-    String srcDeviceID = "hal";
-    String srcInstanceID = "322F";
+    String srcVendor = "HAL9000";
+    String srcDeviceID = "xPLHAL";
+    String srcInstanceID = "1";
 
     /* Start xPL up */
     if (!xPL_initialize(xPL_getParsedConnectionType())) {
@@ -94,11 +70,11 @@ int main(int argc, String argv[])
     xPL_addMessageListener(XPLParser::recvMsg, NULL);
 
     /* Create a service so the hubs know to send things to us        */
-    /* While we are not relaly using he service, xPL hubs will not   */
-    /* forward messages to us until they have seen a xPL-looking     */
-    /* device on the end of a hub connection, so this just gets us a */
+    /* While we are not really using the service, xPL hubs will not  */
+    /* forward messages to us until they have seen an xPL-looking    */
+    /* device on the end of a hub connection. So this just gets us a */
     /* place at the table, so to speak                               */
-    theService = xPL_createConfigurableService(srcVendor, srcDeviceID, "Test.hal");
+    theService = xPL_createConfigurableService(srcVendor, srcDeviceID, "hal.xpl");
     xPL_setServiceVersion(theService, HAL_VERSION);
 
     xPL_setServiceEnabled(theService, TRUE);
@@ -114,8 +90,7 @@ int main(int argc, String argv[])
     return 0;
 }
 
-
-
+//The xHCP thread executes this function
 void* xHCPService(void*)
 {
     Deamon cDeamon(CONFIG_FILE);
