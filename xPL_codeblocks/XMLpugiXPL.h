@@ -18,18 +18,9 @@ class XMLpugiXPL {
 	public:
 		explicit XMLpugiXPL(char* xmlFile);
 		~XMLpugiXPL();
-		string readFile();
-        string read();
 
+        void printDeterminatorXML(string xmlstring);
 		Determinator* readDeterminator();
-		int writeDeterminator(char* xmlString);
-        int write(char* xmlString);
-        void setXmlFile(char* xmlFile); //does c++ have a path library?
-
-	private:
-		char* xmlFile_;
-        static int currentLine_; //here be dragons
 
 };
-
 #endif //XMLpugiXPL_H

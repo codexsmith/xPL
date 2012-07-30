@@ -18,6 +18,7 @@ class Determinator {
 		vector<XPLMessage> execute();
 		void setEnabled(bool enable);
 		bool isEnabled();
+        void setAction(XPLAction* action);
 		//void operator=(const Determinator&);
 
 	protected:

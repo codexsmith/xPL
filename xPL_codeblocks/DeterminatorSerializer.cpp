@@ -9,14 +9,20 @@
 #include "DeterminatorFactory.h"
 #include "pugixml/pugixml.hpp"
 #include "XMLpugiXPL.h"
+#include "XPLAction.h"
 
 using namespace std;
+
+int DeterminatorSerializer::currentLine_;
+
+DeterminatorSerializer::~DeterminatorSerializer()
+{
+}
 
 DeterminatorSerializer::DeterminatorSerializer(char* xmlFile)
 {
     xmlFile_ = xmlFile;
-    currentLine_ = -1; //static
-
+    currentLine_ = 0; //static
 }
 
 void DeterminatorSerializer::setXmlFile(char* xmlFile)
@@ -57,17 +63,15 @@ int DeterminatorSerializer::write(char* xmlString)
     return 1;
 }
 
-Determinator* DeterminatorSerializer::readDeterminator(Determinator* determinator)
+Determinator* DeterminatorSerializer::readDeterminator()
 {
-    string determinatorString;
-    string openingLine = "<determinator";
-    string endLine = "</determinator>";
+    string determinatorString = read();
+    vector<XPLMessage>* messages = new vector<XPLMessage>();
+    vector<string>* attributes = new vector<string>();
 
-    bool end = false;
-
-    determinatorString = read();
-
-    determinator =
+    XPLAction* action = DeterminatorFactory::createXPLAction(messages);
+    XPLCondition* condition = DeterminatorFactory::createXPLCondition(*attributes);
+    Determinator* determinator = DeterminatorFactory::createDeterminator(condition, action, true);
 
     //make determinator & return
 
@@ -109,6 +113,7 @@ string DeterminatorSerializer::readFile()
         {
              perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
         }
+
         currentLine_ = ruleFile.tellg();
         ruleFile.flush();
         ruleFile.close();
@@ -121,21 +126,22 @@ string DeterminatorSerializer::read()
 {
 
     fstream ruleFile;
-    ruleFile.open (xmlFile_, ios::in);
-
     string line, lineOut, lineTmp;
     string openingLine = "<xplDeterminator>";
     string endLine = "</xplDeterminator>";
     int lineCheck;
     bool end = false;
 
+    ruleFile.open (xmlFile_, fstream::in);
+
     if (currentLine_ != 0)
     {
         ruleFile.seekg(currentLine_);
     }
-
+    cout << "before";
     if (ruleFile.is_open() and ruleFile.good())
     {
+        cout << "rulefile is open & good";
         getline (ruleFile,line);
         lineOut.append(line);
 
@@ -166,7 +172,7 @@ string DeterminatorSerializer::read()
         ruleFile.close();
 
     }
-    else cout << "Unable to open file";
+    else cout << "Unable to open fileDS";
 
     return lineOut;
 }
