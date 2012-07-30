@@ -45,16 +45,10 @@ Determinator* readDeterminator(string xmlString)
     tmpMsgsIn.push_back(*tmpMsg);
 
 
-    actionsIn = factory.createXPLAction(tmpMsgsIn);
+    actionsIn = factory.createXPLAction(&tmpMsgsIn);
 
     return NULL;
 }
-
-/home/nix/xPL/xPL_codeblocks/XMLpugiXPL.cpp||In function ‘Determinator* readDeterminator(std::string)’:|
-/home/nix/xPL/xPL_codeblocks/XMLpugiXPL.cpp|48|error: no matching function for call to ‘DeterminatorFactory::createXPLAction(std::vector<XPLMessage, std::allocator<XPLMessage> >&)’|
-/home/nix/xPL/xPL_codeblocks/DeterminatorFactory.h|25|note: candidates are: XPLAction* DeterminatorFactory::createXPLAction(std::vector<XPLMessage, std::allocator<XPLMessage> >*)|
-||=== Build finished: 1 errors, 0 warnings ===|
-
 
 void printDeterminatorXML(string xmlString)
 {
