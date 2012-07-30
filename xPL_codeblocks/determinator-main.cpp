@@ -27,7 +27,6 @@ extern "C" {
     #include "xPLLib/xPL.h"
 
 }
-//#include <boost/asio.hpp>
 
 //Prototypes
 void* xHCPService(void*);
