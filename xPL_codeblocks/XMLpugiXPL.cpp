@@ -12,7 +12,7 @@ Determinator* readDeterminator(string xmlString)
     pugi::xml_document doc;
 
     vector<string> conditionsIn = vector<string>();
-    vector<XPLAction> actionsIn = vector<XPLAction>();
+    XPLAction* actionsIn;
     vector<XPLMessage> tmpMsgsIn = vector<XPLMessage>();
 
     string tmpStr;
@@ -40,6 +40,7 @@ Determinator* readDeterminator(string xmlString)
     }
 
     msg_type = string(actions.attribute("msg_type").value());
+
 
     tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, parameters);
     tmpMsgsIn.push_back(*tmpMsg);
