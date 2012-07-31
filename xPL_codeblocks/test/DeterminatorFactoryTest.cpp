@@ -8,7 +8,6 @@
 #include <iostream>
 #include <string>
 
-
 class DeterminatorFactoryTest {
 
 public:

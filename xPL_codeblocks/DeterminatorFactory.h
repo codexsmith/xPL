@@ -22,14 +22,14 @@ class DeterminatorFactory {
 		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters);
 
 		XPLCondition* createXPLCondition(vector<string> definitions);
-		XPLAction* createXPLAction(vector<XPLMessage>* messages);
+        XPLAction* createXPLAction(vector<XPLMessage>* messages);
 		string getMember(string definition);
 		string getValue(string definition);
-		vector<string> getAddressParameters(string address);
+		 vector<string> getAddressParameters(string address);
 
 	private:
-		
+
 };
 
 #endif //DeterminatorFactory_H
-		
+
