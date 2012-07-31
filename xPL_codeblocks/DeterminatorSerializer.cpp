@@ -3,7 +3,7 @@
 #include <string>
 #include <stdio.h>
 #include <errno.h>
-#include <string>
+
 #include "DeterminatorSerializer.h"
 #include "Determinator.h"
 #include "DeterminatorFactory.h"
@@ -16,7 +16,6 @@ DeterminatorSerializer::DeterminatorSerializer(char* xmlFile)
 {
     xmlFile_ = xmlFile;
     currentLine_ = -1; //static
-
 }
 
 void DeterminatorSerializer::setXmlFile(char* xmlFile)
@@ -30,6 +29,11 @@ int DeterminatorSerializer::writeDeterminator(char* xmlString)
 
 
     return success;
+}
+
+bool DeterminatorSerializer::transformDeterminatorToXML(Determinator* determinator)
+{
+	
 }
 
 //takes an entire determinator, as a single \n delimited string

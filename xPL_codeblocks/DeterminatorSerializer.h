@@ -16,6 +16,7 @@ class DeterminatorSerializer {
         string read();
 
 		Determinator* readDeterminator();
+		bool transformDeterminatorForWriting(Determinator* determinator);
 		int writeDeterminator(char* xmlString);
         int write(char* xmlString);
         void setXmlFile(char* xmlFile); //does c++ have a path library?
