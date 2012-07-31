@@ -17,7 +17,7 @@ XPLValuePair* createPairToInject()
 {
 	XPLValuePair* pairToInject = new XPLValuePair();
 	pairToInject->member = "injectedMember";
-	pairToInject->value = "injectedValue";	
+	pairToInject->value = "injectedValue";
 	return pairToInject;
 }
 
@@ -28,37 +28,37 @@ void assertCorrect(XPLValuePair* pair_ptr, string value)
 	else
 		cout << "Unable to match member.\n";
 }
-
-int main()
-{
-	bool segfault = false;
-
-	if(segfault)
-	{	
-		XPLValuePair* destructedPair = createFalsePair();		
-		assertCorrect(destructedPair, "destructedMember");
-	}
-
-	XPLValuePair* injectedPair = createPairToInject();
-	assertCorrect(injectedPair, "injectedMember");
-
-	XPLValuePair copiedPair;
-	copiedPair.member = "copiedMember";
-	copiedPair.value = "copiedValue";
-
-	vector<XPLValuePair> pairVector;
-	pairVector.push_back(copiedPair);
-
-	copiedPair.member = "newMember";
-	copiedPair.value = "newValue";
-
-	XPLValuePair vectoredPair = pairVector.at(0);
-	cout << "Copied Member: " << vectoredPair.member << "\n";
-	cout << "Copied Value: " << vectoredPair.value << "\n";
-	cout << "New Member: " << copiedPair.member << "\n"; 
-	cout << "New Value: " << copiedPair.value << "\n";
-
-	cout << &copiedPair << "\n";
-	cout << &vectoredPair << "\n";
-	return 0;
-}
+//
+//int main()
+//{
+//	bool segfault = false;
+//
+//	if(segfault)
+//	{
+//		XPLValuePair* destructedPair = createFalsePair();
+//		assertCorrect(destructedPair, "destructedMember");
+//	}
+//
+//	XPLValuePair* injectedPair = createPairToInject();
+//	assertCorrect(injectedPair, "injectedMember");
+//
+//	XPLValuePair copiedPair;
+//	copiedPair.member = "copiedMember";
+//	copiedPair.value = "copiedValue";
+//
+//	vector<XPLValuePair> pairVector;
+//	pairVector.push_back(copiedPair);
+//
+//	copiedPair.member = "newMember";
+//	copiedPair.value = "newValue";
+//
+//	XPLValuePair vectoredPair = pairVector.at(0);
+//	cout << "Copied Member: " << vectoredPair.member << "\n";
+//	cout << "Copied Value: " << vectoredPair.value << "\n";
+//	cout << "New Member: " << copiedPair.member << "\n";
+//	cout << "New Value: " << copiedPair.value << "\n";
+//
+//	cout << &copiedPair << "\n";
+//	cout << &vectoredPair << "\n";
+//	return 0;
+//}

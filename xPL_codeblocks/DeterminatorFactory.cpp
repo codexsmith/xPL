@@ -18,7 +18,7 @@ Determinator* DeterminatorFactory::createDeterminator(vector<string> determinato
 	Determinator* determinator;
 	XPLCondition* condition;
 	XPLAction* action;
-	
+
 	return determinator;
 }
 
@@ -34,7 +34,7 @@ XPLCondition* DeterminatorFactory::createXPLCondition(vector<string> conditions)
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	for(int i = 0; i<conditions.size(); i++)
 	{
-		XPLValuePair* valuePair = new XPLValuePair(); 
+		XPLValuePair* valuePair = new XPLValuePair();
 		valuePair->member = getMember(conditions.at(i));
 		valuePair->value = getValue(conditions.at(i));
 		conditionVector->push_back(*valuePair);
@@ -51,7 +51,7 @@ XPLAction* DeterminatorFactory::createXPLAction(vector<XPLMessage>* messages)
 		actionVector->push_back(messages->at(i));
 	}
 	XPLAction* action = new XPLAction(actionVector);
-	return action;	
+	return action;
 }
 
 //TODO: Error checking for individuals fields
@@ -86,7 +86,7 @@ string DeterminatorFactory::getValue(string definition)
 {
 	int splitIndex = definition.find_first_of("=");
 	definition = definition.substr(splitIndex+1, definition.length());
-	return definition;	
+	return definition;
 }
 
 vector<string> DeterminatorFactory::getAddressParameters(string address)
@@ -97,7 +97,7 @@ vector<string> DeterminatorFactory::getAddressParameters(string address)
 	{
 		position = address.find_first_of(".");
 		parameters.push_back(address.substr(0,position));
-		address = address.substr(position+1, address.length());			
+		address = address.substr(position+1, address.length());
 	}
 	return parameters;
 }
