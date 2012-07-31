@@ -28,10 +28,17 @@
 				</Linker>
 			</Target>
 			<Target title="Test">
-				<Option output="bin/Debug/xPLHalTest" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Test/xPLHalTest" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Test/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+			</Target>
+			<Target title="Hub">
+				<Option output="bin/xPLHub/xPLHub" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Hub/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 			</Target>
 		</Build>
 		<Compiler>
@@ -41,45 +48,185 @@
 		<Linker>
 			<Add option="-lpthread" />
 		</Linker>
-		<Unit filename="Determinator.cpp" />
-		<Unit filename="Determinator.h" />
-		<Unit filename="DeterminatorFactory.cpp" />
-		<Unit filename="DeterminatorFactory.h" />
-		<Unit filename="DeterminatorSerializer.h" />
-		<Unit filename="Dispatcher.h" />
-		<Unit filename="TCPDeamon.cpp" />
-		<Unit filename="TCPDeamon.h" />
-		<Unit filename="TCPServer.cpp" />
-		<Unit filename="TCPServer.h" />
-		<Unit filename="XHCP_Parser.cpp" />
-		<Unit filename="XHCP_Parser.h" />
-		<Unit filename="XPLAction.cpp" />
-		<Unit filename="XPLAction.h" />
-		<Unit filename="XPLCondition.cpp" />
-		<Unit filename="XPLCondition.h" />
-		<Unit filename="XPLHal.h" />
-		<Unit filename="XPLMessage.cpp" />
-		<Unit filename="XPLMessage.h" />
-		<Unit filename="XPLParser.cpp" />
-		<Unit filename="XPLParser.h" />
-		<Unit filename="XPLRuleManager.cpp" />
-		<Unit filename="XPLRuleManager.h" />
+		<Unit filename="Determinator.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="Determinator.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="DeterminatorFactory.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="DeterminatorFactory.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="DeterminatorSerializer.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="Dispatcher.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="TCPDeamon.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="TCPDeamon.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="TCPServer.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="TCPServer.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XHCP_Parser.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XHCP_Parser.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLAction.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLAction.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLCondition.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLCondition.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLHal.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLMessage.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLMessage.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLParser.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLParser.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLRuleManager.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="XPLRuleManager.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
 		<Unit filename="determinator-main.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="pthreadcc/condition.cpp" />
-		<Unit filename="pthreadcc/mutualexclusion.cpp" />
-		<Unit filename="pthreadcc/pthreadcc.h" />
-		<Unit filename="pthreadcc/semaphore.cpp" />
-		<Unit filename="pthreadcc/threadbase.cpp" />
-		<Unit filename="pthreadcc/threadexception.cpp" />
-		<Unit filename="socketcc/ipaddress.cpp" />
-		<Unit filename="socketcc/socketbase.cpp" />
-		<Unit filename="socketcc/socketcc.h" />
-		<Unit filename="socketcc/socketexception.cpp" />
-		<Unit filename="socketcc/tcpsockets.cpp" />
-		<Unit filename="socketcc/udpsockets.cpp" />
+		<Unit filename="pthreadcc/condition.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="pthreadcc/mutualexclusion.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="pthreadcc/pthreadcc.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="pthreadcc/semaphore.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="pthreadcc/threadbase.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="pthreadcc/threadexception.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/ipaddress.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/socketbase.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/socketcc.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/socketexception.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/tcpsockets.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
+		<Unit filename="socketcc/udpsockets.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+		</Unit>
 		<Unit filename="test/DeterminatorFactoryTest.cpp">
 			<Option target="Test" />
 		</Unit>
@@ -97,6 +244,10 @@
 		</Unit>
 		<Unit filename="test/XPLMessageTest.cpp">
 			<Option target="Test" />
+		</Unit>
+		<Unit filename="xPLLib/examples/xPL_Hub.c">
+			<Option compilerVar="CC" />
+			<Option target="Hub" />
 		</Unit>
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
