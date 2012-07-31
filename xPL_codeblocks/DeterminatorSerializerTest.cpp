@@ -12,6 +12,14 @@ public:
 		else
 			cout << functionName +" failed!\n Got: " << value << "\n";
 	}
+	
+	void testReadDeterminator(DeterminatorSerializer* parser)
+    {
+        string ruleIn = parser->read();
+
+        assertSuccess("testReadDeterminator", ruleIn.compare("") != 0, ruleIn);
+
+    }
 
 	void testParseDeterminator()
 	{

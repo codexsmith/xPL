@@ -96,6 +96,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     int hops;
     vector<string> parametersIn = vector<string>();
 
+    //CONDITION
     for (pugi::xml_attribute_iterator ait = conditions.attributes_begin(); ait != conditions.attributes_end(); ++ait)
     {
         strcat(tmpChr,ait->name());
@@ -105,14 +106,20 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         conditionsIn.push_back(tmpStr);
     }
 
+    parameters = conditons.child("param");
+
+
     condition = factory.createXPLCondition(conditionsIn);
 
+    //ACTION
     msg_type = string(actions.attribute("msg_type").value());
     dstAddress = string(actions.attribute("msg_target").value());
     schema = string(actions.attribute("msg_schema").value());
     hops = factory.HOPS;
 
-    parameters = actions.child("param");
+
+
+    parameters = actions.child("xpl");
 
     for (pugi::xml_attribute_iterator ait = parameters.attributes_begin(); ait != parameters.attributes_end(); ++ait)
     {
@@ -213,14 +220,14 @@ string DeterminatorSerializer::read()
 
         if (lineCheck == 0)
         { //yes this is an opening determinator file tag
-            cout << "xplRule";
+            cout << "xplRule\n";
 
             getline(ruleFile,line);
             lineOut.append(line);
             lineCheck = line.compare(0,checkLine.length(),checkLine,0,checkLine.length());
 
             if (lineCheck == 0){//this is an opening determinator tag
-                cout << "rule";
+                cout << "rule\n";
                 while ( ruleFile.good() and !end)
                 {
 

@@ -6,7 +6,7 @@
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
             schema = "schema-class"
-            hops = 2>
+            hops = 2;
             <param
                 name = "parameter1"
                 operator = "="
