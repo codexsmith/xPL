@@ -3,11 +3,11 @@
 #include "DeterminatorTest.cpp"
 #include "XPLActionTest.cpp"
 #include "XPLMessageTest.cpp"
-#include "XPLRuleManager.h"
+#include "../XPLRuleManager.h"
 
 extern "C" {
 
-    #include "xPLLib/xPL.h"
+    #include "../xPLLib/xPL.h"
 
 }
 xPL_ServicePtr theService = NULL;

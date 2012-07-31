@@ -292,3 +292,123 @@
 	"pthreadcc/pthreadcc.h"
 	"socketcc/socketcc.h"
 
+1343773533 source:/home/xpl/Desktop/xPL/xPL_codeblocks/TCPDeamon.cpp
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<signal.h>
+	<syslog.h>
+	"socketcc/socketcc.h"
+	"pthreadcc/pthreadcc.h"
+	"TCPServer.h"
+	"TCPDeamon.h"
+
+1343773595 /home/xpl/Desktop/xPL/xPL_codeblocks/TCPDeamon.h
+	"TCPServer.h"
+	"pthreadcc/pthreadcc.h"
+
+1343773581 source:/home/xpl/Desktop/xPL/xPL_codeblocks/TCPServer.cpp
+	<stdio.h>
+	<signal.h>
+	<unistd.h>
+	<syslog.h>
+	"TCPServer.h"
+	"XHCP_Parser.h"
+
+1343776549 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/DeterminatorFactoryTest.cpp
+	"../DeterminatorFactory.h"
+	"../XPLHal.h"
+	"../Determinator.h"
+	"../XPLCondition.h"
+	"../XPLMessage.h"
+	"../XPLAction.h"
+	<iostream>
+	<string>
+
+1343776558 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/DeterminatorTest.cpp
+	"../Determinator.h"
+	"../XPLAction.h"
+	"../XPLCondition.h"
+	"../XPLHal.h"
+	<string>
+	<iostream>
+
+1343776573 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/PassByValueTest.cpp
+	"../XPLAction.h"
+	"../XPLCondition.h"
+	"../XPLHal.h"
+	<iostream>
+	<string>
+
+1343776606 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/TestRunner.cpp
+	"DeterminatorFactoryTest.cpp"
+	"XPLConditionTest.cpp"
+	"DeterminatorTest.cpp"
+	"XPLActionTest.cpp"
+	"XPLMessageTest.cpp"
+	"../XPLRuleManager.h"
+	"../xPLLib/xPL.h"
+
+1343776549 /home/xpl/Desktop/xPL/xPL_codeblocks/test/DeterminatorFactoryTest.cpp
+	"../DeterminatorFactory.h"
+	"../XPLHal.h"
+	"../Determinator.h"
+	"../XPLCondition.h"
+	"../XPLMessage.h"
+	"../XPLAction.h"
+	<iostream>
+	<string>
+
+1343776580 /home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLConditionTest.cpp
+	<stdio.h>
+	<iostream>
+	<string>
+	<vector>
+	"../XPLCondition.h"
+	"../XPLMessage.h"
+
+1343776558 /home/xpl/Desktop/xPL/xPL_codeblocks/test/DeterminatorTest.cpp
+	"../Determinator.h"
+	"../XPLAction.h"
+	"../XPLCondition.h"
+	"../XPLHal.h"
+	<string>
+	<iostream>
+
+1343776587 /home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLActionTest.cpp
+	"../XPLAction.h"
+	"../XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
+
+1343776593 /home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLMessageTest.cpp
+	"../XPLHal.h"
+	"../XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
+
+1343776587 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLActionTest.cpp
+	"../XPLAction.h"
+	"../XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
+
+1343776580 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLConditionTest.cpp
+	<stdio.h>
+	<iostream>
+	<string>
+	<vector>
+	"../XPLCondition.h"
+	"../XPLMessage.h"
+
+1343776593 source:/home/xpl/Desktop/xPL/xPL_codeblocks/test/XPLMessageTest.cpp
+	"../XPLHal.h"
+	"../XPLMessage.h"
+	<vector>
+	<iostream>
+	<string>
+

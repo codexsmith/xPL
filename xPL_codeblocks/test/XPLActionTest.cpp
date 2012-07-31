@@ -1,5 +1,5 @@
-#include "XPLAction.h"
-#include "XPLMessage.h"
+#include "../XPLAction.h"
+#include "../XPLMessage.h"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -55,7 +55,7 @@ public:
 		messageOne.setHops(2);
 		messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
 		messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
-		
+
 		messageTwo.addMember("firstResponseMemberOne", "firstResponeValueOne");
 		messageTwo.addMember("firstResponseMemberTwo", "firstResponseValueTwo");
 		messageTwo.setMsgType("firstMessageType");
