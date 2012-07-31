@@ -11,6 +11,7 @@ using namespace std;
 
 class Determinator {
 	public:
+        Determinator();
 		Determinator(XPLCondition* condition, XPLAction* action);
 		//Determinator(const Determinator& determinator);
 		~Determinator();

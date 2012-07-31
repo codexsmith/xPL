@@ -1,58 +1,57 @@
 <xplDeterminator>
 <determinator>
-    <input match = "all"> <!-- or "all|any"-->
+    <input match = "all">
         <xplCondition
             msgType = "stat"
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
             schema = "schema-class"
-            hops = 2
+            hops = 2>
             <param
                 name = "parameter1"
                 operator = "="
                 value = "value1"
             />
-        >
         </xplCondition>
     </input>
     <output>
-        <xplActiondisplay_name = "action-1"
+        <xplAction
+        display_name = "action-1"
         executeOrder = "nnn"
         msg_type = "cmnd"
         msg_target = "target"
         msg_schema = "class.type">
         <xplActionParam
          expression = "name1=value1"
-        />
-        >
+         />
         </xplAction>
     </output>
 </determinator>
 <determinator>
-    <input match = "all"> <!-- or "all|any"-->
+    <input match = "all">
         <xplCondition
-            msgType = "cmnd"
+            msgType = "stat"
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
-            schema = "schemaB-classB"
-            hops = 3
+            schema = "schema-class"
+            hops = 2>
             <param
                 name = "parameter1"
                 operator = "="
-                value = "value2"
+                value = "value1"
             />
-        >
         </xplCondition>
     </input>
     <output>
-        <xplAction display_name = "action-1"
+        <xplAction
+        display_name = "action-1"
         executeOrder = "nnn"
         msg_type = "cmnd"
-        msg_target = "targetB"
-        msg_schema = "classB.typeB">
+        msg_target = "target"
+        msg_schema = "class.type">
         <xplActionParam
-         expression = "name1=value2"
-        />
+         expression = "name1=value1"
+         />
         </xplAction>
     </output>
 </determinator>
