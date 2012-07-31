@@ -18,7 +18,8 @@ class DeterminatorSerializer {
         string read();
 
         Determinator* parseDeterminator(string xmlstring);
-		bool transformDeterminatorForWriting(Determinator* determinator);
+		Determinator* readDeterminator(string xmlstring);
+		string transformDeterminatorForWriting(Determinator* determinator);
 		int writeDeterminator(char* xmlString);
         int write(char* xmlString);
         void setXmlFile(char* xmlFile); 

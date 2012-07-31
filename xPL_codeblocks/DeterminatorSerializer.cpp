@@ -25,6 +25,11 @@ DeterminatorSerializer::DeterminatorSerializer(string xmlFile)
     currentLine_ = 0; //static
 }
 
+string DeterminatorSerializer::transformDeterminatorForWriting(Determinator* determinator)
+{
+
+}
+
 void DeterminatorSerializer::setXmlFile(char* xmlFile)
 {
     xmlFile_ = xmlFile;
@@ -33,14 +38,7 @@ void DeterminatorSerializer::setXmlFile(char* xmlFile)
 int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
     int success = 0;
-
-
     return success;
-}
-
-bool DeterminatorSerializer::transformDeterminatorToXML(Determinator* determinator)
-{
-	
 }
 
 //takes an entire determinator, as a single \n delimited string
@@ -139,12 +137,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
 
 Determinator* DeterminatorSerializer::readDeterminator(string xmlstring)
 {
-    char* tmpChr;
-    strcpy(tmpChr, xmlstring.c_str());
-    string tmpStr = string(tmpChr);
-    Determinator* rule = parseDeterminator(xmlstring);
-
-    return rule;
+    return parseDeterminator(xmlstring);
 }
 
 
@@ -181,7 +174,7 @@ string DeterminatorSerializer::readFile()
         }//end of determinator file
         else
         {
-             perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
+             perror ("Error opening file, not formatted correctly. First line is not an xPLDeterminator tag. %s\n");
         }
 
         currentLine_ = ruleFile.tellg();
