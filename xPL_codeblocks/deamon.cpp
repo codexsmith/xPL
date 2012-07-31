@@ -13,17 +13,6 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* -XPLHAL EDITS-                                                             */
-/*                                                                            */
-/* The daemon uses tcpserver.cpp to create and manage all the TCP connections */
-/* on port 3865.                                                              */
-/*                                                                            */
-/* Signal handling in "Deamon::Deamon(const char *pcConfigFile)" was commented*/
-/* out due to it causing the process to improperly crash and lock when        */
-/* attempting to stop it.                                                     */
-/******************************************************************************/
-
-/******************************************************************************/
 /* Standard C Includes.                                                       */
 /******************************************************************************/
 #include <stdio.h>
@@ -42,12 +31,12 @@
 /******************************************************************************/
 /* Include header files for TCPServer and TCPServerThread classes.            */
 /******************************************************************************/
-#include "TCPServer.h"
+#include "tcpserver.h"
 
 /******************************************************************************/
 /* Include class header file.                                                 */
 /******************************************************************************/
-#include "TCPDeamon.h"
+#include "deamon.h"
 
 /******************************************************************************/
 /* Default values for configuration items.                                    */
@@ -86,15 +75,17 @@ Condition   Deamon::condSignal;
 void
 Deamon::SignalHandler(int iSig)
 {
-    condSignal.LockMutEx();
+    //condSignal.LockMutEx();
     syslog(LOG_INFO, "SignalHandler() Called: %d", iSig);
     switch (iSig)
     {
         case SIGINT:
         case SIGTERM:   bKillFlag = true; break;
-        case SIGHUP:    bRestartFlag = true; break;
+        //case SIGHUP:    bRestartFlag = true; break;
+        case SIGHUP:    bKillFlag = true; break;
+
     }
-    condSignal.UnlockMutEx();
+    //condSignal.UnlockMutEx();
     condSignal.Signal();
 }
 
@@ -343,12 +334,12 @@ Deamon::RunDeamon()
     while (!bKillFlag)
     {
         condSignal.Wait();
-        if (bRestartFlag)
-        {
-            Stop();
-            Start();
-            bRestartFlag = false;
-        }
+//        if (bRestartFlag)
+//        {
+//            Stop();
+//            Start();
+//            bRestartFlag = false;
+//        }
         syslog(LOG_INFO, "condSignal.Signal() received.");
     }
     condSignal.UnlockMutEx();

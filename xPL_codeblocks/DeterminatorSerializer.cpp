@@ -3,7 +3,7 @@
 #include <string>
 #include <stdio.h>
 #include <errno.h>
-
+#include <string>
 #include "DeterminatorSerializer.h"
 #include "Determinator.h"
 #include "DeterminatorFactory.h"
@@ -25,11 +25,6 @@ DeterminatorSerializer::DeterminatorSerializer(string xmlFile)
     currentLine_ = 0; //static
 }
 
-string DeterminatorSerializer::transformDeterminatorForWriting(Determinator* determinator)
-{
-
-}
-
 void DeterminatorSerializer::setXmlFile(char* xmlFile)
 {
     xmlFile_ = xmlFile;
@@ -38,6 +33,8 @@ void DeterminatorSerializer::setXmlFile(char* xmlFile)
 int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
     int success = 0;
+
+
     return success;
 }
 
@@ -105,9 +102,15 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         tmpStr = string(tmpChr);
         conditionsIn.push_back(tmpStr);
     }
+//for condition children
+    parameters = conditions.child("param");
+    if (parameters != NULL)
+    {
+        for (pugi::xml_attribute_iterator ait = parameters.attributes_begin(); ait != parameters.attributes_end(); ++ait)
+        {
 
-    parameters = conditons.child("param");
-
+        }
+    }
 
     condition = factory.createXPLCondition(conditionsIn);
 
@@ -130,7 +133,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         parametersIn.push_back(tmpStr);
     }
     //does this need to be in a loop? can we always assume that there will be one action message per determinator? i dont think so.
-    tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, &parametersIn);
+    tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, parametersIn);
 
     tmpMsgsIn.push_back(*tmpMsg);
 
@@ -144,7 +147,12 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
 
 Determinator* DeterminatorSerializer::readDeterminator(string xmlstring)
 {
-    return parseDeterminator(xmlstring);
+    char* tmpChr;
+    strcpy(tmpChr, xmlstring.c_str());
+    string tmpStr = string(tmpChr);
+    Determinator* rule = parseDeterminator(xmlstring);
+
+    return rule;
 }
 
 
@@ -181,7 +189,7 @@ string DeterminatorSerializer::readFile()
         }//end of determinator file
         else
         {
-             perror ("Error opening file, not formatted correctly. First line is not an xPLDeterminator tag. %s\n");
+             perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
         }
 
         currentLine_ = ruleFile.tellg();

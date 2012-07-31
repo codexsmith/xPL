@@ -8,6 +8,8 @@
 
 extern XPLRuleManager* ruleMgr;
 
+int level = 0;
+
 XPLParser::XPLParser()
 {
 }
@@ -42,6 +44,11 @@ int XPLParser::sendMsg(XPLMessage msg)
         msgType = xPL_MESSAGE_ANY;
 
     //Create a new message
+//    if ((theMessage = xPL_createTargetedMessage(theService, msgType, "temp",
+//            "temp", "temp")) == NULL) {
+//        fprintf(stderr, "Unable to create broadcast message\n");
+//        return FALSE;
+//    }
     if (msg.isBroadcast())
     {
         if ((theMessage = xPL_createBroadcastMessage(theService, msgType)) == NULL) {
@@ -67,6 +74,9 @@ int XPLParser::sendMsg(XPLMessage msg)
     schemaClass[msg.getSchema().schema.size()]=0;
     memcpy(schemaClass,msg.getSchema().schema.c_str(),msg.getSchema().schema.size());
 
+
+//    const char* schemaClass = msg.getSchema().schema.c_str();
+//    const char* schemaType = msg.getSchema().type.c_str();
     xPL_setSchema(theMessage, schemaClass, schemaType);
 
     //Add members to the message
@@ -144,5 +154,75 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     {
         sendMsg(messagesToSend[i]);
     }
+    ///////////////////////////////////////////////////////////////////////////
+
+        ////////// PLACE TEST CODE HERE ///////////////////////////////////////////
+
+//    char temp[50];
+//
+//    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
+//        msg.getSource().device.compare("lamp") == 0 &&
+//        msg.getSource().instance.compare("3") == 0 &&
+//        msg.findMember("device").compare("button2") == 0 &&
+//        msg.findMember("current").compare("HIGH") == 0)
+//    {
+//        if (level < 60)
+//            level += 10;
+//
+//        if (level < 0)
+//            level = 0;
+//        else if (level > 60)
+//            level = 60;
+//
+//        sprintf(temp,"%d",level);
+//
+//        XPLMessage turnLampOn;
+//        turnLampOn.setMsgType("xpl-cmnd");
+//        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
+//        turnLampOn.setDestination("smgpoe", "lamp", "1");
+//        turnLampOn.setSchema("control", "basic");
+//        turnLampOn.setHops(5);
+//        turnLampOn.setBroadcast(false);
+//        turnLampOn.addMember("device", "pwm");
+//        turnLampOn.addMember("type", "variable");
+//        turnLampOn.addMember("current", temp);
+//        sendMsg(turnLampOn);
+//
+//        turnLampOn.setDestination("smgpoe", "lamp", "3");
+//        sendMsg(turnLampOn);
+//    }
+//
+//    if (msg.getSource().vendor.compare("smgpoe") == 0 &&
+//        msg.getSource().device.compare("lamp") == 0 &&
+//        msg.getSource().instance.compare("3") == 0 &&
+//        msg.findMember("device").compare("button1") == 0 &&
+//        msg.findMember("current").compare("HIGH") == 0)
+//    {
+//        if (level >= 10)
+//            level -= 10;
+//
+//        if (level < 0)
+//            level = 0;
+//        else if (level > 60)
+//            level = 60;
+//
+//        sprintf(temp,"%d",level);
+//
+//        XPLMessage turnLampOn;
+//        turnLampOn.setMsgType("xpl-cmnd");
+//        turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
+//        turnLampOn.setDestination("smgpoe", "lamp", "1");
+//        turnLampOn.setSchema("control", "basic");
+//        turnLampOn.setHops(5);
+//        turnLampOn.setBroadcast(false);
+//        turnLampOn.addMember("device", "pwm");
+//        turnLampOn.addMember("type", "variable");
+//        turnLampOn.addMember("current", temp);
+//        sendMsg(turnLampOn);
+//
+//        turnLampOn.setDestination("smgpoe", "lamp", "3");
+//        sendMsg(turnLampOn);
+//    }
+
     ///////////////////////////////////////////////////////////////////////////
 }

@@ -19,15 +19,6 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* -XPLHAL EDITS-                                                             */
-/*                                                                            */
-/* The following two functions were modified to call directly into our        */
-/* xHCPParser class:                                                          */
-/*   TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)                */
-/*   TCPServerThread::AcceptClient()                                          */
-/******************************************************************************/
-
-/******************************************************************************/
 /* Check to see if already included.                                          */
 /******************************************************************************/
 #ifndef TCPSERVER_H

@@ -1,9 +1,9 @@
-#include "../DeterminatorFactory.h"
-#include "../XPLHal.h"
-#include "../Determinator.h"
-#include "../XPLCondition.h"
-#include "../XPLMessage.h"
-#include "../XPLAction.h"
+#include "DeterminatorFactory.h"
+#include "XPLHal.h"
+#include "Determinator.h"
+#include "XPLCondition.h"
+#include "XPLMessage.h"
+#include "XPLAction.h"
 
 #include <iostream>
 #include <string>

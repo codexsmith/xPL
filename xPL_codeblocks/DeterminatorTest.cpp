@@ -1,7 +1,7 @@
-#include "../Determinator.h"
-#include "../XPLAction.h"
-#include "../XPLCondition.h"
-#include "../XPLHal.h"
+#include "Determinator.h"
+#include "XPLAction.h"
+#include "XPLCondition.h"
+#include "XPLHal.h"
 
 #include <string>
 #include <iostream>
@@ -15,11 +15,11 @@ public:
 		//First, let's create the condition
 		XPLValuePair pairOne, pairTwo, pairThree;
 		pairOne.member = "oneMember";
-		pairOne.value = "oneValue";
+		pairOne.value = "oneValue";	
 		pairTwo.member = "twoMember";
 		pairTwo.value = "twoValue";
 		pairThree.member = "threeMember";
-		pairThree.value = "threeValue";
+		pairThree.value = "threeValue";	
 
 		vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 		conditionVector->push_back(pairOne);
@@ -41,7 +41,7 @@ public:
 		messageOne.setHops(2);
 		messageOne.setSource("messageOneVendor", "messageOneDevice", "messageOneInstance");
 		messageOne.setDestination("messageOneDestinationVendor", "messageTwoDestinationDevice", "messageOneDestinationInstance");
-
+		
 		messageTwo.addMember("secondResponseMemberOne", "secondResponseValueOne");
 		messageTwo.addMember("secondResponseMemberTwo", "secondResponseValueTwo");
 		messageTwo.setMsgType("secondMessageType");
@@ -76,12 +76,12 @@ public:
 
 		XPLValuePair pairOne, pairTwo, pairThree;
 		pairOne.member = "oneMember";
-		pairOne.value = "oneValue";
+		pairOne.value = "oneValue";	
 		pairTwo.member = "twoMember";
 		pairTwo.value = "twoValue";
 		pairThree.member = "threeMember";
-		pairThree.value = "threeValue";
-
+		pairThree.value = "threeValue";	
+		
 		XPLMessage triggerMessage;
 		triggerMessage.addMember(pairOne.member, pairOne.value);
 		triggerMessage.addMember(pairTwo.member, pairTwo.value);
@@ -98,7 +98,7 @@ public:
 		Determinator determinator(createCondition(), createAction());
 		vector<XPLMessage> responses = determinator.execute();
 		if(responses.size() == 2)
-			cout << "Test Determinator::execute() success!\n";
+			cout << "Test Determinator::execute() success!\n";	
 		else
 			cout << "Test Determinator::execute() failed!\n";
 	}
