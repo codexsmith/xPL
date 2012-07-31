@@ -13,6 +13,17 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* -XPLHAL EDITS-                                                             */
+/*                                                                            */
+/* The daemon uses tcpserver.cpp to create and manage all the TCP connections */
+/* on port 3865.                                                              */
+/*                                                                            */
+/* Signal handling in "Deamon::Deamon(const char *pcConfigFile)" was commented*/
+/* out due to it causing the process to improperly crash and lock when        */
+/* attempting to stop it.                                                     */
+/******************************************************************************/
+
+/******************************************************************************/
 /* Check to see if already included.                                          */
 /******************************************************************************/
 #ifndef DEAMON_H

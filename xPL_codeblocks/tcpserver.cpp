@@ -15,6 +15,15 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* -XPLHAL EDITS-                                                             */
+/*                                                                            */
+/* The following two functions were modified to call directly into our        */
+/* xHCPParser class:                                                          */
+/*   TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)                */
+/*   TCPServerThread::AcceptClient()                                          */
+/******************************************************************************/
+
+/******************************************************************************/
 /* Standard C Includes.                                                       */
 /******************************************************************************/
 #include <stdio.h>
@@ -27,16 +36,6 @@
 /******************************************************************************/
 #include "tcpserver.h"
 #include "XHCP_Parser.h"
-
-/******************************************************************************/
-/* -XPLHAL EDITS-                                                             */
-/*                                                                            */
-/* The following two functions were modified to call directly into our        */
-/* xHCPParser class:                                                          */
-/*   TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)                */
-/*   TCPServerThread::AcceptClient()                                          */
-/******************************************************************************/
-
 
 /******************************************************************************/
 /* void ServiceClient(TCPSocket *pcClientSocket)                              */
