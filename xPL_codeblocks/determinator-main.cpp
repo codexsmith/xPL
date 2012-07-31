@@ -20,7 +20,7 @@
 /******************************************************************************/
 /* Include header files for TCPServer and StreamerThread classes.             */
 /******************************************************************************/
-#include "deamon.h"
+#include "TCPDeamon.h"
 
 extern "C" {
 
