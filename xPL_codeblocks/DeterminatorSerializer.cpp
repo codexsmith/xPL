@@ -3,26 +3,31 @@
 #include <string>
 #include <stdio.h>
 #include <errno.h>
-#include <string>
+
 #include "DeterminatorSerializer.h"
 #include "Determinator.h"
 #include "DeterminatorFactory.h"
 #include "pugixml/pugixml.hpp"
-#include "XMLpugiXPL.h"
 #include "XPLAction.h"
 
 using namespace std;
 
 int DeterminatorSerializer::currentLine_;
 
+
 DeterminatorSerializer::~DeterminatorSerializer()
 {
 }
 
-DeterminatorSerializer::DeterminatorSerializer(char* xmlFile)
+DeterminatorSerializer::DeterminatorSerializer(string xmlFile)
 {
     xmlFile_ = xmlFile;
     currentLine_ = 0; //static
+}
+
+string DeterminatorSerializer::transformDeterminatorForWriting(Determinator* determinator)
+{
+
 }
 
 void DeterminatorSerializer::setXmlFile(char* xmlFile)
@@ -33,8 +38,6 @@ void DeterminatorSerializer::setXmlFile(char* xmlFile)
 int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
     int success = 0;
-
-
     return success;
 }
 
@@ -46,7 +49,7 @@ int DeterminatorSerializer::write(char* xmlString)
     int lineCheck;
     string openingLine = "<xplDeterminator>";
 
-    ruleFile.open (xmlFile_, ios::out | ios::app); //APPEND!
+    ruleFile.open (xmlFile_.c_str(), ios::out | ios::app); //APPEND!
 
     if (ruleFile.is_open() and ruleFile.good())
     {
@@ -63,20 +66,87 @@ int DeterminatorSerializer::write(char* xmlString)
     return 1;
 }
 
-Determinator* DeterminatorSerializer::readDeterminator()
+Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
 {
-    string determinatorString = read();
-    vector<XPLMessage>* messages = new vector<XPLMessage>();
-    vector<string>* attributes = new vector<string>();
 
-    XPLAction* action = DeterminatorFactory::createXPLAction(messages);
-    XPLCondition* condition = DeterminatorFactory::createXPLCondition(*attributes);
-    Determinator* determinator = DeterminatorFactory::createDeterminator(condition, action, true);
+    size_t size = sizeof(xmlString);
+    pugi::xml_document doc;
 
-    //make determinator & return
+    Determinator* outRule;
+    DeterminatorFactory factory;
 
-    return NULL;
+    vector<string> conditionsIn = vector<string>();
+    XPLAction* action;
+    XPLCondition* condition;
+    vector<XPLMessage> tmpMsgsIn = vector<XPLMessage>();
+
+    string tmpStr;
+    char* tmpChr;
+    XPLMessage* tmpMsg;
+
+
+    pugi::xml_parse_result result = doc.load_buffer(xmlString.c_str(), size);
+
+    pugi::xml_node root = doc.document_element();//root
+
+    pugi::xml_node conditions = root.child("xplCondition");
+    pugi::xml_node actions = root.child("xplAction");
+    pugi::xml_node parameters;
+    string msg_type, srcAddress, dstAddress, schema;
+    int hops;
+    vector<string> parametersIn = vector<string>();
+
+    //CONDITION
+    for (pugi::xml_attribute_iterator ait = conditions.attributes_begin(); ait != conditions.attributes_end(); ++ait)
+    {
+        strcat(tmpChr,ait->name());
+        strcat(tmpChr,"=");
+        strcat(tmpChr, ait->value());
+        tmpStr = string(tmpChr);
+        conditionsIn.push_back(tmpStr);
+    }
+
+    parameters = conditons.child("param");
+
+
+    condition = factory.createXPLCondition(conditionsIn);
+
+    //ACTION
+    msg_type = string(actions.attribute("msg_type").value());
+    dstAddress = string(actions.attribute("msg_target").value());
+    schema = string(actions.attribute("msg_schema").value());
+    hops = factory.HOPS;
+
+
+
+    parameters = actions.child("xpl");
+
+    for (pugi::xml_attribute_iterator ait = parameters.attributes_begin(); ait != parameters.attributes_end(); ++ait)
+    {
+        strcat(tmpChr, ait->name());
+        strcat(tmpChr, "=");
+        strcat(tmpChr, ait ->value());
+        tmpStr = string(tmpChr);
+        parametersIn.push_back(tmpStr);
+    }
+    //does this need to be in a loop? can we always assume that there will be one action message per determinator? i dont think so.
+    tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, &parametersIn);
+
+    tmpMsgsIn.push_back(*tmpMsg);
+
+    action = factory.createXPLAction(&tmpMsgsIn);
+
+    outRule = factory.createDeterminator(condition, action, true);
+
+    return outRule;
 }
+
+
+Determinator* DeterminatorSerializer::readDeterminator(string xmlstring)
+{
+    return parseDeterminator(xmlstring);
+}
+
 
 string DeterminatorSerializer::readFile()
 {
@@ -87,7 +157,7 @@ string DeterminatorSerializer::readFile()
     int lineCheck;
     bool end = false;
 
-    ruleFile.open (xmlFile_, ios::in);
+    ruleFile.open (xmlFile_.c_str(), ios::in);
 
     if (ruleFile.is_open() and ruleFile.good())
     {
@@ -111,7 +181,7 @@ string DeterminatorSerializer::readFile()
         }//end of determinator file
         else
         {
-             perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
+             perror ("Error opening file, not formatted correctly. First line is not an xPLDeterminator tag. %s\n");
         }
 
         currentLine_ = ruleFile.tellg();
@@ -128,37 +198,47 @@ string DeterminatorSerializer::read()
     fstream ruleFile;
     string line, lineOut, lineTmp;
     string openingLine = "<xplDeterminator>";
-    string endLine = "</xplDeterminator>";
+    string checkLine = "<determinator>";
+    string stopLine = "</determinator>";
     int lineCheck;
     bool end = false;
 
-    ruleFile.open (xmlFile_, fstream::in);
+    ruleFile.open (xmlFile_.c_str(), fstream::in);
 
     if (currentLine_ != 0)
     {
         ruleFile.seekg(currentLine_);
     }
-    cout << "before";
+
     if (ruleFile.is_open() and ruleFile.good())
     {
-        cout << "rulefile is open & good";
+
         getline (ruleFile,line);
-        lineOut.append(line);
+
 
         lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
 
         if (lineCheck == 0)
-        { //yes this is an opening determinator tag
+        { //yes this is an opening determinator file tag
+            cout << "xplRule\n";
 
-            while ( ruleFile.good() and !end)
-            {
-                getline(ruleFile, lineTmp);
+            getline(ruleFile,line);
+            lineOut.append(line);
+            lineCheck = line.compare(0,checkLine.length(),checkLine,0,checkLine.length());
 
-                lineOut.append(lineTmp+"\n"); //adding back in newline delimeters, since getline removes them
+            if (lineCheck == 0){//this is an opening determinator tag
+                cout << "rule\n";
+                while ( ruleFile.good() and !end)
+                {
 
-                lineCheck = lineTmp.compare(0,endLine.length(),endLine,0,endLine.length());
-                if (lineCheck == 0){
-                    end = true; //end of a determinator
+                    getline(ruleFile, lineTmp);
+
+                    lineOut.append(lineTmp+"\n"); //adding back in newline delimeters, since getline removes them
+
+                    lineCheck = lineTmp.compare(0,stopLine.length(),stopLine,0,stopLine.length());
+                    if (lineCheck == 0){
+                        end = true; //end of a determinator
+                    }
                 }
             }
         }
@@ -172,7 +252,7 @@ string DeterminatorSerializer::read()
         ruleFile.close();
 
     }
-    else cout << "Unable to open fileDS";
+    else cout << "Unable to open file";
 
     return lineOut;
 }
