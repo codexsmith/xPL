@@ -41,6 +41,10 @@
 		<Unit filename="DeterminatorFactory.h" />
 		<Unit filename="DeterminatorSerializer.h" />
 		<Unit filename="Dispatcher.h" />
+		<Unit filename="TCPDeamon.cpp" />
+		<Unit filename="TCPDeamon.h" />
+		<Unit filename="TCPServer.cpp" />
+		<Unit filename="TCPServer.h" />
 		<Unit filename="XHCP_Parser.cpp" />
 		<Unit filename="XHCP_Parser.h" />
 		<Unit filename="XPLAction.cpp" />
@@ -54,8 +58,6 @@
 		<Unit filename="XPLParser.h" />
 		<Unit filename="XPLRuleManager.cpp" />
 		<Unit filename="XPLRuleManager.h" />
-		<Unit filename="deamon.cpp" />
-		<Unit filename="deamon.h" />
 		<Unit filename="determinator-main.cpp" />
 		<Unit filename="pthreadcc/condition.cpp" />
 		<Unit filename="pthreadcc/mutualexclusion.cpp" />
@@ -69,8 +71,6 @@
 		<Unit filename="socketcc/socketexception.cpp" />
 		<Unit filename="socketcc/tcpsockets.cpp" />
 		<Unit filename="socketcc/udpsockets.cpp" />
-		<Unit filename="tcpserver.cpp" />
-		<Unit filename="tcpserver.h" />
 		<Unit filename="xPLLib/xPL-config.c">
 			<Option compilerVar="CC" />
 		</Unit>

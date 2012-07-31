@@ -56,9 +56,9 @@
 1343686579 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
 	"XHCP_Parser.h"
 
-1343686581 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
+1343773551 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
 	<map>
-	"tcpserver.h"
+	"TCPServer.h"
 	"Dispatcher.h"
 	"XPLRuleManager.h"
 
@@ -287,4 +287,8 @@
 	<stdarg.h>
 	"xPL.h"
 	"xPL_priv.h"
+
+1343771477 /home/xpl/Desktop/xPL/xPL_codeblocks/TCPServer.h
+	"pthreadcc/pthreadcc.h"
+	"socketcc/socketcc.h"
 

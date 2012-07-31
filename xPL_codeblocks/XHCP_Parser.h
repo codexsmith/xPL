@@ -1,7 +1,7 @@
 #ifndef XHCP_PARSER_H
 #define XHCP_PARSER_H
 #include <map>
-#include "tcpserver.h"
+#include "TCPServer.h"
 #include "Dispatcher.h"
 #include "XPLRuleManager.h"
 
