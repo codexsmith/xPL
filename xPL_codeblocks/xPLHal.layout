@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="XHCP_Parser.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="0" topLine="0" />
-	</File>
-	<File name="deamon.cpp" open="1" top="0" tabpos="4">
+	<File name="deamon.cpp" open="1" top="1" tabpos="4">
 		<Cursor position="1881" topLine="0" />
 	</File>
 	<File name="deamon.h" open="1" top="0" tabpos="3">
 		<Cursor position="1863" topLine="0" />
 	</File>
 	<File name="tcpserver.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1863" topLine="518" />
+		<Cursor position="1863" topLine="511" />
 	</File>
 	<File name="tcpserver.h" open="1" top="0" tabpos="2">
 		<Cursor position="2187" topLine="0" />
