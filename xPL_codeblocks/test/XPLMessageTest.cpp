@@ -1,5 +1,5 @@
-#include "XPLHal.h"
-#include "XPLMessage.h"
+#include "../XPLHal.h"
+#include "../XPLMessage.h"
 #include <vector>
 #include <iostream>
 #include <string>

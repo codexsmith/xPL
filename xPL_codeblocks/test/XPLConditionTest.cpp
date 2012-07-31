@@ -2,14 +2,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "XPLCondition.h"
-#include "XPLMessage.h"
+#include "../XPLCondition.h"
+#include "../XPLMessage.h"
 
 
 class XPLConditionTest {
 
 public:
-	
+
 	void resultCompare(int memberCompare, int valueCompare)
 	{
 		if(memberCompare != 0 && valueCompare == 0)
@@ -26,7 +26,7 @@ public:
 		}
 		else
 		{
-			printf("Test Success!\n");	
+			printf("Test Success!\n");
 		}
 	}
 
@@ -43,14 +43,14 @@ public:
 
 	vector<XPLValuePair>* createPairVector()
 	{
-		XPLValuePair* pairOne; 
-		XPLValuePair* pairTwo; 
+		XPLValuePair* pairOne;
+		XPLValuePair* pairTwo;
 		XPLValuePair* pairThree;
 
 		pairOne = new XPLValuePair();
 		pairTwo = new XPLValuePair();
 		pairThree = new XPLValuePair();
-		
+
 		pairOne->member = "nameOne";
 		pairOne->value  = "valueOne";
 		pairTwo->member = "nameTwo";
@@ -58,14 +58,14 @@ public:
 		pairThree->member = "nameThree";
 		pairThree->value = "valueThree";
 
-		vector<XPLValuePair>* pairVector = createVector(pairOne, pairTwo, pairThree);	
+		vector<XPLValuePair>* pairVector = createVector(pairOne, pairTwo, pairThree);
 
 		return pairVector;
 	}
 
 	void testMatch()
 	{
-		vector<XPLValuePair>* pairVector = createPairVector();	
+		vector<XPLValuePair>* pairVector = createPairVector();
 		vector<XPLValuePair>* pairVectorTwo = createPairVector();
 
 		XPLCondition* conditionOne;
@@ -97,7 +97,7 @@ public:
 
 	void testEquals()
 	{
-		vector<XPLValuePair>* pairVector = createPairVector();	
+		vector<XPLValuePair>* pairVector = createPairVector();
 		vector<XPLValuePair>* pairVectorTwo = createPairVector();
 
 		XPLCondition* conditionOne;
@@ -117,6 +117,6 @@ public:
 	void runTests()
 	{
 		testMatch();
-		testEquals();		
+		testEquals();
 	}
 };
