@@ -11,12 +11,16 @@ using namespace std;
 
 class Determinator {
 	public:
+        Determinator();
 		Determinator(XPLCondition* condition, XPLAction* action);
 		~Determinator();
 		bool match(XPLMessage* message);
 		vector<XPLMessage> execute();
 		void setEnabled(bool enable);
 		bool isEnabled();
+        void setAction(XPLAction* action);
+
+	protected:
 		XPLCondition* getCondition();
 		XPLAction* getAction();
 

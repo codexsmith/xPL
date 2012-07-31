@@ -107,7 +107,7 @@ public:
 		parameters.push_back("nameThree=valueThree");
 
 		// cout << "CreateXPLMessage being called...\n";
-		XPLMessage* message = factory->createXPLMessage(msgType, sourceAddress, destinationAddress, schema, hops, parameters);
+		XPLMessage* message = factory->createXPLMessage(msgType, sourceAddress, destinationAddress, schema, hops, &parameters);
 		// cout << "Message returned\n";
 		string memberOneValue = message->findMember("nameOne");
 		string memberTwoValue = message->findMember("nameTwo");

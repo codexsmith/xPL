@@ -3,6 +3,7 @@
 #include "XPLActionTest.cpp"
 #include "XPLMessageTest.cpp"
 #include "XPLRuleManager.h"
+#include "DeterminatorSerializerTest.cpp"
 
 extern "C" {
 
@@ -15,16 +16,20 @@ XPLRuleManager* ruleMgr;
 
 int main()
 {
-	XPLConditionTest xplConditionTest;
-	xplConditionTest.runTests();
+//
+//	XPLConditionTest xplConditionTest;
+//	xplConditionTest.runTests();
+//
+//	DeterminatorTest determinatorTest;
+//	determinatorTest.runTests();
+//
+//	XPLActionTest xplActionTest;
+//	xplActionTest.runTests();
+//
+//    XPLMessageTest::runTests();
 
-	DeterminatorTest determinatorTest;
-	determinatorTest.runTests();
-
-	XPLActionTest xplActionTest;
-	xplActionTest.runTests();
-
-    XPLMessageTest::runTests();
+    DeterminatorSerializerTest ruleSerializerTest;
+    ruleSerializerTest.runTests();
 
 	return 0;
 }

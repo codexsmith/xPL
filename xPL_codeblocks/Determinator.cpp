@@ -5,6 +5,10 @@
 #include <vector>
 #include <iostream>
 
+Determinator::Determinator()
+{
+}
+
 Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 {
 	condition_ = condition;
@@ -23,6 +27,11 @@ Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 
 Determinator::~Determinator()
 {
+}
+
+void Determinator::setAction(XPLAction* action)
+{
+    action_ = action;
 }
 
 XPLAction* Determinator::getAction()
