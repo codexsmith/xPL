@@ -13,13 +13,13 @@ public:
 			cout << functionName +" failed!\n Got: " << value << "\n";
 	}
 	
-	void testReadDeterminator(DeterminatorSerializer* parser)
-    {
-        string ruleIn = parser->read();
+	// void testReadDeterminator(DeterminatorSerializer* parser)
+ //    {
+ //        string ruleIn = parser->read();
 
-        assertSuccess("testReadDeterminator", ruleIn.compare("") != 0, ruleIn);
+ //        assertSuccess("testReadDeterminator", ruleIn.compare("") != 0, ruleIn);
 
-    }
+ //    }
 
 	void testParseDeterminator()
 	{
@@ -28,8 +28,7 @@ public:
 
 		cout << xmlString;
 		Determinator* determinator = serializer.parseDeterminator(xmlString);
-		//string writtenDeterminator = serializer.
-		
+		cout << determinator->printXML();		
 	}
 
 

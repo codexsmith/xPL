@@ -5,6 +5,7 @@
 #include "XPLMessage.h"
 
 using namespace std;
+static const string tabLevel = "\t\t";
 
 class XPLAction {
 	public:
@@ -12,6 +13,7 @@ class XPLAction {
 		~XPLAction();
 		vector<XPLMessage> execute();
 		bool equals(XPLAction* action);
+		string printXML();
 
 	protected:
 		vector<XPLMessage>* getResponses();

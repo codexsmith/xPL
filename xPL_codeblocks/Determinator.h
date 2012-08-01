@@ -19,12 +19,16 @@ class Determinator {
 		void setEnabled(bool enable);
 		bool isEnabled();
         void setAction(XPLAction* action);
+        string printXML();
+        void setGUID(string GUID);
+        string getGUID();
 
 	protected:
 		XPLCondition* getCondition();
 		XPLAction* getAction();
 
 	private:
+		string GUID_;
 		XPLCondition* condition_;
 		XPLAction* action_;
 		bool enabled_;

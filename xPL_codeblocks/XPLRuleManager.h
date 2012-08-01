@@ -14,6 +14,7 @@ class XPLRuleManager {
 		~XPLRuleManager();
 		vector<XPLMessage> match(XPLMessage);
         std::string detToString();//XHCP support
+        Determinator* retrieveDeterminator(string GUID);
 	private:
         vector<Determinator>* determinators;
 };

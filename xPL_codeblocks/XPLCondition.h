@@ -6,6 +6,7 @@
 #include <string>
 
 using namespace std;
+static const string tabs = "\t\t";
 
 class XPLCondition {
 	public:
@@ -13,6 +14,7 @@ class XPLCondition {
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);
+		string printXML();
 
 	protected:
 		vector<XPLValuePair>* getAttributes();
