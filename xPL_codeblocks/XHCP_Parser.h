@@ -9,14 +9,23 @@ typedef std::string (Dispatcher::*pt2Member)(std::string);
 class XHCP_Parser
 {
     public:
-        XHCP_Parser();
+        static XHCP_Parser* Create()
+        {
+            if(!singleton){
+                singleton = new XHCP_Parser;
+            }
+            return singleton;
+        }
         virtual ~XHCP_Parser();
-        static void recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize);
-        static void acceptMsg(TCPSocket *pcClientSocket);
-        static std::map<std::string,pt2Member> theMap;
+        void recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize);
+        void acceptMsg(TCPSocket *pcClientSocket);
+
     protected:
     private:
-        void run();
+        std::map<std::string,pt2Member> theMap;
+        static XHCP_Parser* singleton;
+        XHCP_Parser();
+
 };
 
 
