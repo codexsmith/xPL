@@ -28,7 +28,7 @@ public:
 
 		cout << xmlString;
 		Determinator* determinator = serializer.parseDeterminator(xmlString);
-		string writtenDeterminator = serializer.
+		//string writtenDeterminator = serializer.
 		
 	}
 
