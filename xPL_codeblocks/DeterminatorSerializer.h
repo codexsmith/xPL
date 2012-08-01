@@ -3,8 +3,6 @@
 
 #include <string>
 #include "Determinator.h"
-#include "DeterminatorWriter.h"
-#include "DeterminatorReader.h"
 
 using namespace std;
 
@@ -21,7 +19,7 @@ class DeterminatorSerializer {
 		Determinator* readDeterminator(string xmlstring);
 		string transformDeterminatorForWriting(Determinator* determinator);
 		int writeDeterminator(char* xmlString);
-        int write(char* xmlString);
+        bool write(char* xmlString);
         void setXmlFile(char* xmlFile); 
 
 	private:

@@ -8,10 +8,6 @@
 #include "Determinator.h"
 #include "DeterminatorFactory.h"
 #include "pugixml/pugixml.hpp"
-<<<<<<< HEAD
-#include "XMLpugiXPL.h"
-=======
->>>>>>> serializer
 #include "XPLAction.h"
 
 using namespace std;
@@ -39,11 +35,6 @@ void DeterminatorSerializer::setXmlFile(char* xmlFile)
     xmlFile_ = xmlFile;
 }
 
-void DeterminatorSerializer::setXmlFile(char* xmlFile)
-{
-
-}
-
 int DeterminatorSerializer::writeDeterminator(char* xmlString)
 {
     int success = 0;
@@ -51,7 +42,7 @@ int DeterminatorSerializer::writeDeterminator(char* xmlString)
 }
 
 //takes an entire determinator, as a single \n delimited string
-int DeterminatorSerializer::write(char* xmlString)
+bool DeterminatorSerializer::write(char* xmlString)
 {
     fstream ruleFile;
     string line;
@@ -69,10 +60,10 @@ int DeterminatorSerializer::write(char* xmlString)
         if (lineCheck == 0)
         { //yes this is an opening determinator tag
             ruleFile.write(xmlString,strlen(xmlString)); //APPENDS to the end
-            return 0;
+            return false;
         }
     }
-    return 1;
+    return true;
 }
 
 Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
@@ -105,7 +96,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     vector<string> parametersIn = vector<string>();
 
     //CONDITION
-    conditions.child("")
+    conditions.child("");
     for (pugi::xml_attribute_iterator ait = conditions.attributes_begin(); ait != conditions.attributes_end(); ++ait)
     {
         strcat(tmpChr,ait->name());
@@ -115,10 +106,10 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         conditionsIn.push_back(tmpStr);
     }
 
-    parameters = conditons.child("param");
+    parameters = conditions.child("param");
 
-
-    condition = factory.createXPLCondition(conditionsIn);
+    string replace = "replace";
+    condition = factory.createXPLCondition(conditionsIn, replace, replace, replace, replace, replace);
 
     //ACTION
     msg_type = string(actions.attribute("msg_type").value());
@@ -157,7 +148,6 @@ Determinator* DeterminatorSerializer::readDeterminator(string xmlstring)
 }
 
 
->>>>>>> serializer
 string DeterminatorSerializer::readFile()
 {
     fstream ruleFile;
@@ -167,17 +157,12 @@ string DeterminatorSerializer::readFile()
     int lineCheck;
     bool end = false;
 
-<<<<<<< HEAD
-    ruleFile.open (xmlFile_, ios::in);
-=======
     ruleFile.open (xmlFile_.c_str(), ios::in);
->>>>>>> serializer
 
     if (ruleFile.is_open() and ruleFile.good())
     {
         getline (ruleFile,line);
         lineOut.append(line);
-<<<<<<< HEAD
 
         lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
 
@@ -188,18 +173,6 @@ string DeterminatorSerializer::readFile()
                 lineTmp = read();
                 lineOut.append(lineTmp);
 
-=======
-
-        lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
-
-        if (lineCheck == 0)
-        { //yes this is an opening determinator file
-            while(!end and ruleFile.good())
-            {
-                lineTmp = read();
-                lineOut.append(lineTmp);
-
->>>>>>> serializer
                 lineCheck = lineTmp.compare(0,endLine.length(),endLine,0,endLine.length());
                 if (lineCheck == 0){
                     end = true;
@@ -208,11 +181,7 @@ string DeterminatorSerializer::readFile()
         }//end of determinator file
         else
         {
-<<<<<<< HEAD
-             perror ("Error opening file, not formatted correctly. First line is not a xplDeterminator tag. %s\n");
-=======
              perror ("Error opening file, not formatted correctly. First line is not an xPLDeterminator tag. %s\n");
->>>>>>> serializer
         }
 
         currentLine_ = ruleFile.tellg();
@@ -229,13 +198,6 @@ string DeterminatorSerializer::read()
     fstream ruleFile;
     string line, lineOut, lineTmp;
     string openingLine = "<xplDeterminator>";
-<<<<<<< HEAD
-    string endLine = "</xplDeterminator>";
-    int lineCheck;
-    bool end = false;
-
-    ruleFile.open (xmlFile_, fstream::in);
-=======
     string checkLine = "<determinator>";
     string stopLine = "</determinator>";
     int lineCheck;
@@ -247,7 +209,6 @@ string DeterminatorSerializer::read()
     {
         ruleFile.seekg(currentLine_);
     }
->>>>>>> serializer
 
     if (currentLine_ != 0)
     {
@@ -256,17 +217,8 @@ string DeterminatorSerializer::read()
     cout << "before";
     if (ruleFile.is_open() and ruleFile.good())
     {
-<<<<<<< HEAD
-        cout << "rulefile is open & good";
-=======
-
->>>>>>> serializer
         getline (ruleFile,line);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> serializer
         lineCheck = line.compare(0,openingLine.length(),openingLine,0,openingLine.length()); //is this a proper opening line?
 
         if (lineCheck == 0)
@@ -277,25 +229,21 @@ string DeterminatorSerializer::read()
             lineOut.append(line);
             lineCheck = line.compare(0,checkLine.length(),checkLine,0,checkLine.length());
 
-            if (lineCheck == 0){//this is an opening determinator tag
+            if (lineCheck == 0)
+            {//this is an opening determinator tag
                 cout << "rule\n";
                 while ( ruleFile.good() and !end)
                 {
 
-<<<<<<< HEAD
-                lineCheck = lineTmp.compare(0,endLine.length(),endLine,0,endLine.length());
-                if (lineCheck == 0){
-                    end = true; //end of a determinator
-=======
                     getline(ruleFile, lineTmp);
 
                     lineOut.append(lineTmp+"\n"); //adding back in newline delimeters, since getline removes them
 
                     lineCheck = lineTmp.compare(0,stopLine.length(),stopLine,0,stopLine.length());
-                    if (lineCheck == 0){
+                    if (lineCheck == 0)
+                    {
                         end = true; //end of a determinator
                     }
->>>>>>> serializer
                 }
             }
         }
