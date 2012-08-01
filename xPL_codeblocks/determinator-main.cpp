@@ -110,7 +110,7 @@ vector<Determinator>* createDeterminator()
 	conditionVector->push_back(pairOne);
 	conditionVector->push_back(pairTwo);
 
-	XPLCondition* condition = new XPLCondition(conditionVector);
+	XPLCondition* condition = new XPLCondition(conditionVector, NULL, NULL, NULL, NULL, NULL);
 
     //Create the actions
     XPLMessage turnLampOn;
