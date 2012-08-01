@@ -22,7 +22,7 @@ public:
         return aString;
     }
     std::string deleteRule(std::string aString){
-        return NULL;
+        return "wee";
     }
     std::string capCommand(std::string aString){
         std::string theString = "236 --010L0\r\n";

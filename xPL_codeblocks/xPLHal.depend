@@ -53,8 +53,9 @@
 	"Determinator.h"
 	"XPLMessage.h"
 
-1343686579 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
+1343782441 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
 	"XHCP_Parser.h"
+	<iostream>
 
 1343780891 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
 	<map>
@@ -79,7 +80,7 @@
 	"../pthreadcc/pthreadcc.h"
 	<string>
 
-1343780856 /home/xpl/Desktop/xPL/xPL_codeblocks/Dispatcher.h
+1343782542 /home/xpl/Desktop/xPL/xPL_codeblocks/Dispatcher.h
 
 1343513782 /home/xpl/Desktop/xPL/xPL_codeblocks/XPLRuleManager.h
 	"XPLMessage.h"

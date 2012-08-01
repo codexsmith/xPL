@@ -1,8 +1,9 @@
 #include "XHCP_Parser.h"
+#include <iostream>
 
 
 XHCP_Parser::XHCP_Parser(){
-    theMap["ADDRULE"] = &Dispatcher::addRule;
+    theMap["SETRULE"] = &Dispatcher::addRule;
     theMap["LISTRULE"] = &Dispatcher::listRule;
     theMap["DELETERULE"]= &Dispatcher::deleteRule;
     theMap["CAPABILITIES"]= &Dispatcher::capCommand;
@@ -21,9 +22,18 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     while(std::getline(ss,item, ' '))
         theList.push_back(item);
     Dispatcher aParser;
-    if(theList.size() == 2){
+
+    //Check for extra carriage returns and line returns
+    if(theList.size() == 1){
+        if (theList[0].substr(theList[0].size()-2, 2).compare("\r\n")==0)
+            theList[0] = theList[0].substr(0, theList[0].size()-2);
+    }
+    else if(theList.size() == 2){
+        if (theList[1].substr(theList[1].size()-2, 2).compare("\r\n")==0)
+            theList[1] = theList[1].substr(0, theList[1].size()-2);
         command = theList[1];
     }
+
     else command = "No Argument";
     std::string buffer = (aParser.*theMap[theList[0]])(command);
     int sendMsgSize = buffer.size();
