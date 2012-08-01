@@ -37,6 +37,12 @@
 #include "TCPServer.h"
 #include "XHCP_Parser.h"
 
+
+/******************************************************************************/
+/* Include global variables                                                   */
+/******************************************************************************/
+XHCP_Parser* XHCP_Parser::singleton = 0;
+
 /******************************************************************************/
 /* void ServiceClient(TCPSocket *pcClientSocket)                              */
 /*                                                                            */
@@ -55,13 +61,15 @@ TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)
     int                 iBytesTransferred;
     char                pcBuffer[65535];
 
+    XHCP_Parser* parser = NULL;
+
     for(;;)
     {
         try
         {
             iBytesTransferred = pcClientSocket->RecvData(pcBuffer, 65535);
 
-            XHCP_Parser::recvMsg(pcClientSocket, pcBuffer, iBytesTransferred);
+            XHCP_Parser::Create()->recvMsg(pcClientSocket, pcBuffer, iBytesTransferred);
 
             pcBuffer[iBytesTransferred] = 0;
 
@@ -105,6 +113,8 @@ TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)
 TCPSocket *
 TCPServerThread::AcceptClient()
 {
+    XHCP_Parser* parser = NULL;
+
     mutexAccept.Lock();
     if (bServerActive)
     {
@@ -114,7 +124,7 @@ TCPServerThread::AcceptClient()
 
             pcClientSocket = pcListeningSocket->AcceptClient();
 
-            XHCP_Parser::acceptMsg(pcClientSocket);
+            XHCP_Parser::Create()->acceptMsg(pcClientSocket);
 
             mutexAccept.Unlock();
             return pcClientSocket;

@@ -56,7 +56,7 @@
 1343686579 source:/home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.cpp
 	"XHCP_Parser.h"
 
-1343773551 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
+1343779888 /home/xpl/Desktop/xPL/xPL_codeblocks/XHCP_Parser.h
 	<map>
 	"TCPServer.h"
 	"Dispatcher.h"
@@ -137,7 +137,7 @@
 	"tcpserver.h"
 	"pthreadcc/pthreadcc.h"
 
-1343687733 source:/home/xpl/Desktop/xPL/xPL_codeblocks/determinator-main.cpp
+1343777231 source:/home/xpl/Desktop/xPL/xPL_codeblocks/determinator-main.cpp
 	<string>
 	<stdio.h>
 	<vector>
@@ -151,7 +151,7 @@
 	"Determinator.h"
 	"XPLAction.h"
 	"XPLCondition.h"
-	"deamon.h"
+	"TCPDeamon.h"
 	"xPLLib/xPL.h"
 
 1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/pthreadcc/condition.cpp
