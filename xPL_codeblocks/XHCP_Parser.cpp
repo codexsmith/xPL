@@ -1,7 +1,8 @@
 #include "XHCP_Parser.h"
 #include <iostream>
 
-
+//XHCP_Parser Constructor
+//Maps inbound xHCP commands to a function that will create a proper response
 XHCP_Parser::XHCP_Parser(){
     theMap["SETRULE"] = &Dispatcher::addRule;
     theMap["LISTRULE"] = &Dispatcher::listRule;
@@ -9,10 +10,14 @@ XHCP_Parser::XHCP_Parser(){
     theMap["CAPABILITIES"]= &Dispatcher::capCommand;
 }
 
+//XHCP_Parser Destructor
 XHCP_Parser::~XHCP_Parser()
 {
     //dtor
 }
+
+//Handler for inbound TCP (3865) messages.  Cleans up string and passes to
+//the proper function using theMap
 void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     std::string theString(msg, msgSize);
     std::string command;
