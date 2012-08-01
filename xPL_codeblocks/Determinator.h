@@ -11,6 +11,7 @@ using namespace std;
 
 class Determinator {
 	public:
+        Determinator();
 		Determinator(XPLCondition* condition, XPLAction* action);
 		~Determinator();
 		bool match(XPLMessage* message);

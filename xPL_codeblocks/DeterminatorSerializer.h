@@ -9,20 +9,24 @@
 using namespace std;
 
 class DeterminatorSerializer {
+
 	public:
-		explicit DeterminatorSerializer(char* xmlFile);
+		explicit DeterminatorSerializer(string xmlFile);
 		~DeterminatorSerializer();
+
 		string readFile();
         string read();
 
-		Determinator* readDeterminator();
+        Determinator* parseDeterminator(string xmlstring);
+		Determinator* readDeterminator(string xmlstring);
+		string transformDeterminatorForWriting(Determinator* determinator);
 		int writeDeterminator(char* xmlString);
         int write(char* xmlString);
-        void setXmlFile(char* xmlFile); //does c++ have a path library?
+        void setXmlFile(char* xmlFile); 
 
 	private:
-		char* xmlFile_;
-        static int currentLine_; //here be dragons
+		string xmlFile_;
+        static int currentLine_; 
 
 };
 

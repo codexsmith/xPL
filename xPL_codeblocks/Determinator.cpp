@@ -5,6 +5,10 @@
 #include <vector>
 #include <iostream>
 
+Determinator::Determinator()
+{
+}
+
 Determinator::Determinator(XPLCondition* condition, XPLAction* action)
 {
 	condition_ = condition;

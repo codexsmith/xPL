@@ -9,13 +9,8 @@
 class XPLConditionTest {
 
 public:
-<<<<<<< HEAD:xPL_codeblocks/XPLConditionTest.cpp
 	
 	static void resultCompare(int memberCompare, int valueCompare)
-=======
-
-	void resultCompare(int memberCompare, int valueCompare)
->>>>>>> master:xPL_codeblocks/test/XPLConditionTest.cpp
 	{
 		if(memberCompare != 0 && valueCompare == 0)
 		{
@@ -75,10 +70,7 @@ public:
 
 	static void testMatchWithLessParameters()
 	{
-<<<<<<< HEAD:xPL_codeblocks/XPLConditionTest.cpp
-=======
 		vector<XPLValuePair>* pairVector = createPairVector();
->>>>>>> master:xPL_codeblocks/test/XPLConditionTest.cpp
 		vector<XPLValuePair>* pairVectorTwo = createPairVector();
 		XPLAddress sourceAddressTwo;
 		sourceAddressTwo.device = "device";
@@ -151,7 +143,6 @@ public:
 	static void testEquals()
 	{
 		vector<XPLValuePair>* pairVector = createPairVector();
-<<<<<<< HEAD:xPL_codeblocks/XPLConditionTest.cpp
 		XPLAddress sourceAddressOne;
 		sourceAddressOne.device = "device";
 		sourceAddressOne.vendor = "vendor";
@@ -166,8 +157,6 @@ public:
 		int hopsOne = 5;
 		string msgTypeOne = "xpl-cmd";
 
-=======
->>>>>>> master:xPL_codeblocks/test/XPLConditionTest.cpp
 		vector<XPLValuePair>* pairVectorTwo = createPairVector();
 		XPLAddress sourceAddressTwo;
 		sourceAddressTwo.device = "device";

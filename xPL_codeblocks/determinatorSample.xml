@@ -1,34 +1,55 @@
 <xplDeterminator>
 <determinator>
+<<<<<<< HEAD
     <input match = "all"> <!-- or "all|any"-->
+=======
+    <input match = "all">
+>>>>>>> serializer
         <xplCondition
             msgType = "stat"
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
             schema = "schema-class"
+<<<<<<< HEAD
             hops = 2
+=======
+            hops = 2;
+>>>>>>> serializer
             <param
                 name = "parameter1"
                 operator = "="
                 value = "value1"
             />
+<<<<<<< HEAD
         >
         </xplCondition>
     </input>
     <output>
         <xplActiondisplay_name = "action-1"
+=======
+        </xplCondition>
+    </input>
+    <output>
+        <xplAction
+        display_name = "action-1"
+>>>>>>> serializer
         executeOrder = "nnn"
         msg_type = "cmnd"
         msg_target = "target"
         msg_schema = "class.type">
         <xplActionParam
          expression = "name1=value1"
+<<<<<<< HEAD
         />
         >
+=======
+         />
+>>>>>>> serializer
         </xplAction>
     </output>
 </determinator>
 <determinator>
+<<<<<<< HEAD
     <input match = "all"> <!-- or "all|any"-->
         <xplCondition
             msgType = "cmnd"
@@ -53,6 +74,32 @@
         <xplActionParam
          expression = "name1=value2"
         />
+=======
+    <input match = "all">
+        <xplCondition
+            msgType = "stat"
+            sourceAddres = "vendor_device_instance"
+            destinationAddress = "vendor_device_instance"
+            schema = "schema-class"
+            hops = 2>
+            <param
+                name = "parameter1"
+                operator = "="
+                value = "value1"
+            />
+        </xplCondition>
+    </input>
+    <output>
+        <xplAction
+        display_name = "action-1"
+        executeOrder = "nnn"
+        msg_type = "cmnd"
+        msg_target = "target"
+        msg_schema = "class.type">
+        <xplActionParam
+         expression = "name1=value1"
+         />
+>>>>>>> serializer
         </xplAction>
     </output>
 </determinator>

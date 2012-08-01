@@ -15,12 +15,13 @@ using namespace std;
 
 class DeterminatorFactory {
 	public:
+        static const int HOPS = 8;
+
 		DeterminatorFactory();
 		~DeterminatorFactory();
 		Determinator* createDeterminator(vector<string> determinator, vector<string> condition, vector<string> action);
 		Determinator* createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled);
-		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters);
-
+		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string>* parameters);
 		XPLCondition* createXPLCondition(vector<string> definitions, string source, string destination, string schema, string hops, string msgType);
 		XPLAction* createXPLAction(vector<XPLMessage>* messages);
 		string getMember(string definition);
@@ -30,7 +31,7 @@ class DeterminatorFactory {
 	private:
 		string getSchemaClass(string definition);
 		string getSchemaType(string definition);
-		
+
 };
 
 #endif //DeterminatorFactory_H

@@ -84,7 +84,7 @@ XPLAction* DeterminatorFactory::createXPLAction(vector<XPLMessage>* messages)
 }
 
 //TODO: Error checking for individuals fields
-XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string> parameters)
+XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string>* parameters)
 {
 	XPLMessage* message = new XPLMessage();
 	message->setMsgType(msgType);
@@ -97,9 +97,9 @@ XPLMessage* DeterminatorFactory::createXPLMessage(string msgType, string sourceA
 	string schemaType = schema.substr(schemaSplit+1, schema.length() - schemaSplit);
 	message->setSchema(schemaClass, schemaType);
 	message->setHops(hops);
-	for(int i = 0; i<parameters.size(); i++)
+	for(int i = 0; i<(*parameters).size(); i++)
 	{
-		message->addMember(getMember(parameters[i]), getValue(parameters[i]));
+		message->addMember(getMember((*parameters)[i]), getValue((*parameters)[i]));
 	}
 	return message;
 }

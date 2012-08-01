@@ -95,7 +95,6 @@ public:
 		pairTwo.member = "twoMember";
 		pairTwo.value = "twoValue";
 		pairThree.member = "threeMember";
-<<<<<<< HEAD:xPL_codeblocks/DeterminatorTest.cpp
 		pairThree.value = "threeValue";	
 
 		vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
@@ -108,10 +107,6 @@ public:
 		Determinator determinator(condition, action);
 		bool failedMatched = determinator.match(&messageOne);
 		
-=======
-		pairThree.value = "threeValue";
-
->>>>>>> master:xPL_codeblocks/test/DeterminatorTest.cpp
 		XPLMessage triggerMessage;
 		triggerMessage.setSource(sourceAddressOne);
 		triggerMessage.setDestination(destinationAddressOne);
