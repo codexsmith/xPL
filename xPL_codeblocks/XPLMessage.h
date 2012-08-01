@@ -84,27 +84,14 @@ class XPLMessage
 	string messageType;
 	int hops;
 
-//	string schemaClass;
-//	string schemaType;
-
     XPLSchema schema;
-
-//	string sourceVendor;
-//	string sourceDevice;
-//	string sourceInstance;
 
     XPLAddress source;
 
 	bool broadcast;
 
-//	string destinationVendor;
-//	string destinationDevice;
-//	string destinationInstance;
-
     XPLAddress destination;
 
-//	vector<string> members;
-//	vector<string> values;
     vector<XPLValuePair> members;
 };
 
