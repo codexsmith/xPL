@@ -24,7 +24,7 @@ public:
     std::string deleteRule(std::string aString){
         return NULL;
     }
-    std::capCommand(std::string aString){
+    std::string capCommand(std::string aString){
         std::string theString = "236 --010L0\r\n";
         return theString;
     }

@@ -21,12 +21,13 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     while(std::getline(ss,item, ' '))
         theList.push_back(item);
     Dispatcher aParser;
-    if(theList.size == 2){
-        command = list[1];
+    if(theList.size() == 2){
+        command = theList[1];
     }
     else command = "No Argument";
     std::string buffer = (aParser.*theMap[theList[0]])(command);
-    pcClientSocket->SendData(greeting.c_str(), sendMsgSize);
+    int sendMsgSize = buffer.size();
+    pcClientSocket->SendData(buffer.c_str(), sendMsgSize);
 }
 void XHCP_Parser::acceptMsg(TCPSocket *pcClientSocket){
     std::string greeting( "200 GA-TECH-XPLHAL.SERVER1 Version 0.0 alpha XHCP 1.5 ready\r\n" );
