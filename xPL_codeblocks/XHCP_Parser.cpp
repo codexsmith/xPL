@@ -18,7 +18,7 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     std::string item;
     std::vector<std::string> theList;
     std::stringstream ss(theString);
-    while(std::getline(ss,item))
+    while(std::getline(ss,item, ' '))
         theList.push_back(item);
     Dispatcher aParser;
     if(theList.size == 2){
