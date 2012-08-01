@@ -1,11 +1,9 @@
-#include "XMLpugiXPL.h"
+#include <iostream>
 #include "DeterminatorSerializer.h"
 
 using namespace std;
 
 class DeterminatorSerializerTest {
-
-
 public:
 
     void assertSuccess(string functionName, bool result, string value)
@@ -19,6 +17,8 @@ public:
     void testReadDeterminator(DeterminatorSerializer* parser)
     {
         string ruleIn = parser->read();
+
+        Determinator* rule = parser->parseDeterminator(ruleIn);
 
         assertSuccess("testReadDeterminator", ruleIn.compare("") != 0, ruleIn);
 

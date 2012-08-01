@@ -93,7 +93,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     int hops;
     vector<string> parametersIn = vector<string>();
 
-    //CONDITION
+    //put xmlcondition attributes into conditionIn
     for (pugi::xml_attribute_iterator ait = conditions.attributes_begin(); ait != conditions.attributes_end(); ++ait)
     {
         strcat(tmpChr,ait->name());
@@ -102,7 +102,8 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         tmpStr = string(tmpChr);
         conditionsIn.push_back(tmpStr);
     }
-//for condition children
+
+    //for condition children
     parameters = conditions.child("param");
     while (parameters != NULL)
     {
@@ -124,7 +125,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     msg_type = string(actions.attribute("msg_type").value());
     dstAddress = string(actions.attribute("msg_target").value());
     schema = string(actions.attribute("msg_schema").value());
-    hops = string(actions.attribute());
+    hops = factory.HOPS;
 
     parameters = actions.child("xpl");
 
@@ -137,7 +138,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
         parametersIn.push_back(tmpStr);
     }
     //does this need to be in a loop? can we always assume that there will be one action message per determinator? i dont think so.
-    tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, parametersIn);
+    tmpMsg = factory.createXPLMessage(msg_type, srcAddress, dstAddress, schema, hops, &parametersIn);
 
     tmpMsgsIn.push_back(*tmpMsg);
 

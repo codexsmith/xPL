@@ -5,8 +5,7 @@
             msgType = "stat"
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
-            schema = "schema-class"
-            hops = 2;
+            schema = "schema-class">
             <param
                 name = "parameter1"
                 operator = "="
@@ -34,7 +33,7 @@
             sourceAddres = "vendor_device_instance"
             destinationAddress = "vendor_device_instance"
             schema = "schema-class"
-            hops = 2>
+            >
             <param
                 name = "parameter1"
                 operator = "="
