@@ -104,12 +104,18 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     }
 //for condition children
     parameters = conditions.child("param");
-    if (parameters != NULL)
+    while (parameters != NULL)
     {
+
         for (pugi::xml_attribute_iterator ait = parameters.attributes_begin(); ait != parameters.attributes_end(); ++ait)
         {
-
+            strcat(tmpChr, ait->name());
+            strcat(tmpChr, "=");
+            strcat(tmpChr, ait->value());
+            tmpStr = string(tmpChr);
+            conditionsIn.push_back(tmpStr);
         }
+        parameters = conditions.next_sibling("param");
     }
 
     condition = factory.createXPLCondition(conditionsIn);
@@ -118,9 +124,7 @@ Determinator* DeterminatorSerializer::parseDeterminator(string xmlString)
     msg_type = string(actions.attribute("msg_type").value());
     dstAddress = string(actions.attribute("msg_target").value());
     schema = string(actions.attribute("msg_schema").value());
-    hops = factory.HOPS;
-
-
+    hops = string(actions.attribute());
 
     parameters = actions.child("xpl");
 
