@@ -100,6 +100,10 @@ void* xHCPService(void*)
 vector<Determinator>* createDeterminator()
 {
 	//First, let's create the condition
+	XPLAddress conditionAddress;
+	XPLSchema conditionSchema;
+	string conditionMsgType;
+
 	XPLValuePair pairOne, pairTwo;
 	pairOne.member = "device";
 	pairOne.value = "button2";
@@ -110,7 +114,8 @@ vector<Determinator>* createDeterminator()
 	conditionVector->push_back(pairOne);
 	conditionVector->push_back(pairTwo);
 
-	XPLCondition* condition = new XPLCondition(conditionVector);
+
+	XPLCondition* condition = new XPLCondition(conditionVector, conditionAddress, conditionAddress, conditionSchema, 5, conditionMsgType );
 
     //Create the actions
     XPLMessage turnLampOn;
@@ -144,7 +149,7 @@ vector<Determinator>* createDeterminator()
 	conditionVector2->push_back(pairThree);
 	conditionVector2->push_back(pairFour);
 
-	XPLCondition* condition2 = new XPLCondition(conditionVector2);
+	XPLCondition* condition2 = new XPLCondition(conditionVector2, conditionAddress, conditionAddress, conditionSchema, 5, conditionMsgType);
 
     //Create the actions
     XPLMessage turnLampOn2;

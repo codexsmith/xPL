@@ -3,24 +3,29 @@
 
 #include <string>
 #include "Determinator.h"
-#include "DeterminatorWriter.h"
-#include "DeterminatorReader.h"
 
 using namespace std;
 
 class DeterminatorSerializer {
-	public:tor()
+
+	public:
 		explicit DeterminatorSerializer(string xmlFile);
 		~DeterminatorSerializer();
-		Determinator read();
-		void write(Determinator determinator);
+
+		string readFile();
+        string read();
+
+        Determinator* parseDeterminator(string xmlstring);
+		Determinator* readDeterminator(string xmlstring);
+		string transformDeterminatorForWriting(Determinator* determinator);
+		int writeDeterminator(char* xmlString);
+        bool write(char* xmlString);
+        void setXmlFile(char* xmlFile); 
 
 	private:
-		DeterminatorSerializer(const DeterminatorSerializer&);
-		void operator=(const DeterminatorSerializer&);
 		string xmlFile_;
-		DeterminatorReader reader_;
-		DeterminatorWriter writer_;
+        static int currentLine_; 
+
 };
 
 #endif //DeterminatorSerializer_H

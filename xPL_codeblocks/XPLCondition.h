@@ -3,21 +3,31 @@
 
 #include "XPLHal.h"
 #include "XPLMessage.h"
+#include <string>
 
 using namespace std;
+static const string tabs = "\t\t";
 
 class XPLCondition {
 	public:
-		explicit XPLCondition(vector<XPLValuePair>* attributes);
+		explicit XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType);
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);
+		string printXML();
 
 	protected:
 		vector<XPLValuePair>* getAttributes();
 
 	private:
 		vector<XPLValuePair>* attributes_;
+		XPLAddress sourceAddress_;
+		XPLAddress destinationAddress_;
+		XPLSchema schema_;
+		string msgType_;
+		int hops_;
+
+
 };
 
 #endif //XPLAction_H
