@@ -25,7 +25,7 @@ class DeterminatorFactory {
 		XPLAction* createXPLAction(vector<XPLMessage>* messages);
 		string getMember(string definition);
 		string getValue(string definition);
-		vector<string> getAddressParameters(string address);
+		 vector<string> getAddressParameters(string address);
 
 	private:
 		string getSchemaClass(string definition);
@@ -34,4 +34,4 @@ class DeterminatorFactory {
 };
 
 #endif //DeterminatorFactory_H
-		
+

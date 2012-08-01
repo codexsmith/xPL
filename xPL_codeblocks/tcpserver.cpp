@@ -15,6 +15,15 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* -XPLHAL EDITS-                                                             */
+/*                                                                            */
+/* The following two functions were modified to call directly into our        */
+/* xHCPParser class:                                                          */
+/*   TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)                */
+/*   TCPServerThread::AcceptClient()                                          */
+/******************************************************************************/
+
+/******************************************************************************/
 /* Standard C Includes.                                                       */
 /******************************************************************************/
 #include <stdio.h>
@@ -25,8 +34,98 @@
 /******************************************************************************/
 /* Include class header file.                                                 */
 /******************************************************************************/
-#include "tcpserver.h"
+#include "TCPServer.h"
 #include "XHCP_Parser.h"
+
+/******************************************************************************/
+/* void ServiceClient(TCPSocket *pcClientSocket)                              */
+/*                                                                            */
+/* This virtual member method is automatically called to service the client   */
+/* once it has connected to the server.  The default implementation consists  */
+/* of a TCP echo server.  The thread blocks until data is received from the   */
+/* connected client socket, if the client closes the socket, this will return */
+/* an exception.  We then print details about the received data and then echo */
+/* the data back to the client.  This loops until the socket is closed.  If a */
+/* socket error occurs, details are printed and the FatalError exception is   */
+/* thrown so the calling method can correctly terminate.                      */
+/******************************************************************************/
+void
+TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)
+{
+    int                 iBytesTransferred;
+    char                pcBuffer[65535];
+
+    for(;;)
+    {
+        try
+        {
+            iBytesTransferred = pcClientSocket->RecvData(pcBuffer, 65535);
+
+            XHCP_Parser::recvMsg(pcClientSocket, pcBuffer, iBytesTransferred);
+
+            pcBuffer[iBytesTransferred] = 0;
+
+//            syslog(LOG_INFO, "Received %d bytes [%s] from, %s:%d", iBytesTransferred,
+//                   pcBuffer, (pcClientSocket->RemoteIPAddress()).GetAddressString(),
+//                   pcClientSocket->RemotePortNumber());
+//
+//            iBytesTransferred = pcClientSocket->SendData(pcBuffer, iBytesTransferred);
+        }
+        catch (SocketException &excep)
+        {
+            if (excep != SocketException::errNotConnected)
+            {
+                syslog(LOG_ERR, "Socket Exception : %s", (const char *) excep);
+                throw errFatalError;
+            }
+            return;
+        }
+    }
+}
+
+/******************************************************************************/
+/* TCPSocket *AcceptClient()                                                  */
+/*                                                                            */
+/* This method blocks until the next client connects to the server and returns*/
+/* a pointer to a TCPSocket instance that can be used to communicate with the */
+/* newly connected client.  This method is executed as a critical section but */
+/* using a different Mutual Exclusion variable than the previous two methods  */
+/* and can therefore run concurrently with the Kill or Create threads methods */
+/* of other instances.  The primary reason for locking around the call to the */
+/* socket AcceptClient() method is to avoid the thundering herd problem, only */
+/* one thread is actively accepting a connection at a time.  Once the lock is */
+/* acquired, if the static ServerActive flag is set we attempt to accept a    */
+/* client connection.  We attempt to accept the connection, if successful, we */
+/* release the lock on the mutual exclusion and return.  If it fails, a       */
+/* SocketException is thrown, indicating a failed connection attempt.  If     */
+/* this is the case, or the ServerActive flag is set, we release the Mutual   */
+/* Exclusion lock and throw a ServerDown exception.  This will be caught in   */
+/* the Execute() method which will then act to terminate the thread.          */
+/******************************************************************************/
+TCPSocket *
+TCPServerThread::AcceptClient()
+{
+    mutexAccept.Lock();
+    if (bServerActive)
+    {
+        try
+        {
+            TCPSocket   *pcClientSocket;
+
+            pcClientSocket = pcListeningSocket->AcceptClient();
+
+            XHCP_Parser::acceptMsg(pcClientSocket);
+
+            mutexAccept.Unlock();
+            return pcClientSocket;
+        }
+        catch (SocketException)
+        {
+        }
+    }
+    mutexAccept.Unlock();
+    throw errServerDown;
+}
 
 /******************************************************************************/
 /* TCPServer Class.                                                           */
@@ -453,96 +552,6 @@ TCPServerThread::CreateExtraThreads()
         }
     }
     mutexProtect.Unlock();
-}
-
-/******************************************************************************/
-/* TCPSocket *AcceptClient()                                                  */
-/*                                                                            */
-/* This method blocks until the next client connects to the server and returns*/
-/* a pointer to a TCPSocket instance that can be used to communicate with the */
-/* newly connected client.  This method is executed as a critical section but */
-/* using a different Mutual Exclusion variable than the previous two methods  */
-/* and can therefore run concurrently with the Kill or Create threads methods */
-/* of other instances.  The primary reason for locking around the call to the */
-/* socket AcceptClient() method is to avoid the thundering herd problem, only */
-/* one thread is actively accepting a connection at a time.  Once the lock is */
-/* acquired, if the static ServerActive flag is set we attempt to accept a    */
-/* client connection.  We attempt to accept the connection, if successful, we */
-/* release the lock on the mutual exclusion and return.  If it fails, a       */
-/* SocketException is thrown, indicating a failed connection attempt.  If     */
-/* this is the case, or the ServerActive flag is set, we release the Mutual   */
-/* Exclusion lock and throw a ServerDown exception.  This will be caught in   */
-/* the Execute() method which will then act to terminate the thread.          */
-/******************************************************************************/
-TCPSocket *
-TCPServerThread::AcceptClient()
-{
-    mutexAccept.Lock();
-    if (bServerActive)
-    {
-        try
-        {
-            TCPSocket   *pcClientSocket;
-
-            pcClientSocket = pcListeningSocket->AcceptClient();
-
-            XHCP_Parser::acceptMsg(pcClientSocket);
-
-            mutexAccept.Unlock();
-            return pcClientSocket;
-        }
-        catch (SocketException)
-        {
-        }
-    }
-    mutexAccept.Unlock();
-    throw errServerDown;
-}
-
-/******************************************************************************/
-/* void ServiceClient(TCPSocket *pcClientSocket)                              */
-/*                                                                            */
-/* This virtual member method is automatically called to service the client   */
-/* once it has connected to the server.  The default implementation consists  */
-/* of a TCP echo server.  The thread blocks until data is received from the   */
-/* connected client socket, if the client closes the socket, this will return */
-/* an exception.  We then print details about the received data and then echo */
-/* the data back to the client.  This loops until the socket is closed.  If a */
-/* socket error occurs, details are printed and the FatalError exception is   */
-/* thrown so the calling method can correctly terminate.                      */
-/******************************************************************************/
-void
-TCPServerThread::ServiceClient(TCPSocket *pcClientSocket)
-{
-    int                 iBytesTransferred;
-    char                pcBuffer[65535];
-
-    for(;;)
-    {
-        try
-        {
-            iBytesTransferred = pcClientSocket->RecvData(pcBuffer, 65535);
-
-            XHCP_Parser::recvMsg(pcClientSocket, pcBuffer, iBytesTransferred);
-
-            pcBuffer[iBytesTransferred] = 0;
-
-//            syslog(LOG_INFO, "Received %d bytes [%s] from, %s:%d", iBytesTransferred,
-//                   pcBuffer, (pcClientSocket->RemoteIPAddress()).GetAddressString(),
-//                   pcClientSocket->RemotePortNumber());
-//
-//            iBytesTransferred = pcClientSocket->SendData(pcBuffer, iBytesTransferred);
-        }
-        catch (SocketException &excep)
-        {
-            if (excep != SocketException::errNotConnected)
-            {
-                syslog(LOG_ERR, "Socket Exception : %s", (const char *) excep);
-                throw errFatalError;
-            }
-            return;
-        }
-    }
 }
 
 /******************************************************************************/

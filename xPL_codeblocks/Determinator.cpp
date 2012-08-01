@@ -16,6 +16,11 @@ Determinator::~Determinator()
 {
 }
 
+void Determinator::setAction(XPLAction* action)
+{
+    action_ = action;
+}
+
 XPLAction* Determinator::getAction()
 {
 	return action_;
