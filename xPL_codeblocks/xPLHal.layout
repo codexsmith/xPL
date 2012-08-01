@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Test" />
 	<File name="TCPDeamon.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="3059" topLine="15" />
 	</File>
-	<File name="TCPDeamon.h" open="1" top="1" tabpos="5">
+	<File name="TCPDeamon.h" open="1" top="0" tabpos="5">
 		<Cursor position="2769" topLine="10" />
 	</File>
 	<File name="TCPServer.cpp" open="1" top="0" tabpos="4">
@@ -15,5 +15,8 @@
 	</File>
 	<File name="XHCP_Parser.h" open="1" top="0" tabpos="3">
 		<Cursor position="75" topLine="0" />
+	</File>
+	<File name="test/DeterminatorFactoryTest.cpp" open="1" top="1" tabpos="6">
+		<Cursor position="4225" topLine="95" />
 	</File>
 </CodeBlocks_layout_file>
