@@ -78,12 +78,12 @@
 			<Option target="Release" />
 			<Option target="Test" />
 		</Unit>
-		<Unit filename="TCPDeamon.cpp">
+		<Unit filename="TCPDaemon.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 			<Option target="Test" />
 		</Unit>
-		<Unit filename="TCPDeamon.h">
+		<Unit filename="TCPDaemon.h">
 			<Option target="Debug" />
 			<Option target="Release" />
 			<Option target="Test" />

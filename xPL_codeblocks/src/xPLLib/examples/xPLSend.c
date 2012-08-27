@@ -34,7 +34,7 @@ void printUsage(String commandName) {
 }
 
 Bool parseSourceIdent() {
-  String dashPtr, periodPtr;
+ const char * dashPtr, periodPtr;
 
   /* Make sure we have something to work with */
   if ((msgSource == NULL) || (strlen(msgSource) < 5)) {
@@ -63,7 +63,7 @@ Bool parseSourceIdent() {
 }
 
 Bool parseTargetIdent() {
-  String dashPtr, periodPtr;
+ const char * dashPtr, periodPtr;
 
   /* Make sure we have something to work with */
   if (msgTarget == NULL) return TRUE;
@@ -101,7 +101,7 @@ Bool parseTargetIdent() {
 Bool parseCmdLine( int *argc, char *argv[]) {
   int swptr;
   int newcnt = 0;
-  String delimPtr;
+ const char * delimPtr;
 
 
   /* Handle each item of the command line.  If it starts with a '-', then */
@@ -174,11 +174,11 @@ Bool parseCmdLine( int *argc, char *argv[]) {
 }
 
 
-Bool sendMessage(int argc, String argv[]) {
+Bool sendMessage(int argc,const char * argv[]) {
   int argIndex = 0;
   xPL_ServicePtr theService = NULL;
   xPL_MessagePtr theMessage = NULL;
-  String delimPtr;
+ const char * delimPtr;
 
   /* Create service so we can create messages */
   if ((theService = xPL_createService(srcVendor, srcDeviceID, srcInstanceID)) == NULL) {
@@ -223,7 +223,7 @@ Bool sendMessage(int argc, String argv[]) {
   return TRUE;
 }
 
-int main(int argc, String argv[]) {
+int main(int argc,const char * argv[]) {
   /* Handle a plea for help */
   if (argc == 1) {
     printUsage(argv[0]);

@@ -25,7 +25,7 @@ static pid_t hubPid = 0;
 
 
 /* Private wrapper for messages */
-static void writeMessage(int msgType, String theFormat, va_list theParms) {
+static void writeMessage(int msgType,const char * theFormat, va_list theParms) {
   time_t rightNow;
 
   /* Write a time stamp */
@@ -266,7 +266,7 @@ static void superviseHub() {
 }
 
 
-int main(int argc, String argv[]) {
+int main(int argc,const char * argv[]) {
   /* Check for xPL command parameters */
   xPL_parseCommonArgs(&argc, argv, TRUE);
 

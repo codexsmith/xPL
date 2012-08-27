@@ -11,7 +11,7 @@
 #include <pthread.h>
 #include <signal.h>
 #include <syslog.h>
-#include "XPLHal.h";
+#include "XPLHal.h"
 #include "XPLMessage.h"
 #include "XPLParser.h"
 #include "XPLRuleManager.h"
@@ -22,7 +22,7 @@
 /******************************************************************************/
 /* Include header files for TCPServer and StreamerThread classes.             */
 /******************************************************************************/
-#include "TCPDeamon.h"
+#include "TCPDaemon.h"
 
 extern "C" {
 
@@ -38,11 +38,11 @@ pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
 
-int main(int argc, String argv[])
+int main(int argc,const char * argv[])
 {
     //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
-    openlog("my_deamon", LOG_PID, LOG_DAEMON);
+    openlog("my_daemon", LOG_PID, LOG_DAEMON);
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
 
@@ -59,9 +59,9 @@ int main(int argc, String argv[])
 	ruleMgr = new XPLRuleManager(determinators);
 
     //Source Address
-    String srcVendor = "HAL9000";
-    String srcDeviceID = "xPLHAL";
-    String srcInstanceID = "1";
+    const std::string srcVendor = "HAL9000";
+    const std::string srcDeviceID = "xPLHAL";
+    const std::string srcInstanceID = "1";
 
     /* Start xPL up */
     if (!xPL_initialize(xPL_getParsedConnectionType())) {
@@ -77,7 +77,8 @@ int main(int argc, String argv[])
     /* forward messages to us until they have seen an xPL-looking    */
     /* device on the end of a hub connection. So this just gets us a */
     /* place at the table, so to speak                               */
-    theService = xPL_createConfigurableService(srcVendor, srcDeviceID, "hal.xpl");
+    theService = xPL_createConfigurableService(srcVendor.c_str(), srcDeviceID.c_str(), "hal.xpl");
+    //theService = xPL_createConfigurableService(srcVendor.c_str(),"b", "hal.xpl");
     xPL_setServiceVersion(theService, HAL_VERSION);
 
     xPL_setServiceEnabled(theService, TRUE);
@@ -96,9 +97,9 @@ int main(int argc, String argv[])
 //The xHCP thread executes this function
 void* xHCPService(void*)
 {
-    Deamon cDeamon(CONFIG_FILE);
+    Daemon cDaemon(CONFIG_FILE);
 
-    cDeamon.RunDeamon();
+    cDaemon.RunDaemon();
 }
 
 vector<Determinator>* createDeterminator()

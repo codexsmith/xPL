@@ -51,8 +51,8 @@ typedef void * xPL_ObjectPtr;
 
 /* A discrete name/value structure */
 typedef struct {
-  String itemName;
-  String itemValue;
+  char * itemName;
+  char * itemValue;
   Bool isBinary;
   int binaryLength;
 } xPL_NameValuePair, *xPL_NameValuePairPtr;
@@ -73,43 +73,43 @@ typedef struct {
   int hopCount;
   Bool receivedMessage; /* TRUE if received, FALSE if being sent */
 
-  String sourceVendor;
-  String sourceDeviceID;
-  String sourceInstanceID;
+ char * sourceVendor;
+char * sourceDeviceID;
+char * sourceInstanceID;
 
   Bool isGroupMessage;
-  String groupName;
+char * groupName;
 
   Bool isBroadcastMessage;
-  String targetVendor;
-  String targetDeviceID;
-  String targetInstanceID;
+char * targetVendor;
+char * targetDeviceID;
+char * targetInstanceID;
 
-  String schemaClass;
-  String schemaType;
+char * schemaClass;
+char * schemaType;
 
   xPL_NameValueListPtr messageBody;
 } xPL_Message, *xPL_MessagePtr;
 
 typedef struct {
   xPL_MessageType matchOnMessageType;
-  String matchOnVendor;
-  String matchOnDeviceID;
-  String matchOnInstanceID;
-  String matchOnSchemaClass;
-  String matchOnSchemaType;
+char * matchOnVendor;
+char * matchOnDeviceID;
+char * matchOnInstanceID;
+char * matchOnSchemaClass;
+char * matchOnSchemaType;
 } xPL_ServiceFilter, *xPL_ServiceFilterPtr;
 
 typedef enum { xPL_CONFIG_OPTIONAL, xPL_CONFIG_MANDATORY, xPL_CONFIG_RECONF } xPL_ConfigurableType;
 
 typedef struct {
-  String itemName;
+char * itemName;
   xPL_ConfigurableType itemType;
   int maxValueCount;
 
   int valueCount;
   int valueAllocCount;
-  String *valueList;
+char * *valueList;
 } xPL_ServiceConfigurable, *xPL_ServiceConfigurablePtr;
 
 
@@ -124,8 +124,8 @@ typedef void (* xPL_ServiceListener)(xPL_ServicePtr, xPL_MessagePtr, xPL_ObjectP
 
 typedef struct {
   xPL_MessageType matchMessageType;
-  String matchSchemaClass;
-  String matchSchemaType;
+char * matchSchemaClass;
+char * matchSchemaType;
   xPL_ObjectPtr userValue;
   xPL_ServiceListener serviceListener;
 } xPL_ServiceListenerDef, *xPL_ServiceListenerDefPtr;
@@ -139,15 +139,15 @@ typedef struct {
 struct _xPL_Service {
   Bool serviceEnabled;
 
-  String serviceVendor;
-  String serviceDeviceID;
-  String serviceInstanceID;
+  char * serviceVendor;
+  char * serviceDeviceID;
+  char * serviceInstanceID;
 
-  String serviceVersion;
+  char * serviceVersion;
 
   int groupCount;
   int groupAllocCount;
-  String *groupList;
+  char * *groupList;
 
   Bool ignoreBroadcasts;
 
@@ -157,7 +157,7 @@ struct _xPL_Service {
 
   Bool configurableService;
   Bool serviceConfigured;
-  String configFileName;
+  char * configFileName;
   int configChangedCount;
   int configChangedAllocCount;
   xPL_ServiceChangedListenerDefPtr changedListenerList;
@@ -177,26 +177,26 @@ struct _xPL_Service {
 };
 
 /* xPL Service Support */
-extern xPL_ServicePtr xPL_createService(String, String, String);
+extern xPL_ServicePtr xPL_createService( const char* theVendor, const char* theDeviceID, const char* theInstanceID );
 extern void xPL_releaseService(xPL_ServicePtr);
 
 extern void xPL_setServiceEnabled(xPL_ServicePtr, Bool);
 extern Bool xPL_isServiceEnabled(xPL_ServicePtr);
 
-extern void xPL_setServiceVendor(xPL_ServicePtr, String);
-extern String xPL_getServiceVendor(xPL_ServicePtr);
+extern void xPL_setServiceVendor(xPL_ServicePtr, const char *);
+char* xPL_getServiceVendor( xPL_ServicePtr theService );
 
-extern void xPL_setServiceDeviceID(xPL_ServicePtr, String);
-extern String xPL_getServiceDeviceID(xPL_ServicePtr);
+extern void xPL_setServiceDeviceID(xPL_ServicePtr, const char *);
+char* xPL_getServiceDeviceID( xPL_ServicePtr theService );
 
-extern void xPL_setServiceInstanceID(xPL_ServicePtr, String);
-extern String xPL_getServiceInstanceID(xPL_ServicePtr);
+extern void xPL_setServiceInstanceID(xPL_ServicePtr, const char *);
+char* xPL_getServiceInstanceID( xPL_ServicePtr theService );
 
 extern void xPL_setRespondingToBroadcasts(xPL_ServicePtr, Bool);
 extern Bool xPL_isRespondingToBroadcasts(xPL_ServicePtr);
 
-extern void xPL_setServiceVersion(xPL_ServicePtr, String);
-extern String xPL_getServiceVersion(xPL_ServicePtr);
+extern void xPL_setServiceVersion(xPL_ServicePtr, const char *);
+char* xPL_getServiceVersion( xPL_ServicePtr theService );
 
 extern void xPL_setReportOwnMessages(xPL_ServicePtr, Bool);
 extern Bool xPL_isReportOwnMessages(xPL_ServicePtr);
@@ -217,27 +217,27 @@ extern int xPL_getServiceCount();
 extern xPL_ServicePtr xPL_getServiceAt(int);
 
 /* xPL Service Configuratuion Support */
-extern xPL_ServicePtr xPL_createConfigurableService(String, String, String);
+extern xPL_ServicePtr xPL_createConfigurableService( const char* vendorName, const char* deviceID, const char* localConfigFile );
 
 extern Bool xPL_isConfigurableService(xPL_ServicePtr);
 extern Bool xPL_isServiceConfigured(xPL_ServicePtr);
 
-extern String xPL_getServiceConfigFile(xPL_ServicePtr);
+extern const char * xPL_getServiceConfigFile(xPL_ServicePtr);
 
-extern Bool xPL_addServiceConfigurable(xPL_ServicePtr, String, xPL_ConfigurableType, int);
-extern Bool xPL_removeServiceConfigurable(xPL_ServicePtr, String);
+extern Bool xPL_addServiceConfigurable(xPL_ServicePtr, const char *, xPL_ConfigurableType, int);
+extern Bool xPL_removeServiceConfigurable(xPL_ServicePtr, const char *);
 extern void xPL_removeAllServiceConfigurables(xPL_ServicePtr);
 
-extern void xPL_clearServiceConfigValues(xPL_ServicePtr, String);
+extern void xPL_clearServiceConfigValues(xPL_ServicePtr, const char *);
 extern void xPL_clearAllServiceConfigValues(xPL_ServicePtr);
 
-extern Bool xPL_addServiceConfigValue(xPL_ServicePtr, String, String);
-extern void xPL_setServiceConfigValueAt(xPL_ServicePtr, String, int, String);
-extern void xPL_setServiceConfigValue(xPL_ServicePtr, String, String);
+extern Bool xPL_addServiceConfigValue(xPL_ServicePtr, const char *, const char *);
+extern void xPL_setServiceConfigValueAt(xPL_ServicePtr, const char *, int, const char *);
+extern void xPL_setServiceConfigValue(xPL_ServicePtr, const char *, const char *);
 
-extern int xPL_getServiceConfigValueCount(xPL_ServicePtr, String);
-extern String xPL_getServiceConfigValueAt(xPL_ServicePtr, String, int);
-extern String xPL_getServiceConfigValue(xPL_ServicePtr, String);
+extern int xPL_getServiceConfigValueCount(xPL_ServicePtr, const char *);
+extern const char * xPL_getServiceConfigValueAt(xPL_ServicePtr, const char *, int);
+extern const char * xPL_getServiceConfigValue(xPL_ServicePtr, const char *);
 
 extern void xPL_addServiceConfigChangedListener(xPL_ServicePtr, xPL_ServiceConfigChangedListener, xPL_ObjectPtr);
 extern Bool xPL_removeServiceConfigChangedListener(xPL_ServicePtr, xPL_ServiceConfigChangedListener);
@@ -259,58 +259,58 @@ extern Bool xPL_isReceivedMessage(xPL_MessagePtr);
 extern void xPL_setBroadcastMessage(xPL_MessagePtr, Bool);
 extern Bool xPL_isBroadcastMessage(xPL_MessagePtr);
 
-extern void xPL_setTargetGroup(xPL_MessagePtr, String);
-extern String xPL_getTargetGroup(xPL_MessagePtr);
+extern void xPL_setTargetGroup(xPL_MessagePtr, const char *);
+extern  char * xPL_getTargetGroup(xPL_MessagePtr);
 extern Bool xPL_isGroupMessage(xPL_MessagePtr);
 
-extern void xPL_setTargetVendor(xPL_MessagePtr, String);
-extern String xPL_getTargetVendor(xPL_MessagePtr);
+extern void xPL_setTargetVendor(xPL_MessagePtr, const char *);
+extern  char * xPL_getTargetVendor(xPL_MessagePtr);
 
-extern void xPL_setTargetDeviceID(xPL_MessagePtr, String);
-extern String xPL_getTargetDeviceID(xPL_MessagePtr);
+extern void xPL_setTargetDeviceID(xPL_MessagePtr, const char *);
+extern  char * xPL_getTargetDeviceID(xPL_MessagePtr);
 
-extern void xPL_setTargetInstanceID(xPL_MessagePtr, String);
-extern String xPL_getTargetInstanceID(xPL_MessagePtr);
+extern void xPL_setTargetInstanceID(xPL_MessagePtr, const char *);
+extern  char * xPL_getTargetInstanceID(xPL_MessagePtr);
 
-extern void xPL_setTarget(xPL_MessagePtr, String, String, String);
+extern void xPL_setTarget(xPL_MessagePtr, const char *, const char *, const char *);
 
-extern void xPL_setSourceVendor(xPL_MessagePtr, String);
-extern String xPL_getSourceVendor(xPL_MessagePtr);
+extern void xPL_setSourceVendor(xPL_MessagePtr, const char *);
+char* xPL_getSourceVendor( xPL_MessagePtr theMessage );
 
-extern void xPL_setSourceDeviceID(xPL_MessagePtr, String);
-extern String xPL_getSourceDeviceID(xPL_MessagePtr);
+extern void xPL_setSourceDeviceID(xPL_MessagePtr, const char *);
+extern char * xPL_getSourceDeviceID(xPL_MessagePtr);
 
-extern void xPL_setSourceInstanceID(xPL_MessagePtr, String);
-extern String xPL_getSourceInstanceID(xPL_MessagePtr);
+extern void xPL_setSourceInstanceID(xPL_MessagePtr, const char *);
+char* xPL_getSourceInstanceID( xPL_MessagePtr theMessage );
 
-extern void xPL_setSource(xPL_MessagePtr, String, String, String);
+extern void xPL_setSource(xPL_MessagePtr, const char *, const char *, const char *);
 
-extern void xPL_setSchemaClass(xPL_MessagePtr, String);
-extern String xPL_getSchemaClass(xPL_MessagePtr);
-extern void xPL_setSchemaType(xPL_MessagePtr, String);
-extern String xPL_getSchemaType(xPL_MessagePtr);
-extern void xPL_setSchema(xPL_MessagePtr, String, String);
+extern void xPL_setSchemaClass(xPL_MessagePtr, const char *);
+extern char * xPL_getSchemaClass(xPL_MessagePtr);
+extern void xPL_setSchemaType(xPL_MessagePtr, const char *);
+char* xPL_getSchemaType( xPL_MessagePtr theMessage );
+extern void xPL_setSchema(xPL_MessagePtr, const char *, const char *);
 //extern void xPL_setSchema(xPL_MessagePtr, const char*, const char*);
 
 extern xPL_NameValueListPtr xPL_getMessageBody(xPL_MessagePtr);
-extern Bool xPL_doesMessageNamedValueExist(xPL_MessagePtr, String);
-extern String xPL_getMessageNamedValue(xPL_MessagePtr, String);
+extern Bool xPL_doesMessageNamedValueExist(xPL_MessagePtr, const char *);
+extern char * xPL_getMessageNamedValue(xPL_MessagePtr, const char *);
 
 extern void xPL_clearMessageNamedValues(xPL_MessagePtr);
-extern void xPL_addMessageNamedValue(xPL_MessagePtr, String, String);
+extern void xPL_addMessageNamedValue(xPL_MessagePtr, const char *, const char *);
 //extern void xPL_addMessageNamedValue(xPL_MessagePtr, const char*, const char*);
-extern void xPL_setMessageNamedValue(xPL_MessagePtr, String, String);
+extern void xPL_setMessageNamedValue(xPL_MessagePtr, const char *, const char *);
 extern void xPL_setMessageNamedValues(xPL_MessagePtr, ...);
 
-extern xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr, xPL_MessageType, String, String, String);
+extern xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr, xPL_MessageType, const char *, const char *, const char *);
 //extern xPL_MessagePtr xPL_createTargetedMessage(xPL_ServicePtr, xPL_MessageType, const char*, const char*, const char*);
-extern xPL_MessagePtr xPL_createGroupTargetedMessage(xPL_ServicePtr, xPL_MessageType, String);
+extern xPL_MessagePtr xPL_createGroupTargetedMessage( xPL_ServicePtr theService, xPL_MessageType messageType, const char* theGroup );
 extern xPL_MessagePtr xPL_createBroadcastMessage(xPL_ServicePtr, xPL_MessageType);
 extern void xPL_releaseMessage(xPL_MessagePtr);
 
 extern Bool xPL_sendMessage(xPL_MessagePtr);
 
-extern void xPL_addServiceListener(xPL_ServicePtr, xPL_ServiceListener, xPL_MessageType, String, String, xPL_ObjectPtr);
+extern void xPL_addServiceListener( xPL_ServicePtr, xPL_ServiceListener, xPL_MessageType, const char*, const char*, xPL_ObjectPtr );
 extern Bool xPL_removeServiceListener(xPL_ServicePtr, xPL_ServiceListener);
 
 /* General Library support */
@@ -328,13 +328,13 @@ extern xPL_ConnectType xPL_getConnectType();
 
 extern Bool xPL_isHubConfirmed();
 
-extern String xPL_formatMessage(xPL_MessagePtr);
+extern const char * xPL_formatMessage( xPL_MessagePtr theMessage );
 
-extern String xPL_getBroadcastInterface();
-extern void xPL_setBroadcastInterface(String);
-extern String xPL_getBroadcastIPAddr();
+extern const char * xPL_getBroadcastInterface();
+extern void xPL_setBroadcastInterface( const char* );
+extern const char * xPL_getBroadcastIPAddr();
 
-extern String xPL_getListenerIPAddr();
+extern const char * xPL_getListenerIPAddr();
 
 extern Bool xPL_processMessages(int);
 
@@ -350,25 +350,25 @@ extern Bool xPL_removeTimeoutHandler(xPL_TimeoutHandler);
 
 
 /* General utility/helpers */
-extern int xPL_strcmpIgnoreCase(String, String);
-extern int xPL_strncmpIgnoreCase(String, String, int);
-extern void xPL_Upcase(String);
+extern int xPL_strcmpIgnoreCase(const char *, const char *);
+extern int xPL_strncmpIgnoreCase(const char *, const char *, int);
+extern void xPL_Upcase( char* target );
 
-extern String xPL_intToHex(int);
-extern Bool xPL_hexToInt(String, int *);
-extern String xPL_intToStr(int);
-extern Bool xPL_strToInt(String, int *);
+char* xPL_intToHex( int theValue );
+extern Bool xPL_hexToInt(const char *, int *);
+extern const char * xPL_intToStr(int);
+extern Bool xPL_strToInt(const char *, int *);
 
-extern Bool xPL_parseCommonArgs(int *, String[], Bool);
+extern Bool xPL_parseCommonArgs(int *, char *[], Bool);
 extern xPL_ConnectType xPL_getParsedConnectionType();
 
 /* Name/value list support */
 
 /* Add a new named value to the list */
-extern void xPL_addNamedValue(xPL_NameValueListPtr, String, String);
+extern void xPL_addNamedValue(xPL_NameValueListPtr, const char *, const char *);
 
 /* Update an existing named value or, if the name does not exist, add a new name/value */
-extern void xPL_setNamedValue(xPL_NameValueListPtr, String, String);
+extern void xPL_setNamedValue(xPL_NameValueListPtr, const char *, const char *);
 
 /* Set a series of name/value pairs.  Each name must be followed by a value */
 /* even if that value is NULL.                                              */
@@ -381,30 +381,30 @@ extern int xPL_getNamedValueCount(xPL_NameValueListPtr);
 extern xPL_NameValuePairPtr xPL_getNamedValuePairAt(xPL_NameValueListPtr, int);
 
 /* Given the passed list and name, return the index into the list of the name or -1 */
-extern int xPL_getNamedValueIndex(xPL_NameValueListPtr, String);
+extern int xPL_getNamedValueIndex(xPL_NameValueListPtr, const char *);
 
 /* Given the passed list and name, return the first matching name/value pair or NULL */
-extern xPL_NameValuePairPtr xPL_getNamedValuePair(xPL_NameValueListPtr, String);
+extern xPL_NameValuePairPtr xPL_getNamedValuePair(xPL_NameValueListPtr, const char *);
 
 /* Given the passed list and name, return the first matching value or NULL */
 /* Note: Value can be NULL because it was not found or because the actual */
 /* value of the name/value pair is NULL.  If this matters, use doesNamedValueExist() */
-extern String xPL_getNamedValue(xPL_NameValueListPtr, String);
+extern char * xPL_getNamedValue( xPL_NameValueListPtr theList, const char* theName );
 
 /* Given the passed list and name, return TRUE if the named value exists in the list */
-extern Bool xPL_doesNamedValueExist(xPL_NameValueListPtr, String);
+extern Bool xPL_doesNamedValueExist(xPL_NameValueListPtr, const char *);
 
 /* Remove name specified by the passed index from the passed list */
 extern void xPL_clearNamedValueAt(xPL_NameValueListPtr, int);
 
 /* Remove all isntances of the passed name from the passed list */
-extern void xPL_clearNamedValue(xPL_NameValueListPtr, String);
+extern void xPL_clearNamedValue(xPL_NameValueListPtr, const char *);
 
 /* Remove All name/value pairs from the passed list */
 extern void xPL_clearAllNamedValues(xPL_NameValueListPtr);
 
 /** Raw Listener Support **/
-typedef void (* xPL_rawListener)(String, int, xPL_ObjectPtr);
+typedef void (* xPL_rawListener)(const char *, int, xPL_ObjectPtr);
 extern void xPL_addRawListener(xPL_rawListener, xPL_ObjectPtr);
 extern Bool xPL_removeRawListener(xPL_rawListener);
 

@@ -123,7 +123,7 @@
 	"XPLRuleManager.h"
 	<vector>
 
-1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/deamon.cpp
+1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/daemon.cpp
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -133,9 +133,9 @@
 	"socketcc/socketcc.h"
 	"pthreadcc/pthreadcc.h"
 	"tcpserver.h"
-	"deamon.h"
+	"daemon.h"
 
-1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/deamon.h
+1343511099 /home/xpl/Desktop/xPL/xPL_codeblocks/daemon.h
 	"tcpserver.h"
 	"pthreadcc/pthreadcc.h"
 
@@ -153,7 +153,7 @@
 	"Determinator.h"
 	"XPLAction.h"
 	"XPLCondition.h"
-	"TCPDeamon.h"
+	"TCPDaemon.h"
 	"xPLLib/xPL.h"
 
 1343511099 source:/home/xpl/Desktop/xPL/xPL_codeblocks/pthreadcc/condition.cpp
@@ -294,7 +294,7 @@
 	"pthreadcc/pthreadcc.h"
 	"socketcc/socketcc.h"
 
-1343773533 source:/home/xpl/Desktop/xPL/xPL_codeblocks/TCPDeamon.cpp
+1343773533 source:/home/xpl/Desktop/xPL/xPL_codeblocks/TCPDaemon.cpp
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -304,9 +304,9 @@
 	"socketcc/socketcc.h"
 	"pthreadcc/pthreadcc.h"
 	"TCPServer.h"
-	"TCPDeamon.h"
+	"TCPDaemon.h"
 
-1343773595 /home/xpl/Desktop/xPL/xPL_codeblocks/TCPDeamon.h
+1343773595 /home/xpl/Desktop/xPL/xPL_codeblocks/TCPDaemon.h
 	"TCPServer.h"
 	"pthreadcc/pthreadcc.h"
 
@@ -471,7 +471,7 @@
 	"Determinator.h"
 	"XPLMessage.h"
 
-1343837152 source:/home/jeff/Development/xPL/xPL_codeblocks/TCPDeamon.cpp
+1343837152 source:/home/jeff/Development/xPL/xPL_codeblocks/TCPDaemon.cpp
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -481,7 +481,7 @@
 	"socketcc/socketcc.h"
 	"pthreadcc/pthreadcc.h"
 	"TCPServer.h"
-	"TCPDeamon.h"
+	"TCPDaemon.h"
 
 1343837152 /home/jeff/Development/xPL/xPL_codeblocks/socketcc/socketcc.h
 	<unistd.h>
@@ -499,7 +499,7 @@
 	"pthreadcc/pthreadcc.h"
 	"socketcc/socketcc.h"
 
-1343837152 /home/jeff/Development/xPL/xPL_codeblocks/TCPDeamon.h
+1343837152 /home/jeff/Development/xPL/xPL_codeblocks/TCPDaemon.h
 	"TCPServer.h"
 	"pthreadcc/pthreadcc.h"
 
@@ -580,7 +580,7 @@
 	"Determinator.h"
 	"XPLAction.h"
 	"XPLCondition.h"
-	"TCPDeamon.h"
+	"TCPDaemon.h"
 	"xPLLib/xPL.h"
 
 1343837152 source:/home/jeff/Development/xPL/xPL_codeblocks/pthreadcc/condition.cpp

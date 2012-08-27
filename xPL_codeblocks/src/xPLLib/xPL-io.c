@@ -82,7 +82,7 @@ static char base36Table[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 
 /* Convert a long value into an 8 digit base36 number */
 /* and concatenate it onto the passed string          */
-static void longToBase32(unsigned long theValue, String theBuffer) {
+static void longToBase32(unsigned long theValue, char * theBuffer) {
   int charPtr, buffLen;
 
   /* Fill with zeros */
@@ -100,7 +100,7 @@ static void longToBase32(unsigned long theValue, String theBuffer) {
 }
 
 /* Create a reasonably uniqe 16 character identifier */    
-String xPL_getFairlyUniqueIdent() {
+ char *  xPL_getFairlyUniqueIdent() {
   char newIdent[32];
   uint32_t localAddr;
   struct timeval rightNow;
@@ -241,22 +241,22 @@ int xPL_getPort() {
 }
 
 /* Return IP address */
-String xPL_getBroadcastIPAddr() {
+const char *  xPL_getBroadcastIPAddr() {
   return inet_ntoa(xPLBroadcastAddr.sin_addr);
 }
 
 /* Return listing IP address */
-String xPL_getListenerIPAddr() {
+const char *  xPL_getListenerIPAddr() {
   return inet_ntoa(xPLInterfaceAddr);
 }
 
 /* Get the xPL Interface */
-String xPL_getBroadcastInterface() {
+const char *  xPL_getBroadcastInterface() {
   return xPLInterfaceName;
 }
 
 /* Set the interface */
-void xPL_setBroadcastInterface(String newInterfaceName) {
+void xPL_setBroadcastInterface(const char *  newInterfaceName) {
   /* Can't change the interface after it's open */
   if (xPLFD != -1) return;
 
@@ -565,7 +565,7 @@ static Bool setupBroadcastAddr() {
 
 /* Send the passed string and return TRUE if it appears it */
 /* or FALSE if there was an error                          */
-Bool xPL_sendRawMessage(String theData, int dataLen) {
+Bool xPL_sendRawMessage(const char *  theData, int dataLen) {
   int bytesSent;
 
   /* Try to send the message */

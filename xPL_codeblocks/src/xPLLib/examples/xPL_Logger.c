@@ -11,7 +11,7 @@
 #define LOG_APPEND_CFG_NAME "append2Log"
 
 static FILE * logFile = NULL;
-static String logFileName = "";
+staticconst char * logFileName = "";
 static Bool appendToLog = FALSE;
 
 static xPL_ServicePtr loggerService = NULL;
@@ -29,7 +29,7 @@ void shutdownHandler(int onSignal) {
 /** be used by your configChangedHandler and your startup code that  */
 /** will want to parse the same data after a config file is loaded   */
 static void parseConfig(xPL_ServicePtr theService) {
-  String configValue;
+ const char * configValue;
   FILE * newLogFile = NULL;
 
   /* Get append status */
@@ -132,7 +132,7 @@ void printXPLMessage(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue) {
   fprintf(logFile, "\n");
 }
 
-int main(int argc, String argv[]) {
+int main(int argc,const char * argv[]) {
   /* Parse the command line */
   if (!xPL_parseCommonArgs(&argc, argv, FALSE)) exit(1);
 

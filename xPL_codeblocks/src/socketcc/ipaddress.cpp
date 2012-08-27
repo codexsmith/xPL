@@ -93,7 +93,7 @@
 /*    variables are:                                                          */
 /*      pheDetails type (struct hostent *) - Host details returned in this    */
 /*      structure.  If the address lookup is unresolved, must be set to NULL. */
-/*      pcHostName type (char *) - String representation of the host name.    */
+/*      pcHostName type (char *) -const char * representation of the host name.    */
 /*      iAddressType type (int) - Request an AF_INET or AF_INET6 lookup.      */
 /*      iError type (int) - Error details in the operation are returned in    */
 /*      this variable.                                                        */

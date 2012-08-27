@@ -4,10 +4,10 @@
 	<File name="DeterminatorSerializerTest.cpp" open="1" top="0" tabpos="7">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="TCPDeamon.cpp" open="1" top="0" tabpos="1">
+	<File name="TCPDaemon.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="3059" topLine="20" />
 	</File>
-	<File name="TCPDeamon.h" open="1" top="0" tabpos="5">
+	<File name="TCPDaemon.h" open="1" top="0" tabpos="5">
 		<Cursor position="2769" topLine="12" />
 	</File>
 	<File name="TCPServer.cpp" open="1" top="0" tabpos="4">

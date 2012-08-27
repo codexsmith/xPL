@@ -50,7 +50,7 @@ static void sendClockTick() {
   lastTimeSent = rightNow;
 }
 
-int main(int argc, String argv[]) {
+int main(int argc,const char * argv[]) {
   /* Parse command line parms */
   if (!xPL_parseCommonArgs(&argc, argv, FALSE)) exit(1);
 

@@ -154,10 +154,11 @@ xPL_ServicePtr xPL_getServiceAt(int serviceIndex) {
   return serviceList[serviceIndex];
 }
 
-static xPL_ServicePtr newService(String theVendor, String theDeviceID, String theInstanceID) {
+static xPL_ServicePtr newService(const char * theVendor, const char * theDeviceID, const char * theInstanceIDIn) {
   Bool tempInstanceID = FALSE;
   xPL_ServicePtr theService;
-
+  char * theInstanceID = NULL;
+  
   /* Create the new service */
   if (serviceCount == serviceAllocCount) {
     serviceAllocCount += GROW_SERVICE_LIST_BY;
@@ -168,9 +169,12 @@ static xPL_ServicePtr newService(String theVendor, String theDeviceID, String th
   serviceList[serviceCount++] = theService;
 
   /* Create a default instance ID, if needed */
-  if (theInstanceID == NULL) {
+  if (theInstanceIDIn == NULL) {
     theInstanceID = xPL_getFairlyUniqueIdent();
     tempInstanceID = TRUE;
+  } else {
+      theInstanceID = malloc(strlen(theInstanceIDIn));
+      strcpy(theInstanceID, theInstanceIDIn);
   }
 
   /* Install info */
@@ -180,14 +184,15 @@ static xPL_ServicePtr newService(String theVendor, String theDeviceID, String th
   xPL_setHeartbeatInterval(theService, DEFAULT_HEARTBEAT_INTERVAL);
 
   /* Release allocated temp space */
-  if (tempInstanceID) STR_FREE(theInstanceID);
-
+  //if (tempInstanceID) STR_FREE(theInstanceID);
+  STR_FREE(theInstanceID)
+  
   /* And hand it up a level */
   return theService;
 }
 
 /* Create a new xPL service */
-xPL_ServicePtr xPL_createService(String theVendor, String theDeviceID, String theInstanceID) {
+xPL_ServicePtr xPL_createService(const char * theVendor, const char * theDeviceID, const char *  theInstanceID) {
   xPL_ServicePtr theService;
 
   /* Create the service */
@@ -274,7 +279,7 @@ Bool xPL_isServiceEnabled(xPL_ServicePtr theService) {
   return theService->serviceEnabled;
 }
 
-void xPL_setServiceVendor(xPL_ServicePtr theService, String newVendor) {
+void xPL_setServiceVendor(xPL_ServicePtr theService,const char * newVendor) {
   /* Skip if name is already this name */
   if ((theService->serviceVendor != NULL) && !xPL_strcmpIgnoreCase(theService->serviceVendor, newVendor)) return;
 
@@ -289,11 +294,11 @@ void xPL_setServiceVendor(xPL_ServicePtr theService, String newVendor) {
   if (theService->serviceEnabled) xPL_sendHeartbeat(theService);
 }
 
-String xPL_getServiceVendor(xPL_ServicePtr theService) {
+char * xPL_getServiceVendor(xPL_ServicePtr theService) {
   return theService->serviceVendor;
 }
 
-void xPL_setServiceDeviceID(xPL_ServicePtr theService, String newDeviceID) {
+void xPL_setServiceDeviceID(xPL_ServicePtr theService,const char * newDeviceID) {
   /* Skip if name is already this name */
   if ((theService->serviceDeviceID != NULL) && !xPL_strcmpIgnoreCase(theService->serviceDeviceID, newDeviceID)) return;
 
@@ -308,11 +313,11 @@ void xPL_setServiceDeviceID(xPL_ServicePtr theService, String newDeviceID) {
   if (theService->serviceEnabled) xPL_sendHeartbeat(theService);
 }
 
-String xPL_getServiceDeviceID(xPL_ServicePtr theService) {
+char * xPL_getServiceDeviceID(xPL_ServicePtr theService) {
   return theService->serviceDeviceID;
 }
 
-void xPL_setServiceInstanceID(xPL_ServicePtr theService, String newInstanceID) {
+void xPL_setServiceInstanceID(xPL_ServicePtr theService,const char * newInstanceID) {
   /* Skip if name is already this ID */
   if ((theService->serviceInstanceID != NULL) && !xPL_strcmpIgnoreCase(theService->serviceInstanceID, newInstanceID)) return;
 
@@ -327,7 +332,7 @@ void xPL_setServiceInstanceID(xPL_ServicePtr theService, String newInstanceID) {
   if (theService->serviceEnabled) xPL_sendHeartbeat(theService);
 }
 
-String xPL_getServiceInstanceID(xPL_ServicePtr theService) {
+char * xPL_getServiceInstanceID(xPL_ServicePtr theService) {
   return theService->serviceInstanceID;
 }
 
@@ -340,7 +345,7 @@ Bool xPL_isReportOwnMessages(xPL_ServicePtr theService) {
   return theService->reportOwnMessages;
 }
 
-void xPL_setServiceVersion(xPL_ServicePtr theService, String theVersion) {
+void xPL_setServiceVersion(xPL_ServicePtr theService,const char * theVersion) {
   /* Free any previous version */
   if (theService->serviceVersion != NULL) STR_FREE(theService->serviceVersion);
 
@@ -355,7 +360,7 @@ void xPL_setServiceVersion(xPL_ServicePtr theService, String theVersion) {
   theService->serviceVersion = xPL_StrDup(theVersion);
 }
   
-String xPL_getServiceVersion(xPL_ServicePtr theService) {
+char * xPL_getServiceVersion(xPL_ServicePtr theService) {
   return theService->serviceVersion;
 }
 

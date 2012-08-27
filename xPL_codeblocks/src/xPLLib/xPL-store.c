@@ -12,7 +12,7 @@
 
 /* Structured cache info */
 typedef void * cachedItem;
-typedef String itemCacheList;
+typedef char * itemCacheList;
 typedef struct {
   itemCacheList *cachedItems;
   int cacheAllocCount;
@@ -30,7 +30,7 @@ static int totalNameValueListAlloc = 0;
 static int totalMessageAlloc = 0;
 static int totalServiceAlloc = 0;
 
-/* String cache */
+/*const char * cache */
 static itemCachePtr StringCache[STRING_CACHE_MAX];
 
 /* Allocate a new cache pointer */
@@ -150,7 +150,7 @@ xPL_ServicePtr xPL_AllocService() {
   return theService;
 }
 
-void xPL_FreeStr(String theString) {
+void xPL_FreeStr(char * theString) {
   int theLength;
   itemCachePtr theCache;
 
@@ -177,8 +177,8 @@ void xPL_FreeStr(String theString) {
   releaseItem(theString, theCache);
 }
 
-String xPL_StrDup(String theOrigString) {
-  String theString;
+char * xPL_StrDup(const char * theOrigString) {
+  char * theString;
 
   /* Handle attempt to copy null */
   if (theOrigString == NULL) return NULL;
@@ -192,8 +192,8 @@ String xPL_StrDup(String theOrigString) {
 
 /* Copy at MOST the passed number of characters.  If the */
 /* string is shorted, we'll copy less.                   */
-String xPL_StrNDup(String theOrigString, int maxChars) {
-  String theString;
+char * xPL_StrNDup(const char * theOrigString, int maxChars) {
+  char * theString;
   int theLength;
 
   /* Get the length of a valid string.  If bigger than */
@@ -211,8 +211,9 @@ String xPL_StrNDup(String theOrigString, int maxChars) {
   return theString;
 }
 
-String xPL_StrAlloc(int theLength) {
-  String theString;
+char * xPL_StrAlloc(int theLength) {
+ 
+  char * theString;
   itemCachePtr theCache;
 
   CONFIRM_CACHE_OK;
@@ -244,7 +245,7 @@ String xPL_StrAlloc(int theLength) {
     return theString;
   }
 
-  xPL_Debug("STORE:: Reusing cache entry for String @ %p (LEN=%d)", theString, theLength);
+  xPL_Debug("STORE:: Reusing cache entry forconst char * @ %p (LEN=%d)", theString, theLength);
   theString[0] = '\0';
   return theString;
 }

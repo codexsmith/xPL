@@ -21,7 +21,8 @@ static Bool xPL_saveServiceConfig(xPL_ServicePtr theService);
 static void sendServiceConfigList(xPL_ServicePtr theService) {
   int configIndex;
   int allocSize;
-  String configType, configName;
+  char * configType;
+  char * configName;
   xPL_MessagePtr theMessage = xPL_createBroadcastMessage(theService, xPL_MESSAGE_STATUS);
   xPL_ServiceConfigurablePtr configurable;
 
@@ -85,11 +86,11 @@ static void sendServiceConfigList(xPL_ServicePtr theService) {
   xPL_releaseMessage(theMessage);
 }
 
-/* Convert passed filter into a string.  String is dynamic */
+/* Convert passed filter into a string. const char * is dynamic */
 /* and must be freed when no longer needed                 */
-static String formatFilter(xPL_ServiceFilterPtr theFilter) {
+static char * formatFilter(xPL_ServiceFilterPtr theFilter) {
   int allocSize = 5;
-  String formattedFilter;
+  char * formattedFilter;
 
   /* See how big this needs to be */
   allocSize += (theFilter->matchOnMessageType == xPL_MESSAGE_ANY ? 1 : 8);
@@ -135,9 +136,13 @@ static String formatFilter(xPL_ServiceFilterPtr theFilter) {
 }
 
 /* Parse a string into a filter */
-static Bool parseFilter(String theText, xPL_ServiceFilterPtr theFilter) {
-  String msgType, vendor, device, instance;
-  String schemaClass, schemaType;
+static Bool parseFilter(const char * theText, xPL_ServiceFilterPtr theFilter) {
+ const char * msgType;
+ const char * vendor;
+ const char * device;
+ char * instance;
+ const char * schemaClass; 
+ const char * schemaType;
 
   msgType = theText;
 
@@ -189,7 +194,7 @@ static void sendServiceCurrentConfig(xPL_ServicePtr theService) {
   int configIndex;
   int valueIndex, valueCount;
   char intervalBuff[8];
-  String filterText;
+  char * filterText;
   xPL_MessagePtr theMessage = xPL_createBroadcastMessage(theService, xPL_MESSAGE_STATUS);
   xPL_ServiceConfigurablePtr configurable;
   xPL_ServiceFilterPtr theFilter;
@@ -252,9 +257,10 @@ static void sendServiceCurrentConfig(xPL_ServicePtr theService) {
 }
 
 /* Parse a configurable definition from the passed string */
-static Bool parseConfigDefinition(xPL_ServicePtr theService, String parseValue, int configType) {
+static Bool parseConfigDefinition(xPL_ServicePtr theService,const char * parseValue, int configType) {
   int valueCount, nameLength = strlen(parseValue);
-  String startChar = NULL, endChar;
+ const char * startChar = NULL;
+  char * endChar;
   char nameBuffer[128];
 
   /* See how many values are allowed */
@@ -299,7 +305,7 @@ static void installNewConfig(xPL_ServicePtr theService, xPL_NameValueListPtr nam
 
   Bool serviceWasEnabled = theService->serviceEnabled;
   Bool restartService = FALSE;
-  String newInstanceID = NULL;
+ const char * newInstanceID = NULL;
   int newInterval = -1;
 
   xPL_NameValuePairPtr theElement;
@@ -459,8 +465,8 @@ static void installNewConfig(xPL_ServicePtr theService, xPL_NameValueListPtr nam
 
 /* Handle configuration messages */
 static void configHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, xPL_ObjectPtr userValue) {
-  String theSchemaType = xPL_getSchemaType(theMessage);
-  String theCommand = xPL_getMessageNamedValue(theMessage, "command");
+ const char * theSchemaType = xPL_getSchemaType(theMessage);
+ const char * theCommand = xPL_getMessageNamedValue(theMessage, "command");
 
   /* See if this is a request for a list of configurable elements */
   if ((xPL_getMessageType(theMessage) == xPL_MESSAGE_COMMAND) && (xPL_strcmpIgnoreCase(theSchemaType, "list") == 0)
@@ -484,7 +490,7 @@ static void configHandler(xPL_ServicePtr theService, xPL_MessagePtr theMessage, 
 }
 
 /* Install a new configuration file */
-static void xPL_setServiceConfigFile(xPL_ServicePtr theService, String localConfigFile) {
+static void xPL_setServiceConfigFile(xPL_ServicePtr theService, const char * localConfigFile) {
   /* Skip unless there is a real change or service is disabled */
   if (theService->serviceEnabled 
    || ((theService->configFileName != NULL) && (localConfigFile != NULL) 
@@ -498,7 +504,7 @@ static void xPL_setServiceConfigFile(xPL_ServicePtr theService, String localConf
 }
 
 /* Return the installed config file, if any */
-String xPL_getServiceConfigFile(xPL_ServicePtr theService) {
+const char * xPL_getServiceConfigFile(xPL_ServicePtr theService) {
   return theService->configFileName;
 }
 
@@ -510,8 +516,9 @@ String xPL_getServiceConfigFile(xPL_ServicePtr theService) {
 static Bool xPL_loadServiceConfig(xPL_ServicePtr theService) {
   FILE *configFile;
   char lineBuffer[2048];
-  String readVendor, readDevice;
-  String delimPtr;
+  char * readVendor;
+  char * readDevice;
+  char * delimPtr;
   xPL_NameValueListPtr namedValues;
 
 
@@ -608,7 +615,7 @@ static Bool xPL_saveServiceConfig(xPL_ServicePtr theService) {
   int configIndex, configCount = theService->configCount;
   int valueIndex;
   char lineBuff[100];
-  String theValue;
+  char * theValue;
 
   xPL_ServiceConfigurablePtr configItem;
   FILE *configFile;
@@ -713,7 +720,7 @@ static Bool xPL_saveServiceConfig(xPL_ServicePtr theService) {
 /* non-null configFile, it's values are read.  The services instance  */
 /* value will be created in a fairly unique method for services that  */
 /* have not yet been configured                                       */
-xPL_ServicePtr xPL_createConfigurableService(String vendorName, String deviceID, String localConfigFile) {
+xPL_ServicePtr xPL_createConfigurableService(const char * vendorName, const  char * deviceID, const char * localConfigFile) {
   xPL_ServicePtr theService = NULL;
   
   /* Create the service */
@@ -746,7 +753,7 @@ Bool xPL_isServiceConfigured(xPL_ServicePtr theService) {
 }
 
 /* Search for a configurable and return it (or NULL) */
-xPL_ServiceConfigurablePtr xPL_findServiceConfigurable(xPL_ServicePtr theService, String itemName) {
+xPL_ServiceConfigurablePtr xPL_findServiceConfigurable(xPL_ServicePtr theService,const char * itemName) {
   int configIndex;
   xPL_ServiceConfigurablePtr theItem;
 
@@ -760,7 +767,7 @@ xPL_ServiceConfigurablePtr xPL_findServiceConfigurable(xPL_ServicePtr theService
       
 /* Add a new configurable.  If the item is added, TRUE is returned.  If the item */
 /* already exists, FALSE is returned and it's not added or altered              */
-Bool xPL_addServiceConfigurable(xPL_ServicePtr theService, String itemName, xPL_ConfigurableType itemType, int maxValues) {
+Bool xPL_addServiceConfigurable(xPL_ServicePtr theService,const char * itemName, xPL_ConfigurableType itemType, int maxValues) {
   /* Try to find it */
   xPL_ServiceConfigurablePtr theItem = xPL_findServiceConfigurable(theService, itemName);
   if (theItem != NULL) return FALSE;
@@ -806,7 +813,7 @@ static void releaseConfigurable(xPL_ServiceConfigurablePtr theItem) {
 
 /* Remove a configurable.  Return TRUE if item found and removed, FALSE if */
 /* not found                                                              */
-Bool xPL_removeServiceConfigurable(xPL_ServicePtr theService, String itemName) {
+Bool xPL_removeServiceConfigurable(xPL_ServicePtr theService,const char * itemName) {
   int configIndex;
   xPL_ServiceConfigurablePtr theItem;
 
@@ -872,7 +879,7 @@ void xPL_releaseServiceConfigurables(xPL_ServicePtr theService) {
   
 
 /* Clear values for a given configurable */
-void xPL_clearServiceConfigValues(xPL_ServicePtr theService, String itemName) {
+void xPL_clearServiceConfigValues(xPL_ServicePtr theService,const char * itemName) {
   int valueIndex;
 
   /* Get item and if not found, bail */
@@ -912,7 +919,7 @@ void xPL_clearAllServiceConfigValues(xPL_ServicePtr theService) {
 /* this is added to it, up to the limit defined for the   */
 /* configurable.  If the item is "full", then the value is */
 /* discarded                                              */
-Bool xPL_addServiceConfigValue(xPL_ServicePtr theService, String itemName, String itemValue) {
+Bool xPL_addServiceConfigValue(xPL_ServicePtr theService,const char * itemName,const char * itemValue) {
   int growValueListBy;
 
   /* Get item and if not found, bail */
@@ -945,7 +952,7 @@ Bool xPL_addServiceConfigValue(xPL_ServicePtr theService, String itemName, Strin
 /* Set a item value at a given index.  If that index is above    */
 /* the actual number of values, the value is appeneded (i.e. may */
 /* not be the same index as passed                               */
-void xPL_setServiceConfigValueAt(xPL_ServicePtr theService, String itemName, int valueIndex, String itemValue) {
+void xPL_setServiceConfigValueAt(xPL_ServicePtr theService,const char * itemName, int valueIndex,const char * itemValue) {
   /* Locate the item */
   xPL_ServiceConfigurablePtr theItem = xPL_findServiceConfigurable(theService, itemName);
   if (theItem == NULL) return;
@@ -965,12 +972,12 @@ void xPL_setServiceConfigValueAt(xPL_ServicePtr theService, String itemName, int
 }
 
 /* Simple form to set first/only value in an item */
-void xPL_setServiceConfigValue(xPL_ServicePtr theService, String itemName, String itemValue) {
+void xPL_setServiceConfigValue(xPL_ServicePtr theService,const char * itemName,const char * itemValue) {
   xPL_setServiceConfigValueAt(theService, itemName, 0, itemValue);
 }
 
 /* Return the number of values for a given configurable */
-int xPL_getServiceConfigValueCount(xPL_ServicePtr theService, String itemName) {
+int xPL_getServiceConfigValueCount(xPL_ServicePtr theService,const char * itemName) {
   /* Get item and if not found, bail */
   xPL_ServiceConfigurablePtr theItem = xPL_findServiceConfigurable(theService, itemName);
   if (theItem == NULL) return 0;
@@ -979,7 +986,7 @@ int xPL_getServiceConfigValueCount(xPL_ServicePtr theService, String itemName) {
 
 /* Return the value at the given index.  If the value is NULL of the */
 /* index is out of range, NULL is returned                           */
-String xPL_getServiceConfigValueAt(xPL_ServicePtr theService, String itemName, int valueIndex) {
+const char * xPL_getServiceConfigValueAt(xPL_ServicePtr theService,const char * itemName, int valueIndex) {
   /* Locate the item */
   xPL_ServiceConfigurablePtr theItem = xPL_findServiceConfigurable(theService, itemName);
   if (theItem == NULL) return NULL;
@@ -992,6 +999,6 @@ String xPL_getServiceConfigValueAt(xPL_ServicePtr theService, String itemName, i
 }
 
 /* Return the value of the first/only index for an item */
-String xPL_getServiceConfigValue(xPL_ServicePtr theService, String itemName) {
+const char * xPL_getServiceConfigValue(xPL_ServicePtr theService,const char * itemName) {
   return xPL_getServiceConfigValueAt(theService, itemName, 0);
 }

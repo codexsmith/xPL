@@ -66,7 +66,7 @@ Bool xPL_removeRawListener(xPL_rawListener theHandler) {
 }
 
 /* Dispatch raw messages */
-Bool xPL_dispatchRawEvent(String theData, int dataLen) {
+Bool xPL_dispatchRawEvent(const char *  theData, int dataLen) {
   Bool messageDispatched = FALSE;
   rawListenerPtr theRawListener;
   int listenerIndex;
@@ -142,7 +142,7 @@ Bool xPL_dispatchMessageEvent(xPL_MessagePtr theMessage) {
 }
 
 /* Add a service listener */
-void xPL_addServiceListener(xPL_ServicePtr theService, xPL_ServiceListener theListener, xPL_MessageType messageType, String schemaClass, String schemaType, xPL_ObjectPtr userValue) {
+void xPL_addServiceListener(xPL_ServicePtr theService, xPL_ServiceListener theListener, xPL_MessageType messageType,const char * schemaClass,const char * schemaType, xPL_ObjectPtr userValue) {
   xPL_ServiceListenerDefPtr theServiceListener;
 
   /* See if there is a slot to install and allocate more if not */

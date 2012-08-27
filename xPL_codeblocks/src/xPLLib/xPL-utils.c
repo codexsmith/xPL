@@ -71,7 +71,7 @@ void xPL_Error(String theFormat, ...) {
 
 
 /* Convert a string to upper case */
-void xPL_Upcase(String target) {
+void xPL_Upcase(char * target) {
   int charPtr = 0;
 
   /* Convert to upper case */
@@ -89,7 +89,7 @@ void xPL_Upcase(String target) {
 /* -1 - TextA < Text B */
 /*  0 - TextA = Text B */
 /* +1 - TextA > Text B */
-int xPL_strcmpIgnoreCase(String textA, String textB) {
+int xPL_strcmpIgnoreCase(const char * textA,const char * textB) {
   int textALen = strlen(textA);
   int textBLen = strlen(textB);
   char textAChar, textBChar;
@@ -119,7 +119,7 @@ int xPL_strcmpIgnoreCase(String textA, String textB) {
 /* -1 - TextA < Text B */
 /*  0 - TextA = Text B */
 /* +1 - TextA > Text B */
-int xPL_strncmpIgnoreCase(String textA, String textB, int maxChars) {
+int xPL_strncmpIgnoreCase(const char * textA,const char * textB, int maxChars) {
   int textALen = strlen(textA);
   int textBLen = strlen(textB);
   char textAChar, textBChar;
@@ -150,7 +150,7 @@ int xPL_strncmpIgnoreCase(String textA, String textB, int maxChars) {
 }
 
 /* Add a new entry to a passed name/value pair list */
-xPL_NameValuePairPtr xPL_newNamedValuePair(xPL_NameValueListPtr nameValueList, String theName) {
+xPL_NameValuePairPtr xPL_newNamedValuePair(xPL_NameValueListPtr nameValueList,const char * theName) {
   xPL_NameValuePairPtr theNewNamedValue;
 
   /* See if the current array is big enough and if not, allocate more space */
@@ -171,14 +171,14 @@ xPL_NameValuePairPtr xPL_newNamedValuePair(xPL_NameValueListPtr nameValueList, S
 }
 
 /* Just add a simple entry to the list */
-void xPL_addNamedValue(xPL_NameValueListPtr theList, String theName, String theValue) {
+void xPL_addNamedValue(xPL_NameValueListPtr theList,const char * theName,const char * theValue) {
   xPL_NameValuePairPtr theNamedValue = xPL_newNamedValuePair(theList, theName);
   if (theValue != NULL) theNamedValue->itemValue = xPL_StrDup(theValue);
 }
 
 /* Attempt to update an existing name/value and if it is not */
 /* existing, create and add a new one                        */
-void xPL_setNamedValue(xPL_NameValueListPtr theList, String theName, String theValue) {
+void xPL_setNamedValue(xPL_NameValueListPtr theList,const char * theName,const char * theValue) {
   int nvIndex = xPL_getNamedValueIndex(theList, theName);
   if (nvIndex == -1) {
     xPL_addNamedValue(theList, theName, theValue);
@@ -202,7 +202,8 @@ void xPL_setNamedValue(xPL_NameValueListPtr theList, String theName, String theV
 /* Set a series of NameValue pairs for a message */
 void xPL_setNamedValues(xPL_NameValueListPtr theList, ...) {
   va_list argPtr;
-  String theName, theValue;
+ const char * theName;
+ char * theValue;
 
  /* Handle the name/value pairs */
   va_start(argPtr, theList);
@@ -222,7 +223,7 @@ void xPL_setNamedValues(xPL_NameValueListPtr theList, ...) {
 
 /* Search for a name in a list of name values and return the */
 /* index into the list of the value or -1 if not found       */
-int xPL_getNamedValueIndex(xPL_NameValueListPtr theList, String theName) {
+int xPL_getNamedValueIndex(xPL_NameValueListPtr theList,const char * theName) {
   int nvIndex;
 
   if (theList == NULL) return -1;
@@ -236,7 +237,7 @@ int xPL_getNamedValueIndex(xPL_NameValueListPtr theList, String theName) {
 }
 
 /* Find the specified name in the name/value pair or return NULL */
-xPL_NameValuePairPtr xPL_getNamedValuePair(xPL_NameValueListPtr theList, String theName) {
+xPL_NameValuePairPtr xPL_getNamedValuePair(xPL_NameValueListPtr theList,const char * theName) {
   int nvIndex = xPL_getNamedValueIndex(theList, theName);
   if (nvIndex == -1) return NULL;
 
@@ -244,7 +245,7 @@ xPL_NameValuePairPtr xPL_getNamedValuePair(xPL_NameValueListPtr theList, String 
 }
 
 /* Find the specified name in the list and return it's value or NULL */
-String xPL_getNamedValue(xPL_NameValueListPtr theList, String theName) {
+ char * xPL_getNamedValue(xPL_NameValueListPtr theList,const char * theName) {
   int nvIndex = xPL_getNamedValueIndex(theList, theName);
   if (nvIndex == -1) return NULL;
 
@@ -253,7 +254,7 @@ String xPL_getNamedValue(xPL_NameValueListPtr theList, String theName) {
 }
 
 /* Return true if there is a matching named value */
-Bool xPL_doesNamedValueExist(xPL_NameValueListPtr theList, String theName) {
+Bool xPL_doesNamedValueExist(xPL_NameValueListPtr theList,const char * theName) {
   return (xPL_getNamedValueIndex(theList, theName) != -1);
 }
 
@@ -288,7 +289,7 @@ void xPL_clearNamedValueAt(xPL_NameValueListPtr theList, int nameIndex) {
 }
 
 /* Remove all isntances of the passed name from the passed list */
-void xPL_clearNamedValue(xPL_NameValueListPtr theList, String theName) {
+void xPL_clearNamedValue(xPL_NameValueListPtr theList,const char * theName) {
   int nvIndex = 0;
   for(;;) {
     /* Fetch next instance of a named value */
@@ -363,7 +364,7 @@ static int hexToNibble(char theValue) {
 
 /* Convert a number to hex.  Only the lower 8 bits */
 /* of the passed value are examined and converted  */
-String xPL_intToHex(int theValue) {
+ char * xPL_intToHex(int theValue) {
   convertBuffer[0] = nibbleToHex((theValue / 16) % 16);
   convertBuffer[1] = nibbleToHex(theValue % 16);
   convertBuffer[2] = '\0';
@@ -372,7 +373,7 @@ String xPL_intToHex(int theValue) {
 
 /* Convert a two digit hex string to an integer value */
 /* If the string is invalid, FALSE is returned        */
-Bool xPL_hexToInt(String theHexValue, int *theValue) {
+Bool xPL_hexToInt(const char * theHexValue, int *theValue) {
   int lowValue, highValue;
 
   /* Convert high value */
@@ -389,8 +390,8 @@ Bool xPL_hexToInt(String theHexValue, int *theValue) {
 /* Convert a passed string into a number and store in */
 /* the passed value.  If the number is OK, then TRUE  */
 /* is returned.  If there is an error, FALSE          */
-Bool xPL_strToInt(String theValue, int *theResult) {
-  String endChar;
+Bool xPL_strToInt(const char * theValue, int *theResult) {
+  char * endChar;
   int intResult;
 
   /* Convert the value */
@@ -403,7 +404,7 @@ Bool xPL_strToInt(String theValue, int *theResult) {
 }
 
 /* Convert an integer into a string */
-String xPL_intToStr(int theValue) {
+const char * xPL_intToStr(int theValue) {
   sprintf(convertBuffer, "%d", theValue);
   return convertBuffer;
 }

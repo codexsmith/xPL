@@ -27,7 +27,7 @@ typedef struct {
   int heartbeatInterval;
   time_t lastHeardFromAt;
   int clientSocket;
-  String clientIdent;
+  char * clientIdent;
   struct sockaddr_in clientAddr;
 } hubClient, *hubClientPtr;
 
@@ -42,7 +42,7 @@ static hubClientPtr clientList = NULL;
 
 #define MAX_LOCAL_ADDR 128
 static int localIPAddrCount = 0;
-static String *localIPAddrs = NULL;
+static char * *localIPAddrs = NULL;
 
 static void buildLocalIPList() {
   int ifIndex, localIndex;
@@ -95,7 +95,7 @@ static Bool isLocalClient(xPL_MessagePtr theMessage) {
   int ipIndex ;
 
   /* Get clients IP address */
-  String clientIPAddr = xPL_getMessageNamedValue(theMessage, "remote-ip");
+ const char * clientIPAddr = xPL_getMessageNamedValue(theMessage, "remote-ip");
   if (clientIPAddr == NULL) {
     xPL_Debug("No client address (remote-ip) found in message -- client message ignored");
     return FALSE;
@@ -111,7 +111,7 @@ static Bool isLocalClient(xPL_MessagePtr theMessage) {
 
 /* Return true if this is a heartbeat message */
 static Bool isHeartbeatMessage(xPL_MessagePtr theMessage) {
-  String schemaClass = xPL_getSchemaClass(theMessage);
+ const char * schemaClass = xPL_getSchemaClass(theMessage);
   if (schemaClass == NULL) {
     xPL_Debug("Message is missing schema class -- not a heartbeat message");
     return FALSE;
@@ -124,7 +124,7 @@ static Bool isHeartbeatMessage(xPL_MessagePtr theMessage) {
 
 /* Return true if this is a signoff  message */
 static Bool isSignoffMessage(xPL_MessagePtr theMessage) {
-  String schemaType = xPL_getSchemaType(theMessage);
+ const char * schemaType = xPL_getSchemaType(theMessage);
   if (schemaType == NULL) {
     xPL_Debug("Message is missing schema type -- not a heartbeat message");
     return FALSE;
@@ -138,7 +138,7 @@ static int getClientPort(xPL_MessagePtr theMessage) {
   int clientPort = -1;
 
   /* Ge the port # */
-  String clientPortNum = xPL_getMessageNamedValue(theMessage, "port");
+ const char * clientPortNum = xPL_getMessageNamedValue(theMessage, "port");
   if (clientPortNum == NULL) {
     xPL_Debug("Heartbeat message is missing port specification");
     return -1;
@@ -159,7 +159,7 @@ static int getHeartbeatInterval(xPL_MessagePtr theMessage) {
   int theInterval = -1;
 
   /* Ge the interval */
-  String heartbeatInterval = xPL_getMessageNamedValue(theMessage, "interval");
+ const char * heartbeatInterval = xPL_getMessageNamedValue(theMessage, "interval");
   if (heartbeatInterval == NULL) {
     xPL_Debug("Heartbeat message is missing interval -- defaulting to 5 minutes");
     return 5;
@@ -361,7 +361,7 @@ static void checkForClientUpdates(xPL_MessagePtr theMessage) {
 
 /* Broadcast the passed message data to the passed client.  If all goes */
 /* well, return TRUE.  If there is an error, return FALSE               */
-static Bool rebroadcastMessage(hubClientPtr theClient, String theData, int dataLen) {
+static Bool rebroadcastMessage(hubClientPtr theClient,const char * theData, int dataLen) {
   int bytesSent;
 
   /* Try to send the message */
@@ -378,7 +378,7 @@ static Bool rebroadcastMessage(hubClientPtr theClient, String theData, int dataL
 
 /* Rebroadcast the passed message to all current clients */
 static void rebroadcastMessageToClients(xPL_MessagePtr theMessage) {
-  String formattedText;
+ const char * formattedText;
   int formattedSize, clientIndex;
 
   /* If there are no clients, skip this */

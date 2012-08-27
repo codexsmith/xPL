@@ -11,7 +11,7 @@ extern Bool xPL_DebugMode;
 /* xPL-utils.c */
 extern xPL_NameValueListPtr xPL_newNamedValueList();
 extern void xPL_freeNamedValueList(xPL_NameValueListPtr);
-extern xPL_NameValuePairPtr xPL_newNamedValuePair(xPL_NameValueListPtr, String);
+extern xPL_NameValuePairPtr xPL_newNamedValuePair(xPL_NameValueListPtr, const char *);
 extern void xPL_freeNamedValuePair(xPL_NameValuePairPtr);
 
 /* xPL-service.c */
@@ -27,14 +27,14 @@ extern void xPL_disableAllServices();
 extern void xPL_receiveMessage(int, int, int);
 
 /* xPL-listeners.c */
-extern Bool xPL_dispatchRawEvent(String, int);
+extern Bool xPL_dispatchRawEvent(const char *, int);
 extern Bool xPL_dispatchMessageEvent(xPL_MessagePtr);
 extern Bool xPL_dispatchServiceEvent(xPL_ServicePtr, xPL_MessagePtr);
 extern Bool xPL_dispatchServiceConfigChangedEvent(xPL_ServicePtr);
 
 /* xPL-io.c */
-extern Bool xPL_sendRawMessage(String, int);
-extern String xPL_getFairlyUniqueIdent();
+extern Bool xPL_sendRawMessage( const char* theData, int dataLen );
+extern char * xPL_getFairlyUniqueIdent();
 
 /* xPL-store.c */
 extern void xPL_FreeNVPair(xPL_NameValuePairPtr);
@@ -49,10 +49,10 @@ extern xPL_MessagePtr xPL_AllocMessage();
 extern void xPL_FreeService(xPL_ServicePtr);
 extern xPL_ServicePtr xPL_AllocService();
 
-extern void xPL_FreeStr(String);
-extern String xPL_StrDup(String);
-extern String xPL_StrNDup(String, int);
-extern String xPL_StrAlloc(int);
+extern void xPL_FreeStr( char* theString );
+char* xPL_StrDup( const char* theOrigString );
+char* xPL_StrNDup( const char* theOrigString, int maxChars );
+char* xPL_StrAlloc( int theLength );
 
 /* xPL-config.c */
 extern void xPL_releaseServiceConfig(xPL_ServicePtr);

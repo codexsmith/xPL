@@ -21,7 +21,7 @@ static xPL_MessagePtr clockTickMessage = NULL;
 static char numBuffer[10];
 
 /* Quickly to convert an integer to string */
-static String intToStr(int theValue) {
+staticconst char * intToStr(int theValue) {
   sprintf(numBuffer, "%d", theValue);
   return numBuffer;
 }
@@ -32,9 +32,9 @@ static String intToStr(int theValue) {
 /** will want to parse the same data after a config file is loaded   */
 static void parseConfig(xPL_ServicePtr theService) {
   /* Get the tickrate */
-  String newRate = xPL_getServiceConfigValue(theService, TICK_RATE_CFG_NAME);
+ const char * newRate = xPL_getServiceConfigValue(theService, TICK_RATE_CFG_NAME);
   int newTickRate;
-  String endChar;
+ const char * endChar;
 
   /* Handle bad configurable (override it) */
   if ((newRate == NULL) || (strlen(newRate) == 0)) {
@@ -97,7 +97,7 @@ static void sendClockTick() {
   lastTimeSent = rightNow;
 }
 
-int main(int argc, String argv[]) {
+int main(int argc,const char * argv[]) {
   /* Parse command line parms */
   if (!xPL_parseCommonArgs(&argc, argv, FALSE)) exit(1);
 

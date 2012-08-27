@@ -1,8 +1,8 @@
 /******************************************************************************/
-/* File: deamon.cpp                                                           */
+/* File: daemon.cpp                                                           */
 /******************************************************************************/
-/* This source code file contains the implementation of the Deamon class. This*/
-/* class implements the actual Deamon application by reading the configuration*/
+/* This source code file contains the implementation of the Daemon class. This*/
+/* class implements the actual Daemon application by reading the configuration*/
 /* file, starting and stopping the server, and handling system signals.       */
 /******************************************************************************/
 /* Written By: Jason But                                                      */
@@ -18,7 +18,7 @@
 /* The daemon uses tcpserver.cpp to create and manage all the TCP connections */
 /* on port 3865.                                                              */
 /*                                                                            */
-/* Signal handling in "Deamon::Deamon(const char *pcConfigFile)" was commented*/
+/* Signal handling in "Daemon::Daemon(const char *pcConfigFile)" was commented*/
 /* out due to it causing the process to improperly crash and lock when        */
 /* attempting to stop it.                                                     */
 /******************************************************************************/
@@ -47,7 +47,7 @@
 /******************************************************************************/
 /* Include class header file.                                                 */
 /******************************************************************************/
-#include "TCPDeamon.h"
+#include "TCPDaemon.h"
 
 /******************************************************************************/
 /* Default values for configuration items.                                    */
@@ -63,9 +63,9 @@
 /* There is only one instance of STGen, static variables are accessed in the  */
 /* signal handler which must be a static method.                              */
 /******************************************************************************/
-bool        Deamon::bKillFlag = false;
-bool        Deamon::bRestartFlag = false;
-Condition   Deamon::condSignal;
+bool        Daemon::bKillFlag = false;
+bool        Daemon::bRestartFlag = false;
+Condition   Daemon::condSignal;
 
 /******************************************************************************/
 /* Private Methods.                                                           */
@@ -84,7 +84,7 @@ Condition   Deamon::condSignal;
 /*         process to fail.                                                   */
 /******************************************************************************/
 void
-Deamon::SignalHandler(int iSig)
+Daemon::SignalHandler(int iSig)
 {
     condSignal.LockMutEx();
     syslog(LOG_INFO, "SignalHandler() Called: %d", iSig);
@@ -116,7 +116,7 @@ Deamon::SignalHandler(int iSig)
 /*    the field setting.                                                      */
 /******************************************************************************/
 bool
-Deamon::ParseLine(char *pcConfigLine, char *pcFieldName, int &iSetting)
+Daemon::ParseLine(char *pcConfigLine, char *pcFieldName, int &iSetting)
 {
     char    *pcString1, *pcString2, *pcString3, *pcEndIntConv;
 
@@ -160,7 +160,7 @@ Deamon::ParseLine(char *pcConfigLine, char *pcFieldName, int &iSetting)
 /* then thrown.                                                               */
 /******************************************************************************/
 void
-Deamon::ParseConfigFile(int &iServerPortNumber, int &iMinSleepingThreads, int &iMaxSleepingThreads, bool &bUseIPv6)
+Daemon::ParseConfigFile(int &iServerPortNumber, int &iMinSleepingThreads, int &iMaxSleepingThreads, bool &bUseIPv6)
 {
     FILE    *pfdConfig;
     char    pcConfigLine[2048], pcFieldName[15];
@@ -235,14 +235,14 @@ Deamon::ParseConfigFile(int &iServerPortNumber, int &iMinSleepingThreads, int &i
 /******************************************************************************/
 /* void Start()                                                               */
 /*                                                                            */
-/* This function is called to start the deamon.  It begins by setting the     */
+/* This function is called to start the daemon.  It begins by setting the     */
 /* default configuration values before calling ParseConfigFile() to read and  */
 /* set the proper configuration values.  We then create an instance of        */
 /* TCPServer with the specified information.  If either ParseConfigFile() or  */
 /* the TCPServer constructor fails, an exception is thrown.                   */
 /******************************************************************************/
 void
-Deamon::Start()
+Daemon::Start()
 {
     int         iServerPortNumber = PORT_DEFAULT;
     int         iMinSleepingThreads = MIN_THREADS_DEFAULT;
@@ -281,11 +281,11 @@ Deamon::Start()
 /******************************************************************************/
 /* void Stop()                                                                */
 /*                                                                            */
-/* This method stops the deamon, we delete the passed instance of TCPServer   */
+/* This method stops the daemon, we delete the passed instance of TCPServer   */
 /* that refers to the currently running server.                               */
 /******************************************************************************/
 void
-Deamon::Stop()
+Daemon::Stop()
 {
     syslog(LOG_INFO, "Daemon::Stop() attempting to delete pcTheServer...");
     delete pcTheServer;
@@ -301,7 +301,7 @@ Deamon::Stop()
 /* TCPServer instance to NULL, installs the signal handler for SIGHUP, SIGINT */
 /* and SIGTERM                                                                */
 /******************************************************************************/
-Deamon::Deamon(const char *pcConfigFile)
+Daemon::Daemon(const char *pcConfigFile)
 {
     pcConfigFileName = strdup(pcConfigFile);
     pcTheServer = NULL;
@@ -318,7 +318,7 @@ Deamon::Deamon(const char *pcConfigFile)
 /* Frees the memory allocated to store the string representing the config.    */
 /* file name.                                                                 */
 /******************************************************************************/
-Deamon::~Deamon()
+Daemon::~Daemon()
 {
     free(pcConfigFileName);
 }
@@ -326,16 +326,16 @@ Deamon::~Deamon()
 /******************************************************************************/
 /* void RunDaemon()                                                           */
 /*                                                                            */
-/* This method runs the ST-Gen Daemon.  We call Start() to start the deamon.  */
+/* This method runs the ST-Gen Daemon.  We call Start() to start the daemon.  */
 /* We then start a loop waiting for an SIGINT or SIGTERM signal, this will    */
 /* set bKillFlag which terminates the loop and finally calls Stop() to stop   */
-/* the deamon.  If we receive SIGHUP, bRestartFlag is set so we stop the      */
+/* the daemon.  If we receive SIGHUP, bRestartFlag is set so we stop the      */
 /* server, start it again and reset the flag.  The method returns when the    */
-/* deamon is terminated (via SIGINT or SIGTERM) or if an exception is thrown  */
+/* daemon is terminated (via SIGINT or SIGTERM) or if an exception is thrown  */
 /* by Start().                                                                */
 /******************************************************************************/
 void
-Deamon::RunDeamon()
+Daemon::RunDaemon()
 {
     Start();
 
@@ -354,10 +354,10 @@ Deamon::RunDeamon()
     condSignal.UnlockMutEx();
 
     pthread_exit(NULL);
-    syslog(LOG_INFO, "End of Deamon::RunDeamon() reached.");
+    syslog(LOG_INFO, "End of Daemon::RunDaemon() reached.");
     Stop();
 }
 
 /******************************************************************************/
-/* End of File: deamon.cpp                                                     */
+/* End of File: daemon.cpp                                                     */
 /******************************************************************************/
