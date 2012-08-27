@@ -55,7 +55,7 @@
 #define PORT_DEFAULT            0
 #define MIN_THREADS_DEFAULT     5
 #define MAX_THREADS_DEFAULT     10
-#define IPV6_DEFAULT            true
+#define IPV6_DEFAULT            false
 
 /******************************************************************************/
 /* Static Variables.                                                          */

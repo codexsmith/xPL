@@ -42,7 +42,7 @@ int main(int argc,const char * argv[])
 {
     //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
-    openlog("my_daemon", LOG_PID, LOG_DAEMON);
+    openlog("xplhallite", LOG_PID, LOG_DAEMON);
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
 
