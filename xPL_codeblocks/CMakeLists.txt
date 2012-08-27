@@ -1,0 +1,37 @@
+#Specify the version being used aswell as the language
+cmake_minimum_required(VERSION 2.6)
+#Name your project here
+project(xplhallite)
+set (xplhallite_VERSION_MAJOR 1)
+set (xplhallite_VERSION_MINOR 1)
+
+
+# configure a header file to pass some of the CMake settings
+# to the source code
+configure_file (
+  "${PROJECT_SOURCE_DIR}/projconfig.h.in"
+  "${PROJECT_BINARY_DIR}/projconfig.h"
+  )
+
+# add the binary tree to the search path for include files
+# so that we will find TutorialConfig.h
+include_directories("${PROJECT_BINARY_DIR}")
+
+include_directories ("${PROJECT_SOURCE_DIR}/pthreadcc")
+add_subdirectory (pthreadcc)
+include_directories ("${PROJECT_SOURCE_DIR}/socketcc")
+add_subdirectory (socketcc)
+include_directories ("${PROJECT_SOURCE_DIR}/xPLLib")
+add_subdirectory (xPLLib)
+
+find_package (Threads)
+
+
+#Sends the -std=c99 flag to the gcc compiler
+#add_definitions(-std=c99)
+#This tells CMake to fib.c and name it fibonacci
+add_executable(xplhallite Determinator.cpp DeterminatorFactory.cpp TCPDeamon.cpp TCPServer.cpp XHCP_Parser.cpp XPLAction.cpp XPLCondition.cpp XPLMessage.cpp XPLParser.cpp XPLRuleManager.cpp determinator-main.cpp)
+target_link_libraries (xplhallite pthreadcc)
+target_link_libraries (xplhallite socketcc)
+target_link_libraries (xplhallite xPLLib)
+target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})

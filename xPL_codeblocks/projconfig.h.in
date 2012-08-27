@@ -1,0 +1,3 @@
+// the configured options and settings
+#define xplhallite_VERSION_MAJOR @xplhallite_VERSION_MAJOR@
+#define xplhallite_VERSION_MINOR @xplhallite_VERSION_MINOR@

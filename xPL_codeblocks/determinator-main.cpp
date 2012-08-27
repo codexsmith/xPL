@@ -3,6 +3,8 @@
 
 #define CONFIG_FILE "xHCP.config"
 
+#include "projconfig.h"
+
 #include <string>
 #include <stdio.h>
 #include <vector>
@@ -38,6 +40,8 @@ XPLRuleManager* ruleMgr;
 
 int main(int argc, String argv[])
 {
+    //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
+    fprintf(stderr, "Starting up %d.%d \n", 1, 1);
     openlog("my_deamon", LOG_PID, LOG_DAEMON);
 
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
