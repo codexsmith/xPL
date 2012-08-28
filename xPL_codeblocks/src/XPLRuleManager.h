@@ -12,7 +12,7 @@ class XPLRuleManager {
         XPLRuleManager();
         XPLRuleManager(vector<Determinator>*);
 		~XPLRuleManager();
-		vector<XPLMessage> match(XPLMessage);
+		void match(XPLMessage);
         std::string detToString();//XHCP support
         Determinator* retrieveDeterminator(string GUID);
 	private:

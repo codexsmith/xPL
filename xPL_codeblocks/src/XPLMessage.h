@@ -1,6 +1,7 @@
 #ifndef XPLMessage_H
 #define XPLMessage_H
 
+#include "DeterminatorAction.h"
 #include "XPLHal.h"
 
 using namespace std;

@@ -18,6 +18,7 @@
 #include "XPLParser.h"
 #include "XPLRuleManager.h"
 #include "Determinator.h"
+#include "DeterminatorAction.h"
 #include "XPLAction.h"
 #include "XPLCondition.h"
 
@@ -122,9 +123,9 @@ vector<Determinator>* createDeterminator()
 
 	XPLValuePair pairOne, pairTwo;
 	pairOne.member = "device";
-	pairOne.value = "button2";
+	pairOne.value = "pwm";
 	pairTwo.member = "current";
-	pairTwo.value = "HIGH";
+	pairTwo.value = "2";
 
 	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
 	conditionVector->push_back(pairOne);
@@ -138,7 +139,7 @@ vector<Determinator>* createDeterminator()
 
     //Create the actions
     XPLMessage turnLampOn;
-    turnLampOn.setMsgType("xpl-cmnd");
+    turnLampOn.setMsgType("cmnd");
     turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
     turnLampOn.setDestination("smgpoe", "lamp", "1");
     turnLampOn.setSchema("control", "basic");
@@ -152,17 +153,37 @@ vector<Determinator>* createDeterminator()
 	actionVector->push_back(turnLampOn);
 
 	XPLAction* action = new XPLAction(actionVector);
+  
+  
+  //Create the actions
+  XPLMessage turnLampOn3;
+  turnLampOn3.setMsgType("cmnd");
+  turnLampOn3.setSource("XPLHal", "XPLHal", "XPLHal");
+  turnLampOn3.setDestination("smgpoe", "lamp", "3");
+  turnLampOn3.setSchema("control", "basic");
+  turnLampOn3.setHops(5);
+  turnLampOn3.setBroadcast(false);
+  turnLampOn3.addMember("device", "pwm");
+  turnLampOn3.addMember("type", "variable");
+  turnLampOn3.addMember("current", "10");
+  
+  vector<XPLMessage>* actionVector3 = new vector<XPLMessage>();
+  actionVector3->push_back(turnLampOn3);
+  
+  XPLAction* action3 = new XPLAction(actionVector3);
+  
 
     //Create a determinator with the condition and action created above
 	Determinator* determinator1 = new Determinator(condition, action);
+  determinator1->actions.push_back(action3);
 
 
 	//First, let's create the condition
 	XPLValuePair pairThree, pairFour;
 	pairThree.member = "device";
-	pairThree.value = "button1";
+	pairThree.value = "pwm";
 	pairFour.member = "current";
-	pairFour.value = "HIGH";
+	pairFour.value = "1";
 
 	vector<XPLValuePair>* conditionVector2 = new vector<XPLValuePair>();
 	conditionVector2->push_back(pairThree);
@@ -172,7 +193,7 @@ vector<Determinator>* createDeterminator()
 
     //Create the actions
     XPLMessage turnLampOn2;
-    turnLampOn2.setMsgType("xpl-cmnd");
+    turnLampOn2.setMsgType("cmnd");
     turnLampOn2.setSource("XPLHal", "XPLHal", "XPLHal");
     turnLampOn2.setDestination("smgpoe", "lamp", "1");
     turnLampOn2.setSchema("control", "basic");

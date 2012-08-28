@@ -46,11 +46,11 @@ int XPLParser::sendMsg(XPLMessage msg)
     xPL_MessageType msgType = xPL_MESSAGE_COMMAND;
 
     //Set the message type
-    if (msg.getMsgType().compare("xpl-cmnd") == 0)
+    if (msg.getMsgType().compare("cmnd") == 0)
         msgType = xPL_MESSAGE_COMMAND;
-    else if (msg.getMsgType().compare("xpl-stat") == 0)
+    else if (msg.getMsgType().compare("stat") == 0)
         msgType = xPL_MESSAGE_STATUS;
-    else if (msg.getMsgType().compare("xpl-trig") == 0)
+    else if (msg.getMsgType().compare("trig") == 0)
         msgType = xPL_MESSAGE_TRIGGER;
     else
         msgType = xPL_MESSAGE_ANY;
@@ -158,18 +158,8 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     syslog(LOG_DEBUG , " " );
     
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
-    vector<XPLMessage> messagesToSend = ruleMgr->match(msg);
+    ruleMgr->match(msg);
 
 
-    
-    
-    
-    for (int i = 0; i < messagesToSend.size(); i++)
-    {
-        syslog(LOG_DEBUG , "Matched a rule, so sending a message: ");
-        messagesToSend[i].sendToSyslog();
-        syslog(LOG_DEBUG , " " );
-        sendMsg(messagesToSend[i]);
-    }
     ///////////////////////////////////////////////////////////////////////////
 }

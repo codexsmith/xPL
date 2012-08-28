@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "XPLAction.h"
 #include "XPLMessage.h"
@@ -12,6 +13,7 @@ using namespace std;
 XPLAction::XPLAction(vector<XPLMessage>* responses)
 {
 	responses_ = responses;
+  message = (*responses)[0];
 }
 
 XPLAction::~XPLAction()
@@ -29,7 +31,8 @@ XPLAction::~XPLAction()
   for (vector<XPLMessage>::iterator rit = responses_->begin(); rit != responses_->end(); ++rit) {
       XPLParser::Instance()->sendMsg(*rit);    
   }
-  
+  cout<<"execin\n";
+  flush(cout);
   
 }
 
@@ -44,6 +47,24 @@ bool XPLAction::equals(XPLAction* action)
 	}
 }
 
+void XPLAction::appendAction(pugi::xml_node* outputnode) {
+    pugi::xml_node actionnode = outputnode->append_child("xplAction");
+    actionnode.append_attribute("display_name") = "test";
+    actionnode.append_attribute("executeOrder") = "001";
+    actionnode.append_attribute("msg_type") = message.getMsgType().c_str();
+    XPLAddress destinationAddress = message.getDestination();
+    actionnode.append_attribute("msg_target") = (destinationAddress.vendor+"."+destinationAddress.device+"."+destinationAddress.instance).c_str();
+    actionnode.append_attribute("msg_schema") = (message.getSchema().schema + "." + message.getSchema().type).c_str();
+    
+    for(int i = 0; i<message.getMembers().size(); i++)
+    {
+        pugi::xml_node paramnode = actionnode.append_child("xplActionParam");
+        paramnode.append_attribute("expression") =  (message.getMembers()[i].member + "=" + message.getMembers()[i].value).c_str();
+        
+    }
+
+ }
+ 
  
 // Method to convert the action into an XML string.
 // @preturn XML formatted string respresenting the action.

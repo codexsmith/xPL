@@ -1,6 +1,6 @@
 #include "Determinator.h"
 #include "XPLCondition.h"
-#include "XPLAction.h"
+#include "DeterminatorAction.h"
 
 #include <vector>
 #include <iostream>
@@ -13,10 +13,11 @@ Determinator::Determinator()
 //Determinators should be constructed by the DeterminatorFactory only.
 //User must have already created the appropriate condition and action.
 //New Determinators are always enabled.
-Determinator::Determinator(XPLCondition* condition, XPLAction* action)
+Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action )
 {
 	condition_ = condition;
-	action_ = action;
+// 	action_ = action;
+  actions.push_back(action);
 	enabled_ = true;
 }
 
@@ -24,16 +25,16 @@ Determinator::~Determinator()
 {
 }
 
-//Used for serialization in of determinators
-void Determinator::setAction(XPLAction* action)
-{
-    action_ = action;
-}
-
-XPLAction* Determinator::getAction()
-{
-	return action_;
-}
+// //Used for serialization in of determinators
+// void Determinator::setAction(DeterminatorAction* action)
+// {
+//     action_ = action;
+// }
+// 
+// DeterminatorAction* Determinator::getAction()
+// {
+// 	return action_;
+// }
 
 XPLCondition* Determinator::getCondition()
 {
@@ -65,7 +66,13 @@ bool Determinator::match(XPLMessage* message)
 //Future releases should add other action executions here.
 void Determinator::execute()
 {
-	action_->execute();
+
+    for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
+            (*dit)->execute();
+            cout<<"exec\n";
+            flush(cout);
+    }
+	//action_->execute();
 }
 
 //Disabled determinators can never be executed. They are on by default.
@@ -111,7 +118,9 @@ string Determinator::printXML()
     condition_->appendCondition(&inputnode);
     
     pugi::xml_node outputnode = det.append_child("output");
-    
+    for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
+        (*dit)->appendAction(&outputnode);
+    }
 /*    
     // add description node with text child
     pugi::xml_node descr = node.append_child("description");
@@ -148,8 +157,8 @@ string Determinator::printXML()
 	result.append(conditionXML);
 	result.append("\n\t</input>\n");
 	result.append("\n\t<output>\n");
-	string actionXML = action_->printXML();
-	result.append(actionXML);
+	//string actionXML = action_->printXML();
+	//result.append(actionXML);
 	result.append("\n\t</output>\n");
 	result.append("</determinator>");
 

@@ -3,17 +3,21 @@
 
 #include <vector>
 #include "XPLMessage.h"
+#include "DeterminatorAction.h"
+#include "pugixml/pugixml.hpp"
 
 using namespace std;
 static const string tabLevel = "\t\t";
 
-class XPLAction {
+class XPLAction : public DeterminatorAction {
 	public:
-		explicit XPLAction(vector<XPLMessage>* responses);
+		XPLAction(vector<XPLMessage>* responses);
 		~XPLAction();
 		void execute();
+    void appendAction(pugi::xml_node* outputnode);
 		bool equals(XPLAction* action);
 		string printXML();
+    XPLMessage message;
 
 	protected:
 		vector<XPLMessage>* getResponses();

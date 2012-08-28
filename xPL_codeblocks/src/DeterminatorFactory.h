@@ -7,6 +7,8 @@
 #include "XPLHal.h"
 #include "Determinator.h"
 #include "XPLMessage.h"
+#include "DeterminatorAction.h"
+#include "XPLAction.h"
 
 using namespace std;
 
@@ -20,7 +22,7 @@ class DeterminatorFactory {
 		DeterminatorFactory();
 		~DeterminatorFactory();
 		Determinator* createDeterminator(vector<string> determinator, vector<string> condition, vector<string> action);
-		Determinator* createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled);
+    Determinator* createDeterminator(XPLCondition* condition, DeterminatorAction* action, bool enabled);
 		XPLMessage* createXPLMessage(string msgType, string sourceAddress, string destinationAddress, string schema, int hops, vector<string>* parameters);
 		XPLCondition* createXPLCondition(vector<string> definitions, string source, string destination, string schema, string hops, string msgType);
 		XPLAction* createXPLAction(vector<XPLMessage>* messages);

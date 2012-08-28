@@ -32,7 +32,7 @@ Determinator* DeterminatorFactory::createDeterminator(vector<string> determinato
 	return determinator;
 }
 
-Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, XPLAction* action, bool enabled)
+Determinator* DeterminatorFactory::createDeterminator(XPLCondition* condition, DeterminatorAction* action, bool enabled)
 {
 	Determinator* determinator = new Determinator(condition, action);
 	determinator->setEnabled(enabled);
