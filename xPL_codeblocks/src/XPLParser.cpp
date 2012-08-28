@@ -15,6 +15,17 @@ XPLParser::XPLParser()
 {
 }
 
+XPLParser* XPLParser::m_pInstance = NULL;
+
+XPLParser* XPLParser::Instance()
+{
+    if(!m_pInstance){
+        m_pInstance = new XPLParser;
+    }
+    
+    return m_pInstance;
+}
+
 char* uc(string str)
 {
     char *newChar=new char[str.size()+1];

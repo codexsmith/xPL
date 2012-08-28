@@ -11,7 +11,7 @@ class XPLAction {
 	public:
 		explicit XPLAction(vector<XPLMessage>* responses);
 		~XPLAction();
-		vector<XPLMessage> execute();
+		void execute();
 		bool equals(XPLAction* action);
 		string printXML();
 

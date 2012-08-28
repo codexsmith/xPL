@@ -63,9 +63,9 @@ bool Determinator::match(XPLMessage* message)
 
 //pass through to XPLAction. When a determinator is matched, it executes its action.
 //Future releases should add other action executions here.
-vector<XPLMessage> Determinator::execute()
+void Determinator::execute()
 {
-	return action_->execute();
+	action_->execute();
 }
 
 //Disabled determinators can never be executed. They are on by default.

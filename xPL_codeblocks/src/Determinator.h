@@ -15,7 +15,7 @@ class Determinator {
 		Determinator(XPLCondition* condition, XPLAction* action);
 		~Determinator();
 		bool match(XPLMessage* message);
-		vector<XPLMessage> execute();
+		void execute();
 		void setEnabled(bool enable);
 		bool isEnabled();
         void setAction(XPLAction* action);

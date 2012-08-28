@@ -3,6 +3,7 @@
 
 #include "XPLAction.h"
 #include "XPLMessage.h"
+#include "XPLParser.h"
 
 using namespace std;
 
@@ -21,9 +22,15 @@ XPLAction::~XPLAction()
 //Method to execute the determinator.
 //@return returns a vector of XPLMessages for the xPLStack to send out
 //on the network.
-vector<XPLMessage> XPLAction::execute()
+ void XPLAction::execute()
 {
-	return *responses_;
+	//return *responses_;
+  //sendMsg(messagesToSend[i]);
+  for (vector<XPLMessage>::iterator rit = responses_->begin(); rit != responses_->end(); ++rit) {
+      XPLParser::Instance()->sendMsg(*rit);    
+  }
+  
+  
 }
 
 

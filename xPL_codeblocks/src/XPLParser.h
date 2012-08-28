@@ -15,19 +15,28 @@ class XPLParser
 {
     //PUBLIC//
     public:
-
+    static XPLParser* Instance();
+    
 	//FUNCTION PROTOTYPES
 
-    //Constructor
-    XPLParser();
 
-    //Destructor
-    ~XPLParser();
 
     static void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
 
     static int sendMsg(XPLMessage msg);
-
+    
+    private:
+        //Constructor
+        XPLParser();
+        
+        //Destructor
+        ~XPLParser();
+        
+        XPLParser(XPLParser const&) {};
+        XPLParser& operator=(XPLParser const&) {};
+        static XPLParser* m_pInstance;
+        
 };
 
 #endif // XPLParser_h
+

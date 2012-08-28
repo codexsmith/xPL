@@ -34,8 +34,9 @@ vector<XPLMessage> XPLRuleManager::match(XPLMessage msg)
         if (determinators->at(i).match(&msg))
         {
             cout<<"matched";
-            messagesFromDeterminator = determinators->at(i).execute();
-            messagesToSend.insert(messagesToSend.end(), messagesFromDeterminator.begin(), messagesFromDeterminator.end());
+            //messagesFromDeterminator = determinators->at(i).execute();
+            determinators->at(i).execute();
+            //messagesToSend.insert(messagesToSend.end(), messagesFromDeterminator.begin(), messagesFromDeterminator.end());
         }
     }
 
