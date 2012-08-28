@@ -46,7 +46,7 @@ string XPLAction::printXML()
 	for(int i = 0; i<responses_->size(); i++)
 	{
 		XPLMessage message = responses_->at(i);
-		result.append(tabLevel + "<xplaction  \n");
+		result.append(tabLevel + "\n");
 		result.append(tabLevel + "msg_type=");
 		result.append(message.getMsgType() + "\n");
 		result.append(tabLevel + "msg_target=");

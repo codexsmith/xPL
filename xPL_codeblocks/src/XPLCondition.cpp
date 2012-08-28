@@ -82,8 +82,35 @@ vector<XPLValuePair>* XPLCondition::getAttributes()
 
 //Turns the XPLCondition into a formatted XML string
 //for serialization.
+
+
+
+void XPLCondition::appendCondition(pugi::xml_node* inputnode) {
+    pugi::xml_node condnode = inputnode->append_child("xplCondition");
+    condnode.append_attribute("display_name") = "test";
+    condnode.append_attribute("msg_type") = msgType_.c_str();
+    condnode.append_attribute("source_vendor") = sourceAddress_.vendor.c_str();
+    condnode.append_attribute("source_device") = sourceAddress_.device.c_str();
+    condnode.append_attribute("source_instance") = sourceAddress_.instance.c_str();
+    condnode.append_attribute("target_vendor") = destinationAddress_.vendor.c_str();
+    condnode.append_attribute("target_device") = destinationAddress_.device.c_str();
+    condnode.append_attribute("target_instance") = destinationAddress_.instance.c_str();
+    condnode.append_attribute("schema_class") = schema_.schema.c_str();
+    condnode.append_attribute("schema_type") = schema_.type.c_str();
+    for(int i = 0; i<attributes_->size(); i++)
+    {
+        pugi::xml_node paramnode = condnode.append_child("param");
+        paramnode.append_attribute("name") =  attributes_->at(i).member.c_str();
+        paramnode.append_attribute("operator") =  "=";
+        paramnode.append_attribute("value") =  attributes_->at(i).value.c_str();
+    }
+    
+}
+
 string XPLCondition::printXML()
 {
+
+    
 	string result = "";
 	result.append("\t<xplcondition");
 	result.append("\n\tmsg_type=");

@@ -18,6 +18,11 @@ class XPLAddress
 {
     public:
     string vendor, device, instance;
+    XPLAddress(){
+            vendor="*";
+            device="*";
+            instance="*";
+    }
 };
 
 class XPLSchema

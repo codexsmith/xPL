@@ -80,10 +80,59 @@ bool Determinator::isEnabled()
 	return enabled_;
 }
 
+
+struct xml_string_writer: pugi::xml_writer
+{
+    std::string result;
+    
+    virtual void write(const void* data, size_t size)
+    {
+        result += std::string(static_cast<const char*>(data), size);
+    }
+};
+
+
 //Turns Determinator and its collaborators into formatted XML
 //for serialization.
 string Determinator::printXML()
 {
+    
+    pugi::xml_document doc;
+    //pugi::xml_node descr = doc.document_element().append_child("description");
+    // add node with some name
+    pugi::xml_node det = doc.append_child("determinator");
+    det.append_attribute("guid") = "DEADBEEF";
+    det.append_attribute("name") = "noname";
+    det.append_attribute("description") = "";
+    det.append_attribute("enabled") = "Y";
+    
+    pugi::xml_node inputnode = det.append_child("input");
+    inputnode.append_attribute("match") = "any";
+    condition_->appendCondition(&inputnode);
+    
+    pugi::xml_node outputnode = det.append_child("output");
+    
+/*    
+    // add description node with text child
+    pugi::xml_node descr = node.append_child("description");
+    descr.append_child(pugi::node_pcdata).set_value("Simple node");
+    
+    // add param node before the description
+    pugi::xml_node param = node.insert_child_before("param", descr);
+    
+    // add attributes to param node
+    param.append_attribute("name") = "version";
+    param.append_attribute("value") = 1.1;
+    param.insert_attribute_after("type", param.attribute("name")) = "float";*/
+    
+    xml_string_writer xmlwrite;
+    
+    
+    doc.save(xmlwrite);
+    cout << xmlwrite.result;
+    
+    
+    
 	string result = "";
 	result.append("<determinator ");
 	result.append("guid=");

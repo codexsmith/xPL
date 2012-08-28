@@ -23,6 +23,8 @@ include_directories ("${PROJECT_SOURCE_DIR}/socketcc")
 add_subdirectory (socketcc)
 include_directories ("${PROJECT_SOURCE_DIR}/xPLLib")
 add_subdirectory (xPLLib)
+include_directories ("${PROJECT_SOURCE_DIR}/pugixml")
+add_subdirectory (pugixml)
 
 find_package (Threads)
 
@@ -34,4 +36,5 @@ add_executable(xplhallite Determinator.cpp DeterminatorFactory.cpp TCPDaemon.cpp
 target_link_libraries (xplhallite pthreadcc)
 target_link_libraries (xplhallite socketcc)
 target_link_libraries (xplhallite xPLLib)
+target_link_libraries (xplhallite pugixml)
 target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})

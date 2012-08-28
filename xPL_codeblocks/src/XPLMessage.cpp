@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <time.h>
+#include <syslog.h>
 
 #include "XPLHal.h"
 #include "XPLMessage.h"
@@ -171,4 +172,20 @@ bool XPLMessage::isBroadcast()
 void XPLMessage::setBroadcast(bool broadcast)
 {
     this->broadcast = broadcast;
+}
+
+void XPLMessage::sendToSyslog()
+{
+    syslog(LOG_DEBUG , ("Source: " + source.vendor + "-" + source.device + "." + source.instance).c_str());
+    syslog(LOG_DEBUG ,  ("Destination: " + destination.vendor + "-" + destination.device + "." + destination.instance ).c_str());
+    syslog(LOG_DEBUG , ( "Message Type: " + messageType ).c_str());
+    syslog(LOG_DEBUG , ("Schema: " + schema.schema + "." + schema.type).c_str());
+    syslog(LOG_DEBUG , "Members: ");
+    
+    vector<XPLValuePair>::iterator it;
+    for ( it=members.begin() ; it!=members.end(); ++it )
+    {
+        syslog(LOG_DEBUG ,  ((*it).member + " = " + (*it).value).c_str());
+    }
+     
 }

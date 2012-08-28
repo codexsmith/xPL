@@ -1,5 +1,7 @@
 #include "XPLRuleManager.h"
 #include <vector>
+#include <iostream>
+
 
 XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
 {
@@ -28,8 +30,10 @@ vector<XPLMessage> XPLRuleManager::match(XPLMessage msg)
     //match stuff
     for (int i = 0; i < determinators->size(); i++)
     {
+        cout<<"checking" + i;
         if (determinators->at(i).match(&msg))
         {
+            cout<<"matched";
             messagesFromDeterminator = determinators->at(i).execute();
             messagesToSend.insert(messagesToSend.end(), messagesFromDeterminator.begin(), messagesFromDeterminator.end());
         }

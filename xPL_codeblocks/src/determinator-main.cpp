@@ -11,6 +11,8 @@
 #include <pthread.h>
 #include <signal.h>
 #include <syslog.h>
+#include <iostream>
+#include <fstream>
 #include "XPLHal.h"
 #include "XPLMessage.h"
 #include "XPLParser.h"
@@ -56,6 +58,15 @@ int main(int argc,const char * argv[])
 //	determinators->push_back(*determinator);
     vector<Determinator>* determinators = createDeterminator();
 
+    ofstream myfile;
+    myfile.open ("/tmp/loadedDeterminators.xml");
+    
+    for(vector<Determinator>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
+        myfile << (*dit).printXML();
+    }
+    myfile.close();
+    
+    
 	ruleMgr = new XPLRuleManager(determinators);
 
     //Source Address
@@ -120,6 +131,9 @@ vector<Determinator>* createDeterminator()
 	conditionVector->push_back(pairTwo);
 
 
+  conditionSchema.schema = "control";
+  conditionSchema.type = "basic";
+  
 	XPLCondition* condition = new XPLCondition(conditionVector, conditionAddress, conditionAddress, conditionSchema, 5, conditionMsgType );
 
     //Create the actions
@@ -175,6 +189,7 @@ vector<Determinator>* createDeterminator()
 
     //Create a determinator with the condition and action created above
 	Determinator* determinator2 = new Determinator(condition2, action2);
+  
 
 	vector<Determinator>* determinators = new vector<Determinator>();;
 	determinators->push_back(*determinator1);

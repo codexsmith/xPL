@@ -4,6 +4,8 @@
 #include "XPLHal.h"
 #include "XPLMessage.h"
 #include <string>
+#include "pugixml/pugixml.hpp"
+
 
 using namespace std;
 static const string tabs = "\t\t";
@@ -14,6 +16,7 @@ class XPLCondition {
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);
+    void appendCondition( pugi::xml_node* inputnode );
 		string printXML();
 
 	protected:

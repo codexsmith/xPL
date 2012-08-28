@@ -71,6 +71,9 @@ class XPLMessage
 
 	//creates decoupled copy of message object
 	XPLMessage copyMessage();
+  
+  //gives a string representation of the message
+    void sendToSyslog();
 
 	//PRIVATE//
     private:

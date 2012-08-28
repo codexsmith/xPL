@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <syslog.h>
+#include <sstream>
 #include "XPLParser.h"
 #include "XPLMessage.h"
 #include "XPLRuleManager.h"
+
 
 
 extern XPLRuleManager* ruleMgr;
@@ -130,8 +132,6 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 
     //Set the schema class/type
     
-    syslog(LOG_DEBUG , "Received an XPL message: ");
-    
     
     msg.setSchema(xPL_getSchemaClass(theMessage), xPL_getSchemaType(theMessage));
     
@@ -140,27 +140,24 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     {
         member = xPL_getNamedValuePairAt(memberList, i);
         msg.addMember(member->itemName, member->itemValue);
-        string toprint = member->itemName;
-        toprint += " ";
-        toprint += member->itemValue;
-        syslog(LOG_DEBUG , toprint.c_str() );
     }
 
+    syslog(LOG_DEBUG , "Received an XPL message: ");
+    msg.sendToSyslog();
+    syslog(LOG_DEBUG , " " );
+    
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
     vector<XPLMessage> messagesToSend = ruleMgr->match(msg);
 
-    string toprintd = "dest:";
-    toprintd += msg.getDestination().vendor;
-    toprintd += " ";
-    toprintd += msg.getDestination().device;
-    toprintd += " ";
-    toprintd += msg.getDestination().instance;
-    syslog(LOG_DEBUG , toprintd.c_str() );
+
     
     
     
     for (int i = 0; i < messagesToSend.size(); i++)
     {
+        syslog(LOG_DEBUG , "Matched a rule, so sending a message: ");
+        messagesToSend[i].sendToSyslog();
+        syslog(LOG_DEBUG , " " );
         sendMsg(messagesToSend[i]);
     }
     ///////////////////////////////////////////////////////////////////////////
