@@ -14,6 +14,7 @@ class Determinator {
 	public:
         Determinator();
         Determinator( XPLCondition* condition, DeterminatorAction* action );
+        Determinator( string );
 		~Determinator();
 		bool match(XPLMessage* message);
 		void execute();
@@ -31,6 +32,8 @@ class Determinator {
 
 	private:
 		string GUID_;
+    string name;
+    string description;
 		XPLCondition* condition_;
 //     DeterminatorAction* action_;
 		bool enabled_;

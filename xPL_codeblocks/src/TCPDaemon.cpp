@@ -32,6 +32,7 @@
 #include <ctype.h>
 #include <signal.h>
 #include <syslog.h>
+#include <iostream>
 
 /******************************************************************************/
 /* Include socket and pthread library to catch and print exceptions.          */
@@ -87,7 +88,6 @@ void
 Daemon::SignalHandler(int iSig)
 {
     condSignal.LockMutEx();
-    syslog(LOG_INFO, "SignalHandler() Called: %d", iSig);
     switch (iSig)
     {
         case SIGINT:
@@ -307,8 +307,17 @@ Daemon::Daemon(const char *pcConfigFile)
     pcTheServer = NULL;
 
     //attempting to clean up the pcTheServer object causes the application to crash
-    //signal(SIGINT, &SignalHandler);
-    //signal(SIGTERM, &SignalHandler);
+    struct sigaction sigIntHandler;
+    
+    sigIntHandler.sa_handler = &SignalHandler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    
+    //sigaction(SIGINT, &sigIntHandler, NULL);
+    //sigaction(SIGTERM, &sigIntHandler, NULL);
+    
+    signal(SIGINT, &SignalHandler);
+    signal(SIGTERM, &SignalHandler);
     //signal(SIGHUP, &SignalHandler);
 }
 
@@ -337,7 +346,7 @@ Daemon::~Daemon()
 void
 Daemon::RunDaemon()
 {
-    Start();
+//     Start();
 
     condSignal.LockMutEx();
     while (!bKillFlag)
@@ -349,12 +358,12 @@ Daemon::RunDaemon()
             Start();
             bRestartFlag = false;
         }
-        syslog(LOG_INFO, "condSignal.Signal() received.");
+        //syslog(LOG_INFO, "condSignal.Signal() received.");
     }
     condSignal.UnlockMutEx();
 
-    pthread_exit(NULL);
-    syslog(LOG_INFO, "End of Daemon::RunDaemon() reached.");
+    //pthread_exit(NULL);
+    syslog(LOG_INFO, "Exiting xHCP Thread");
     Stop();
 }
 

@@ -21,6 +21,50 @@ Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action 
 	enabled_ = true;
 }
 
+Determinator::Determinator( string  detin)
+{
+
+    
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load(detin.c_str(), detin.length());
+    if (result)
+        std::cout << "XML [" <<  "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
+    else
+    {
+        std::cout << "XML [" <<  "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
+        std::cout << "Error description: " << result.description() << "\n";
+        std::cout << "Error offset: " << result.offset << " (error at [..." << (detin.c_str() + result.offset) << "]\n\n";
+    }
+    pugi::xml_node detnode = doc.child("determinator");
+    
+    bool failed = false;
+    
+    if (detnode.attribute("guid")) {
+        GUID_ = detnode.attribute("guid").as_string();
+    } else {
+        failed = true;
+    }
+    if (detnode.attribute("name")) {
+        name = detnode.attribute("name").as_string();
+    } else {
+        failed = true;
+    }
+    if (detnode.attribute("description")) {
+        description = detnode.attribute("description").as_string();
+    } else {
+        failed = true;
+    }
+    if (detnode.attribute("enabled")) {
+        if (detnode.attribute("enabled").as_string() == "Y") enabled_=true;
+        else enabled_ = false;
+    } else {
+        failed = true;
+    }
+
+    
+    
+}
+
 Determinator::~Determinator()
 {
 }
@@ -108,10 +152,17 @@ string Determinator::printXML()
     //pugi::xml_node descr = doc.document_element().append_child("description");
     // add node with some name
     pugi::xml_node det = doc.append_child("determinator");
-    det.append_attribute("guid") = "DEADBEEF";
+    det.append_attribute("guid") = GUID_.c_str();
     det.append_attribute("name") = "noname";
     det.append_attribute("description") = "";
-    det.append_attribute("enabled") = "Y";
+    if(enabled_) {
+        det.append_attribute("enabled") = "Y";
+    } else {
+        det.append_attribute("enabled") = "N";
+    }
+    det.append_attribute("groupName") = "";
+    det.append_attribute("isGroup") = "N";
+   
     
     pugi::xml_node inputnode = det.append_child("input");
     inputnode.append_attribute("match") = "any";
@@ -138,29 +189,7 @@ string Determinator::printXML()
     
     
     doc.save(xmlwrite);
-    cout << xmlwrite.result;
+    return xmlwrite.result;
     
-    
-    
-	string result = "";
-	result.append("<determinator ");
-	result.append("guid=");
-	result.append(GUID_);
-	string enabled = "N";
-	if(enabled_)
-		enabled = "Y";
-	result.append(" enabled=");
-	result.append(enabled);
-	result.append(">");
-	result.append("\n\t<input match=\"any\">\n");
-	string conditionXML = condition_->printXML();
-	result.append(conditionXML);
-	result.append("\n\t</input>\n");
-	result.append("\n\t<output>\n");
-	//string actionXML = action_->printXML();
-	//result.append(actionXML);
-	result.append("\n\t</output>\n");
-	result.append("</determinator>");
 
-	return result;
 }

@@ -6,6 +6,8 @@
 #include "projconfig.h"
 
 #include <string>
+#include <signal.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <pthread.h>
@@ -40,17 +42,55 @@ vector<Determinator>* createDeterminator();
 pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
+Daemon cDaemon(CONFIG_FILE);
+
+void saveDeterminators(void) {
+    printf("trying to save determinators\n");
+    delete ruleMgr;
+}
+
+
+void shutdown_handler(int s){
+    printf("\nCaught signal %d\n",s);
+    
+    saveDeterminators();
+    
+    xPL_setServiceEnabled(theService, FALSE);
+    xPL_releaseService(theService);
+    printf("Shutting down xPLLib\n");
+    xPL_shutdown();
+    
+    int ret = 0;
+    //ret = pthread_kill(xHCP_thread, s);
+    cDaemon.SignalHandler(s);
+    closelog();
+    
+    exit(0); 
+    
+}
+
+void setup_singnal_handler() {
+    struct sigaction sigIntHandler;
+    
+    sigIntHandler.sa_handler = shutdown_handler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+    
+    sigaction(SIGINT, &sigIntHandler, NULL);
+}
 
 int main(int argc,const char * argv[])
 {
     //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
     openlog("xplhallite", LOG_PID, LOG_DAEMON);
-
+    
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
 
     syslog(LOG_INFO, "Main Thread Created.");
 
+    setup_singnal_handler();
+    
     //Load XML document
 
     //Initialize RuleManager object with returned vector of determinators
@@ -59,16 +99,11 @@ int main(int argc,const char * argv[])
 //	determinators->push_back(*determinator);
     vector<Determinator>* determinators = createDeterminator();
 
-    ofstream myfile;
-    myfile.open ("/tmp/loadedDeterminators.xml");
-    
-    for(vector<Determinator>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-        myfile << (*dit).printXML();
-    }
-    myfile.close();
+
     
     
-	ruleMgr = new XPLRuleManager(determinators);
+	//ruleMgr = new XPLRuleManager(determinators);
+    ruleMgr = new XPLRuleManager();
 
     //Source Address
     const std::string srcVendor = "HAL9000";
@@ -109,7 +144,6 @@ int main(int argc,const char * argv[])
 //The xHCP thread executes this function
 void* xHCPService(void*)
 {
-    Daemon cDaemon(CONFIG_FILE);
 
     cDaemon.RunDaemon();
 }
@@ -176,6 +210,7 @@ vector<Determinator>* createDeterminator()
     //Create a determinator with the condition and action created above
 	Determinator* determinator1 = new Determinator(condition, action);
   determinator1->actions.push_back(action3);
+  determinator1->setGUID("4201");
 
 
 	//First, let's create the condition
@@ -210,7 +245,7 @@ vector<Determinator>* createDeterminator()
 
     //Create a determinator with the condition and action created above
 	Determinator* determinator2 = new Determinator(condition2, action2);
-  
+  determinator2->setGUID("4202");
 
 	vector<Determinator>* determinators = new vector<Determinator>();;
 	determinators->push_back(*determinator1);

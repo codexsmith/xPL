@@ -69,7 +69,6 @@ class Daemon
         static bool        bRestartFlag;
         static Condition   condSignal;
 
-        static void SignalHandler(int iSig);
 
         char        *pcConfigFileName, pcException[1024];
         TCPServer   *pcTheServer;
@@ -82,7 +81,7 @@ class Daemon
 
     public:
         enum DaemonError { errAbnormalTermination };
-
+        static void SignalHandler(int iSig);
                     Daemon(const char *pcConfigFile);
                     ~Daemon();
 
