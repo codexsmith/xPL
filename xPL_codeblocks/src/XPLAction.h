@@ -12,6 +12,7 @@ static const string tabLevel = "\t\t";
 class XPLAction : public DeterminatorAction {
 	public:
 		XPLAction(vector<XPLMessage>* responses);
+    XPLAction(pugi::xml_node);
 		~XPLAction();
 		void execute();
     void appendAction(pugi::xml_node* outputnode);
@@ -24,6 +25,9 @@ class XPLAction : public DeterminatorAction {
 
 	private:
 		vector<XPLMessage>* responses_;
+    string display_name;
+    int executeOrder;
+    
 };
 
 #endif //XPLAction_H

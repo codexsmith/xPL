@@ -20,6 +20,22 @@ XPLCondition::XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAd
 	attributes_ = attributes;
 }
 
+XPLCondition::XPLCondition() {
+    
+    msgType_="cmnd";
+    schema_.schema="control";
+    schema_.type="basic";
+    hops_=3;
+    attributes_ = new vector<XPLValuePair>();
+    XPLValuePair pairThree, pairFour;
+    pairThree.member = "device";
+    pairThree.value = "pwm";
+    pairFour.member = "current";
+    pairFour.value = "1";
+    attributes_->push_back(pairThree);
+    attributes_->push_back(pairFour);
+}
+
 XPLCondition::~XPLCondition()
 {
 	for(int i = 0; i < attributes_->size(); i++)
@@ -86,9 +102,15 @@ vector<XPLValuePair>* XPLCondition::getAttributes()
 
 
 void XPLCondition::appendCondition(pugi::xml_node* inputnode) {
+    
     pugi::xml_node condnode = inputnode->append_child("xplCondition");
+    
     condnode.append_attribute("display_name") = "test";
+    return;
+    msgType_="vvv";
+    return;
     condnode.append_attribute("msg_type") = msgType_.c_str();
+    return;
     condnode.append_attribute("source_vendor") = sourceAddress_.vendor.c_str();
     condnode.append_attribute("source_device") = sourceAddress_.device.c_str();
     condnode.append_attribute("source_instance") = sourceAddress_.instance.c_str();
@@ -97,6 +119,7 @@ void XPLCondition::appendCondition(pugi::xml_node* inputnode) {
     condnode.append_attribute("target_instance") = destinationAddress_.instance.c_str();
     condnode.append_attribute("schema_class") = schema_.schema.c_str();
     condnode.append_attribute("schema_type") = schema_.type.c_str();
+    
     for(int i = 0; i<attributes_->size(); i++)
     {
         pugi::xml_node paramnode = condnode.append_child("param");

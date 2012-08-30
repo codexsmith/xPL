@@ -8,6 +8,7 @@
 //default constructor
 Determinator::Determinator()
 {
+
 }
 
 //Determinators should be constructed by the DeterminatorFactory only.
@@ -59,6 +60,17 @@ Determinator::Determinator( string  detin)
         else enabled_ = false;
     } else {
         failed = true;
+    }
+    
+    if(detnode.child("output")) {
+        pugi::xml_node outnode =detnode.child("output"); 
+        for (pugi::xml_node_iterator ait = outnode.begin(); ait != outnode.end(); ++ait)
+        {
+            if (!strcmp("xplAction",ait->name())) {
+                actions.push_back(new XPLAction(*ait));
+            }
+        }
+        cout << "\tloaded " << actions.size() << " actions\n";
     }
 
     
@@ -153,8 +165,8 @@ string Determinator::printXML()
     // add node with some name
     pugi::xml_node det = doc.append_child("determinator");
     det.append_attribute("guid") = GUID_.c_str();
-    det.append_attribute("name") = "noname";
-    det.append_attribute("description") = "";
+    det.append_attribute("name") = name.c_str();
+    det.append_attribute("description") = description.c_str();
     if(enabled_) {
         det.append_attribute("enabled") = "Y";
     } else {
@@ -166,12 +178,17 @@ string Determinator::printXML()
     
     pugi::xml_node inputnode = det.append_child("input");
     inputnode.append_attribute("match") = "any";
-    condition_->appendCondition(&inputnode);
+    
+    //condition_->appendCondition(&inputnode);
     
     pugi::xml_node outputnode = det.append_child("output");
-    for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
-        (*dit)->appendAction(&outputnode);
-    }
+    
+        for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
+            
+            (*dit)->appendAction(&outputnode);
+        }
+    
+
 /*    
     // add description node with text child
     pugi::xml_node descr = node.append_child("description");

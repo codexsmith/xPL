@@ -22,19 +22,19 @@ XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
 {
     //loadDeterminators();
     this->determinators = determinators;
-    this->determinators = loadDeterminators();
+    //this->determinators = loadDeterminators();
 }
 
 
 XPLRuleManager::XPLRuleManager()
 {
-    this->determinators = new vector<Determinator>();
-    loadDeterminators();
+    //this->determinators = new vector<Determinator>();
+    this->determinators = loadDeterminators();
 }
 
 XPLRuleManager::~XPLRuleManager()
 {
-    
+    printf("trying to save determinators\n");
     saveDeterminators();
 }
 std::string XPLRuleManager::detToString(){
@@ -86,15 +86,22 @@ void XPLRuleManager::saveDeterminators()
     if (ret == 0){
         for(vector<Determinator>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
             myfile.open ((saveLocation +"/" +(*dit).getGUID() + ".xml").c_str());
+            cout << "Saving " + saveLocation +"/" +(*dit).getGUID() + ".xml\n";
             myfile << ((*dit).printXML()).c_str();
             myfile.close();
-        }    
+        }
+        cout << "Saved "<< determinators->size() << " determinators\n";
+        flush(cout);
+    } else {
+        cout << "Cannot save determinators\n";
+        flush(cout);
     }
 }
 vector< Determinator >* XPLRuleManager::loadDeterminators() {
     DIR *dir;
     struct dirent *ent;
-    dir = opendir ((saveLocation + "/").c_str());
+    string loadLocation = saveLocation + "bk";
+    dir = opendir ((loadLocation + "/").c_str());
     vector<Determinator>*  loaded = new vector<Determinator>();
     
     if (dir != NULL) {
@@ -104,9 +111,9 @@ vector< Determinator >* XPLRuleManager::loadDeterminators() {
         while ((ent = readdir (dir)) != NULL) {
             std::ifstream myfile;
             std::string detstr;
-            string filename = (saveLocation + "/" + ent->d_name);
+            string filename = (loadLocation + "/" + ent->d_name);
             string ending = ".xml";
-            string ending2 = saveLocation + "/" +".xml";
+            string ending2 = loadLocation + "/" +".xml";
             if (filename.length() >  ending2.length() && (filename.compare (filename.length() - ending.length(), ending.length(), ending) == 0)) {
                 cout << "\tloading: "+  filename + "\n"; 
             
@@ -131,12 +138,12 @@ vector< Determinator >* XPLRuleManager::loadDeterminators() {
             
         }
         closedir (dir);
-        cout << "loaded " << loaded->size() << " determinators\n";
+
     } else {
         /* could not open directory */
-        syslog(LOG_ERR, ("Failed to open determinator directory " + saveLocation).c_str());
-        cout << ("Failed to open determinator directory " + saveLocation);
+        syslog(LOG_ERR, ("Failed to open determinator directory " + loadLocation).c_str());
+        cout << ("Failed to open determinator directory " + loadLocation);
     }
-    cout << "list end \n";
+    cout << "loaded " << loaded->size() << " determinators\n";
     return loaded;
 }

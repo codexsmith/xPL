@@ -12,7 +12,8 @@ static const string tabs = "\t\t";
 
 class XPLCondition {
 	public:
-		explicit XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType);
+		XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType);
+    XPLCondition();
 		~XPLCondition();
 		bool match(XPLMessage* message);
 		bool equals(XPLCondition* condition);
