@@ -56,10 +56,22 @@ Determinator::Determinator( string  detin)
         failed = true;
     }
     if (detnode.attribute("enabled")) {
-        if (detnode.attribute("enabled").as_string() == "Y") enabled_=true;
+        if (!strcmp(detnode.attribute("enabled").as_string(), "Y")) enabled_=true;
         else enabled_ = false;
     } else {
         failed = true;
+    }
+    
+    if(detnode.child("input")) {
+        pugi::xml_node innode =detnode.child("input"); 
+        for (pugi::xml_node_iterator ait = innode.begin(); ait != innode.end(); ++ait)
+        {
+            if (!strcmp("xplCondition",ait->name())) {
+                //actions.push_back(new XPLCondition(*ait));
+                condition_ = new XPLCondition(*ait);
+            }
+        }
+        //cout << "\tloaded " << actions.size() << " conditions\n";
     }
     
     if(detnode.child("output")) {
@@ -125,10 +137,8 @@ void Determinator::execute()
 
     for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
             (*dit)->execute();
-            cout<<"exec\n";
             flush(cout);
     }
-	//action_->execute();
 }
 
 //Disabled determinators can never be executed. They are on by default.
@@ -179,7 +189,7 @@ string Determinator::printXML()
     pugi::xml_node inputnode = det.append_child("input");
     inputnode.append_attribute("match") = "any";
     
-    //condition_->appendCondition(&inputnode);
+    condition_->appendCondition(&inputnode);
     
     pugi::xml_node outputnode = det.append_child("output");
     

@@ -110,11 +110,10 @@ XPLAction::~XPLAction()
 {
 	//return *responses_;
   //sendMsg(messagesToSend[i]);
-  for (vector<XPLMessage>::iterator rit = responses_->begin(); rit != responses_->end(); ++rit) {
-      XPLParser::Instance()->sendMsg(*rit);    
-  }
-  cout<<"execin\n";
-  flush(cout);
+  //for (vector<XPLMessage>::iterator rit = responses_->begin(); rit != responses_->end(); ++rit) {
+      //XPLParser::Instance()->sendMsg(*rit);    
+  //}
+  XPLParser::Instance()->sendMsg(message);
   
 }
 
@@ -130,7 +129,7 @@ bool XPLAction::equals(XPLAction* action)
 }
 
 void XPLAction::appendAction(pugi::xml_node* outputnode) {
-    return;
+
     pugi::xml_node actionnode = outputnode->append_child("xplAction");
     actionnode.append_attribute("display_name") = "test";
     actionnode.append_attribute("executeOrder") = "001";

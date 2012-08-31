@@ -48,7 +48,6 @@ std::string XPLRuleManager::detToString(){
 
 void XPLRuleManager::match(XPLMessage msg)
 {
-    return;
     //match stuff
     for (int i = 0; i < determinators->size(); i++)
     {

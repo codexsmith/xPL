@@ -13,6 +13,7 @@ static const string tabs = "\t\t";
 class XPLCondition {
 	public:
 		XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType);
+    XPLCondition(pugi::xml_node);
     XPLCondition();
 		~XPLCondition();
 		bool match(XPLMessage* message);
@@ -24,6 +25,7 @@ class XPLCondition {
 		vector<XPLValuePair>* getAttributes();
 
 	private:
+      string display_name;
 		vector<XPLValuePair>* attributes_;
 		XPLAddress sourceAddress_;
 		XPLAddress destinationAddress_;

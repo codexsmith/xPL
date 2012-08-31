@@ -36,6 +36,89 @@ XPLCondition::XPLCondition() {
     attributes_->push_back(pairFour);
 }
 
+
+XPLCondition::XPLCondition(pugi::xml_node condnode) {
+    
+    bool failed = false;
+    attributes_ = new vector<XPLValuePair>();
+    
+    if (condnode.attribute("display_name")) {
+        display_name = condnode.attribute("display_name").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("msg_type")) {
+        msgType_ = condnode.attribute("msg_type").as_int();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("schema_class")) {
+        schema_.schema = condnode.attribute("schema_class").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("schema_type")) {
+        schema_.type = condnode.attribute("schema_type").as_string();
+    } else {
+        failed = true;
+    }
+    
+    if (condnode.attribute("source_vendor")) {
+        sourceAddress_.vendor= condnode.attribute("source_vendor").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("source_device")) {
+        sourceAddress_.device= condnode.attribute("source_device").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("source_instance")) {
+        sourceAddress_.instance= condnode.attribute("source_instance").as_string();
+    } else {
+        failed = true;
+    }
+    
+    
+    if (condnode.attribute("dest_vendor")) {
+        destinationAddress_.vendor= condnode.attribute("dest_vendor").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("dest_device")) {
+        destinationAddress_.device= condnode.attribute("dest_device").as_string();
+    } else {
+        failed = true;
+    }
+    if (condnode.attribute("dest_instance")) {
+        destinationAddress_.instance= condnode.attribute("dest_instance").as_string();
+    } else {
+        failed = true;
+    }
+
+ 
+    for (pugi::xml_node_iterator ait = condnode.begin(); ait != condnode.end(); ++ait)
+    {
+        if (!strcmp(ait->name(), "param")) {
+            if ((*ait).attribute("name") && (*ait).attribute("operator") && (*ait).attribute("value")) {
+                
+                string mname = (*ait).attribute("name").as_string();
+                string moper = (*ait).attribute("operator").as_string();
+                string mvalue = (*ait).attribute("value").as_string();
+                if(moper == "="){
+                    XPLValuePair* pair = new XPLValuePair();
+                    pair->member = mname;
+                    pair->value = mvalue;
+                    attributes_->push_back(*pair);
+                }
+            } else {
+                failed = true;
+            } 
+        }
+    }
+    cout << "\t\tloaded " << attributes_->size() << " attributes\n";
+}
+
 XPLCondition::~XPLCondition()
 {
 	for(int i = 0; i < attributes_->size(); i++)
@@ -58,7 +141,6 @@ bool XPLCondition::match(XPLMessage* message)
 //	bool hopsMatch = (hops_ == hops) || hops_ == NULL;
 //	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0) || sourceAddress == NULL;
 //	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0) || destinationAddress == NULL;
-
 	bool membersMatch = true;
 	for(int i = 0; i < attributes_->size(); i++)
 	{
@@ -106,11 +188,8 @@ void XPLCondition::appendCondition(pugi::xml_node* inputnode) {
     pugi::xml_node condnode = inputnode->append_child("xplCondition");
     
     condnode.append_attribute("display_name") = "test";
-    return;
-    msgType_="vvv";
-    return;
     condnode.append_attribute("msg_type") = msgType_.c_str();
-    return;
+    
     condnode.append_attribute("source_vendor") = sourceAddress_.vendor.c_str();
     condnode.append_attribute("source_device") = sourceAddress_.device.c_str();
     condnode.append_attribute("source_instance") = sourceAddress_.instance.c_str();
