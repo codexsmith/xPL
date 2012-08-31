@@ -32,7 +32,7 @@ find_package (Threads)
 #Sends the -std=c99 flag to the gcc compiler
 #add_definitions(-std=c99)
 #This tells CMake to fib.c and name it fibonacci
-add_executable(xplhallite Determinator.cpp DeterminatorFactory.cpp TCPDaemon.cpp TCPServer.cpp XHCP_Parser.cpp XPLAction.cpp XPLCondition.cpp XPLMessage.cpp XPLParser.cpp XPLRuleManager.cpp determinator-main.cpp)
+add_executable(xplhallite Determinator.cpp DeterminatorFactory.cpp TCPDaemon.cpp TCPServer.cpp XHCP_Parser.cpp XPLAction.cpp XPLCondition.cpp XPLMessage.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp determinator-main.cpp)
 target_link_libraries (xplhallite pthreadcc)
 target_link_libraries (xplhallite socketcc)
 target_link_libraries (xplhallite xPLLib)

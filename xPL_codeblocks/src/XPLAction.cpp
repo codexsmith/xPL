@@ -148,33 +148,3 @@ void XPLAction::appendAction(pugi::xml_node* outputnode) {
  }
  
  
-// Method to convert the action into an XML string.
-// @preturn XML formatted string respresenting the action.
-string XPLAction::printXML()
-{
-	string result = "";
-	for(int i = 0; i<responses_->size(); i++)
-	{
-		XPLMessage message = responses_->at(i);
-		result.append(tabLevel + "\n");
-		result.append(tabLevel + "msg_type=");
-		result.append(message.getMsgType() + "\n");
-		result.append(tabLevel + "msg_target=");
-		XPLAddress destinationAddress = message.getDestination();
-		result.append(destinationAddress.vendor+"."+destinationAddress.device+"."+destinationAddress.instance+"\n");
-		result.append(tabLevel + "msg_schema=");
-		XPLSchema schema = message.getSchema();
-		result.append(schema.schema + "." + schema.type);
-		result.append("\n>\n");
-		vector<XPLValuePair> members = message.getMembers();
-		for(int i = 0; i<members.size(); i++)
-		{
-			result.append(tabLevel + "\t" + "<xplActionParam " + "\n"); 
-			result.append(tabLevel + "\t\t" +	"expression=" + members[i].member + "=" + members[i].value);
-			result.append("\n\t\t\t>\n");
-		}
-
-	}
-	result.append(tabLevel+"</xplaction>");
-	return result;
-}

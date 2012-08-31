@@ -7,7 +7,6 @@
 #include "pugixml/pugixml.hpp"
 
 using namespace std;
-static const string tabLevel = "\t\t";
 
 class XPLAction : public DeterminatorAction {
 	public:
@@ -17,7 +16,6 @@ class XPLAction : public DeterminatorAction {
 		void execute();
     void appendAction(pugi::xml_node* outputnode);
 		bool equals(XPLAction* action);
-		string printXML();
     XPLMessage message;
 
 	protected:
@@ -25,8 +23,7 @@ class XPLAction : public DeterminatorAction {
 
 	private:
 		vector<XPLMessage>* responses_;
-    string display_name;
-    int executeOrder;
+
     
 };
 

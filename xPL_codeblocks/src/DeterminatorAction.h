@@ -13,11 +13,8 @@ class DeterminatorAction {
       virtual void appendAction(pugi::xml_node* outputnode) = 0;
     //bool equals(XPLAction* action);
     
-  protected:
-    
-
-  private:
-    
+      string display_name;
+      int executeOrder;
 };
 
 #endif //DeterminatorAction_H

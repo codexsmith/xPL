@@ -17,7 +17,7 @@ XPLCondition::XPLCondition(vector<XPLValuePair>* attributes, XPLAddress sourceAd
 	destinationAddress_ = destinationAddress;
 	schema_ = schema;
 	hops_ = hops;
-	attributes_ = attributes;
+	attributes_ =  *attributes;
 }
 
 XPLCondition::XPLCondition() {
@@ -26,21 +26,21 @@ XPLCondition::XPLCondition() {
     schema_.schema="control";
     schema_.type="basic";
     hops_=3;
-    attributes_ = new vector<XPLValuePair>();
-    XPLValuePair pairThree, pairFour;
-    pairThree.member = "device";
-    pairThree.value = "pwm";
-    pairFour.member = "current";
-    pairFour.value = "1";
-    attributes_->push_back(pairThree);
-    attributes_->push_back(pairFour);
+    XPLValuePair* pairThree = new XPLValuePair();
+    XPLValuePair* pairFour = new XPLValuePair();
+    pairThree->member = "device";
+    pairThree->value = "pwm";
+    pairFour->member = "current";
+    pairFour->value = "1";
+    attributes_.push_back(*pairThree);
+    attributes_.push_back(*pairFour);
 }
 
 
 XPLCondition::XPLCondition(pugi::xml_node condnode) {
     
     bool failed = false;
-    attributes_ = new vector<XPLValuePair>();
+    //attributes_ = new vector<XPLValuePair>();
     
     if (condnode.attribute("display_name")) {
         display_name = condnode.attribute("display_name").as_string();
@@ -109,23 +109,23 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
                     XPLValuePair* pair = new XPLValuePair();
                     pair->member = mname;
                     pair->value = mvalue;
-                    attributes_->push_back(*pair);
+                    attributes_.push_back(*pair);
                 }
             } else {
                 failed = true;
             } 
         }
     }
-    cout << "\t\tloaded " << attributes_->size() << " attributes\n";
+    cout << "\t\tloaded " << attributes_.size() << " attributes\n";
 }
 
 XPLCondition::~XPLCondition()
 {
-	for(int i = 0; i < attributes_->size(); i++)
+	for(int i = 0; i < attributes_.size(); i++)
 	{
-		attributes_->pop_back();
+		attributes_.pop_back();
 	}
-	delete attributes_;
+	//delete attributes_;
 }
 
 
@@ -142,9 +142,9 @@ bool XPLCondition::match(XPLMessage* message)
 //	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0) || sourceAddress == NULL;
 //	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0) || destinationAddress == NULL;
 	bool membersMatch = true;
-	for(int i = 0; i < attributes_->size(); i++)
+	for(int i = 0; i < attributes_.size(); i++)
 	{
-		XPLValuePair memberToFind = attributes_->at(i);
+		XPLValuePair memberToFind = attributes_.at(i);
 		string value = message->findMember(memberToFind.member);
 		if(!(memberToFind.value.compare(value) == 0))
 		{
@@ -159,11 +159,11 @@ bool XPLCondition::match(XPLMessage* message)
 bool XPLCondition::equals(XPLCondition* condition)
 {
 	vector<XPLValuePair>* compareTo = condition->getAttributes();
-	if(compareTo->size() != attributes_->size())
+	if(compareTo->size() != attributes_.size())
 		return false;
-	for(int i = 0; i < attributes_->size(); i++)
+	for(int i = 0; i < attributes_.size(); i++)
 	{
-		XPLValuePair* attribute = &attributes_->at(i);
+		XPLValuePair* attribute = &attributes_.at(i);
 		XPLValuePair* compare = &compareTo->at(i);
 		if(attribute->member.compare(compare->member) != 0)
 			return false;
@@ -175,7 +175,7 @@ bool XPLCondition::equals(XPLCondition* condition)
 
 vector<XPLValuePair>* XPLCondition::getAttributes()
 {
-	return attributes_;
+	return &attributes_;
 }
 
 //Turns the XPLCondition into a formatted XML string
@@ -199,12 +199,12 @@ void XPLCondition::appendCondition(pugi::xml_node* inputnode) {
     condnode.append_attribute("schema_class") = schema_.schema.c_str();
     condnode.append_attribute("schema_type") = schema_.type.c_str();
     
-    for(int i = 0; i<attributes_->size(); i++)
+    for(int i = 0; i<attributes_.size(); i++)
     {
         pugi::xml_node paramnode = condnode.append_child("param");
-        paramnode.append_attribute("name") =  attributes_->at(i).member.c_str();
+        paramnode.append_attribute("name") =  attributes_.at(i).member.c_str();
         paramnode.append_attribute("operator") =  "=";
-        paramnode.append_attribute("value") =  attributes_->at(i).value.c_str();
+        paramnode.append_attribute("value") =  attributes_.at(i).value.c_str();
     }
     
 }
@@ -235,11 +235,11 @@ string XPLCondition::printXML()
 	result.append(schema_.type);
 	result.append("\n\t>\n");
 
-	for(int i = 0; i<attributes_->size(); i++)
+	for(int i = 0; i<attributes_.size(); i++)
 	{
-		result.append("\t\t<param name=" + attributes_->at(i).member + "\n");
+		result.append("\t\t<param name=" + attributes_.at(i).member + "\n");
 		result.append("\t\toperator=\n");
-		result.append(tabs + "value=" + attributes_->at(i).value + "\n");
+		result.append(tabs + "value=" + attributes_.at(i).value + "\n");
 		result.append(tabs + ">\n");
 	}
 	result.append("</xplcondition>\n");

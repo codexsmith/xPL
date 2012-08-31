@@ -1,6 +1,7 @@
 #include "Determinator.h"
 #include "XPLCondition.h"
 #include "DeterminatorAction.h"
+#include "LogAction.h"
 
 #include <vector>
 #include <iostream>
@@ -80,6 +81,9 @@ Determinator::Determinator( string  detin)
         {
             if (!strcmp("xplAction",ait->name())) {
                 actions.push_back(new XPLAction(*ait));
+            }
+            if (!strcmp("logAction",ait->name())) {
+                actions.push_back(new LogAction(*ait));
             }
         }
         cout << "\tloaded " << actions.size() << " actions\n";
