@@ -28,14 +28,18 @@ XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
 
 XPLRuleManager::XPLRuleManager()
 {
-    //this->determinators = new vector<Determinator>();
-    this->determinators = loadDeterminators();
+    this->determinators = new vector<Determinator>();
+    loadDeterminators(this->determinators );
+    //vector< Determinator >* x = loadDeterminators();
+    //this->determinators = x;
+    //delete x;
 }
 
 XPLRuleManager::~XPLRuleManager()
 {
     printf("trying to save determinators\n");
     saveDeterminators();
+    delete determinators;
 }
 std::string XPLRuleManager::detToString(){
     std::string theString;
@@ -96,12 +100,11 @@ void XPLRuleManager::saveDeterminators()
         flush(cout);
     }
 }
-vector< Determinator >* XPLRuleManager::loadDeterminators() {
+void XPLRuleManager::loadDeterminators(vector< Determinator>* loaded) {
     DIR *dir;
     struct dirent *ent;
     string loadLocation = saveLocation + "bk";
     dir = opendir ((loadLocation + "/").c_str());
-    vector<Determinator>*  loaded = new vector<Determinator>();
     
     if (dir != NULL) {
         /* print all the files and directories within directory */
@@ -120,7 +123,6 @@ vector< Determinator >* XPLRuleManager::loadDeterminators() {
 
                 if(myfile.bad()) {
                     cout<<"fail\n";
-                    return loaded;
                 }
 
                 myfile.seekg(0, std::ios::end);
@@ -129,9 +131,9 @@ vector< Determinator >* XPLRuleManager::loadDeterminators() {
                 myfile.seekg(0, std::ios::beg);
                 myfile.read(&detstr[0], detstr.size());
                 
-                Determinator* d = new Determinator(detstr);
+                Determinator d = Determinator(detstr);
 
-                loaded->push_back(*d);
+                loaded->push_back(d);
                 myfile.close();
             }
             
@@ -144,5 +146,4 @@ vector< Determinator >* XPLRuleManager::loadDeterminators() {
         cout << ("Failed to open determinator directory " + loadLocation);
     }
     cout << "loaded " << loaded->size() << " determinators\n";
-    return loaded;
 }

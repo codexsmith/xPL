@@ -91,18 +91,7 @@ int main(int argc,const char * argv[])
 
     setup_singnal_handler();
     
-    //Load XML document
-
-    //Initialize RuleManager object with returned vector of determinators
-//	vector<Determinator>* determinators = new vector<Determinator>();
-//	Determinator* determinator = createDeterminator();
-//	determinators->push_back(*determinator);
-    vector<Determinator>* determinators = createDeterminator();
-
-
-    
-    
-	//ruleMgr = new XPLRuleManager(determinators);
+    //Load XML Determinators from disk.
     ruleMgr = new XPLRuleManager();
 
     //Source Address
@@ -138,6 +127,7 @@ int main(int argc,const char * argv[])
     pthread_join(xHCP_thread,NULL);
 
 	closelog();
+  delete(ruleMgr);
     return 0;
 }
 
@@ -148,108 +138,4 @@ void* xHCPService(void*)
     cDaemon.RunDaemon();
 }
 
-vector<Determinator>* createDeterminator()
-{
-	//First, let's create the condition
-	XPLAddress conditionAddress;
-	XPLSchema conditionSchema;
-	string conditionMsgType;
 
-	XPLValuePair pairOne, pairTwo;
-	pairOne.member = "device";
-	pairOne.value = "pwm";
-	pairTwo.member = "current";
-	pairTwo.value = "2";
-
-	vector<XPLValuePair>* conditionVector = new vector<XPLValuePair>();
-	conditionVector->push_back(pairOne);
-	conditionVector->push_back(pairTwo);
-
-
-  conditionSchema.schema = "control";
-  conditionSchema.type = "basic";
-  
-	XPLCondition* condition = new XPLCondition(conditionVector, conditionAddress, conditionAddress, conditionSchema, 5, conditionMsgType );
-
-    //Create the actions
-    XPLMessage turnLampOn;
-    turnLampOn.setMsgType("cmnd");
-    turnLampOn.setSource("XPLHal", "XPLHal", "XPLHal");
-    turnLampOn.setDestination("smgpoe", "lamp", "1");
-    turnLampOn.setSchema("control", "basic");
-    turnLampOn.setHops(5);
-    turnLampOn.setBroadcast(false);
-    turnLampOn.addMember("device", "pwm");
-    turnLampOn.addMember("type", "variable");
-    turnLampOn.addMember("current", "200");
-
-	vector<XPLMessage>* actionVector = new vector<XPLMessage>();
-	actionVector->push_back(turnLampOn);
-
-	XPLAction* action = new XPLAction(actionVector);
-  
-  
-  //Create the actions
-  XPLMessage turnLampOn3;
-  turnLampOn3.setMsgType("cmnd");
-  turnLampOn3.setSource("XPLHal", "XPLHal", "XPLHal");
-  turnLampOn3.setDestination("smgpoe", "lamp", "3");
-  turnLampOn3.setSchema("control", "basic");
-  turnLampOn3.setHops(5);
-  turnLampOn3.setBroadcast(false);
-  turnLampOn3.addMember("device", "pwm");
-  turnLampOn3.addMember("type", "variable");
-  turnLampOn3.addMember("current", "10");
-  
-  vector<XPLMessage>* actionVector3 = new vector<XPLMessage>();
-  actionVector3->push_back(turnLampOn3);
-  
-  XPLAction* action3 = new XPLAction(actionVector3);
-  
-
-    //Create a determinator with the condition and action created above
-	Determinator* determinator1 = new Determinator(condition, action);
-  determinator1->actions.push_back(action3);
-  determinator1->setGUID("4201");
-
-
-	//First, let's create the condition
-	XPLValuePair pairThree, pairFour;
-	pairThree.member = "device";
-	pairThree.value = "pwm";
-	pairFour.member = "current";
-	pairFour.value = "1";
-
-	vector<XPLValuePair>* conditionVector2 = new vector<XPLValuePair>();
-	conditionVector2->push_back(pairThree);
-	conditionVector2->push_back(pairFour);
-
-	XPLCondition* condition2 = new XPLCondition(conditionVector2, conditionAddress, conditionAddress, conditionSchema, 5, conditionMsgType);
-
-    //Create the actions
-    XPLMessage turnLampOn2;
-    turnLampOn2.setMsgType("cmnd");
-    turnLampOn2.setSource("XPLHal", "XPLHal", "XPLHal");
-    turnLampOn2.setDestination("smgpoe", "lamp", "1");
-    turnLampOn2.setSchema("control", "basic");
-    turnLampOn2.setHops(5);
-    turnLampOn2.setBroadcast(false);
-    turnLampOn2.addMember("device", "pwm");
-    turnLampOn2.addMember("type", "variable");
-    turnLampOn2.addMember("current", "0");
-
-	vector<XPLMessage>* actionVector2 = new vector<XPLMessage>();
-	actionVector2->push_back(turnLampOn2);
-
-	XPLAction* action2 = new XPLAction(actionVector2);
-
-    //Create a determinator with the condition and action created above
-	Determinator* determinator2 = new Determinator(condition2, action2);
-  determinator2->setGUID("4202");
-
-	vector<Determinator>* determinators = new vector<Determinator>();;
-	determinators->push_back(*determinator1);
-	determinators->push_back(*determinator2);
-
-	return determinators;
-}

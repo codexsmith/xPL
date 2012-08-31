@@ -106,10 +106,11 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
                 string moper = (*ait).attribute("operator").as_string();
                 string mvalue = (*ait).attribute("value").as_string();
                 if(moper == "="){
-                    XPLValuePair* pair = new XPLValuePair();
+                    XPLValuePair* pair = new XPLValuePair();  //FIXME this appears to not get cleaned up??
                     pair->member = mname;
                     pair->value = mvalue;
                     attributes_.push_back(*pair);
+                    //delete pair;
                 }
             } else {
                 failed = true;
@@ -121,11 +122,11 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
 
 XPLCondition::~XPLCondition()
 {
-	for(int i = 0; i < attributes_.size(); i++)
-	{
-		attributes_.pop_back();
-	}
-	//delete attributes_;
+// 	for(int i = 0; i < attributes_.size(); i++)
+// 	{
+// 		delete attributes_.pop_back();
+// 	}
+// 	delete attributes_;
 }
 
 

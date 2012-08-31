@@ -95,18 +95,9 @@ Determinator::Determinator( string  detin)
 
 Determinator::~Determinator()
 {
+
 }
 
-// //Used for serialization in of determinators
-// void Determinator::setAction(DeterminatorAction* action)
-// {
-//     action_ = action;
-// }
-// 
-// DeterminatorAction* Determinator::getAction()
-// {
-// 	return action_;
-// }
 
 XPLCondition* Determinator::getCondition()
 {
@@ -134,14 +125,15 @@ bool Determinator::match(XPLMessage* message)
 	return false;
 }
 
-//pass through to XPLAction. When a determinator is matched, it executes its action.
-//Future releases should add other action executions here.
+//pass through to XPLActions.
+//TODO: we need to handle order.
 void Determinator::execute()
 {
-
-    for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
-            (*dit)->execute();
-            flush(cout);
+    if (isEnabled()){
+        for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
+                (*dit)->execute();
+                flush(cout);
+        }
     }
 }
 

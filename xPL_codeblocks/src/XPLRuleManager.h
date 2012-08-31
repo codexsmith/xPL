@@ -21,7 +21,7 @@ class XPLRuleManager {
         static const string saveLocation ;
         int makeDeterminatorDir();
         void saveDeterminators();
-        vector<Determinator>*  loadDeterminators();
+        void loadDeterminators( vector< Determinator >* loaded );
 };
 
 #endif //XPLRuleManager_H

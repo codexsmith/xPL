@@ -17,9 +17,9 @@ XPLAction::XPLAction(vector<XPLMessage>* responses)
   message = (*responses)[0];
 }
 
+//A constructor that builds the XPLAction from XML, passed in from the Action node down.
 XPLAction::XPLAction(pugi::xml_node actionnode)
 {
- 
     bool failed = false;
     
     if (actionnode.attribute("display_name")) {
@@ -65,16 +65,6 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
     } else {
         failed = true;
     }
-    
-    
-   /* 
-    if (detnode.attribute("msg_target")) {
-        if (detnode.attribute("enabled").as_string() == "Y") enabled_=true;
-        else enabled_ = false;
-    } else {
-        failed = true;
-    }
-    */
 
    //pugi::xml_node outnode =actionnode.child("output"); 
    for (pugi::xml_node_iterator ait = actionnode.begin(); ait != actionnode.end(); ++ait)
@@ -93,7 +83,7 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
             } 
         }
     }
-    cout << "\t\tloaded " << message.getMembers().size() << " members\n";
+    //cout << "\t\tloaded " << message.getMembers().size() << " members\n";
     
     
 }
@@ -108,11 +98,6 @@ XPLAction::~XPLAction()
 //on the network.
  void XPLAction::execute()
 {
-	//return *responses_;
-  //sendMsg(messagesToSend[i]);
-  //for (vector<XPLMessage>::iterator rit = responses_->begin(); rit != responses_->end(); ++rit) {
-      //XPLParser::Instance()->sendMsg(*rit);    
-  //}
   XPLParser::Instance()->sendMsg(message);
   
 }
@@ -122,12 +107,10 @@ XPLAction::~XPLAction()
 // @return true if equal.
 bool XPLAction::equals(XPLAction* action)
 {
-	for(int i = 0; i < responses_->size(); i++)
-	{
-			
-	}
+    // TODO actually compare here, I guess.
 }
 
+//Takes the current Action, and packs it up into XML, appending it all to outputnode.
 void XPLAction::appendAction(pugi::xml_node* outputnode) {
 
     pugi::xml_node actionnode = outputnode->append_child("xplAction");
