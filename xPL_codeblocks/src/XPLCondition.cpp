@@ -109,24 +109,21 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
                     XPLValuePair* pair = new XPLValuePair();  //FIXME this appears to not get cleaned up??
                     pair->member = mname;
                     pair->value = mvalue;
+		    //cout << "\t added pair: " << pair << "\n";
                     attributes_.push_back(*pair);
-                    //delete pair;
+		    delete pair;
                 }
             } else {
                 failed = true;
             } 
         }
     }
-    cout << "\t\tloaded " << attributes_.size() << " attributes\n";
+    //cout << "\t\tloaded " << attributes_.size() << " attributes\n";
 }
 
 XPLCondition::~XPLCondition()
 {
-// 	for(int i = 0; i < attributes_.size(); i++)
-// 	{
-// 		delete attributes_.pop_back();
-// 	}
-// 	delete attributes_;
+ 	//delete attributes_;
 }
 
 

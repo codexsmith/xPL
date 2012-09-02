@@ -10,18 +10,19 @@ using namespace std;
 class XPLRuleManager {
 	public:
         XPLRuleManager();
-        XPLRuleManager(vector<Determinator>*);
+        XPLRuleManager(std::vector< Determinator* >* );
 		~XPLRuleManager();
 		void match(XPLMessage);
         std::string detToString();//XHCP support
         Determinator* retrieveDeterminator(string GUID);
-    
+	void saveDeterminators();
+	
 	private:
-        vector<Determinator>* determinators;
+        vector<Determinator*>* determinators;
         static const string saveLocation ;
         int makeDeterminatorDir();
-        void saveDeterminators();
-        void loadDeterminators( vector< Determinator >* loaded );
+        
+        void loadDeterminators( vector< Determinator*>*);
 };
 
 #endif //XPLRuleManager_H

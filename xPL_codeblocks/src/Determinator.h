@@ -12,9 +12,9 @@ using namespace std;
 
 class Determinator {
 	public:
-        Determinator();
-        Determinator( XPLCondition* condition, DeterminatorAction* action );
-        Determinator( string );
+        explicit Determinator();
+        explicit Determinator( XPLCondition* condition, DeterminatorAction* action );
+        explicit Determinator( string );
 		~Determinator();
 		bool match(XPLMessage* message);
 		void execute();
@@ -25,7 +25,7 @@ class Determinator {
         void setGUID(string GUID);
         string getGUID();
         vector<DeterminatorAction*> actions;
-        
+        vector<XPLCondition*> conditions;
 	protected:
 		XPLCondition* getCondition();
 //     DeterminatorAction* getAction();
@@ -34,7 +34,7 @@ class Determinator {
 		string GUID_;
     string name;
     string description;
-		XPLCondition* condition_;
+	XPLCondition* condition_;
 //     DeterminatorAction* action_;
 		bool enabled_;
 };

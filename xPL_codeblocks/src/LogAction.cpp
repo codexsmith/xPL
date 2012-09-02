@@ -38,6 +38,7 @@ LogAction::LogAction(pugi::xml_node actionnode)
 
 LogAction::~LogAction()
 {
+	//cout << "deleting logaction: " << this << "\n";
 }
 
 //Method to execute the determinator.
@@ -65,7 +66,7 @@ bool LogAction::equals(LogAction* other)
 
 void LogAction::appendAction(pugi::xml_node* outputnode) {
 
-    pugi::xml_node actionnode = outputnode->append_child("xplAction");
+    pugi::xml_node actionnode = outputnode->append_child("logAction");
     actionnode.append_attribute("display_name") = display_name.c_str();
     actionnode.append_attribute("executeOrder") = executeOrder;
     actionnode.append_attribute("logText") = messageText.c_str();

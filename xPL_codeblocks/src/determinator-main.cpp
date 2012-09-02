@@ -46,7 +46,7 @@ Daemon cDaemon(CONFIG_FILE);
 
 void saveDeterminators(void) {
     printf("trying to save determinators\n");
-    delete ruleMgr;
+    ruleMgr->saveDeterminators();
 }
 
 
@@ -84,16 +84,16 @@ int main(int argc,const char * argv[])
     //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
     openlog("xplhallite", LOG_PID, LOG_DAEMON);
-    
+    /*
     pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
 
     syslog(LOG_INFO, "Main Thread Created.");
 
     setup_singnal_handler();
-    
+    */
     //Load XML Determinators from disk.
     ruleMgr = new XPLRuleManager();
-
+    //cout << "rule manager addr: " << ruleMgr << " \n";
     //Source Address
     const std::string srcVendor = "HAL9000";
     const std::string srcDeviceID = "xPLHAL";
@@ -101,8 +101,8 @@ int main(int argc,const char * argv[])
 
     /* Start xPL up */
     if (!xPL_initialize(xPL_getParsedConnectionType())) {
-        fprintf(stderr, "Unable to start xPL");
-        exit(1);
+        fprintf(stderr, "Unable to start xPL\n");
+        //exit(1);
     }
 
     /* And a listener for all xPL messages */
@@ -127,6 +127,10 @@ int main(int argc,const char * argv[])
     pthread_join(xHCP_thread,NULL);
 
 	closelog();
+	
+	
+  //cout << "del rule manager: " << ruleMgr << " \n";
+  ruleMgr->saveDeterminators();
   delete(ruleMgr);
     return 0;
 }

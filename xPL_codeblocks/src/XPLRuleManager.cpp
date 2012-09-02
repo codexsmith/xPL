@@ -18,7 +18,7 @@ using namespace std;
 
 const string XPLRuleManager::saveLocation = "/tmp/determinators";
 
-XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
+XPLRuleManager::XPLRuleManager(vector<Determinator*>* determinators)
 {
     //loadDeterminators();
     this->determinators = determinators;
@@ -28,7 +28,7 @@ XPLRuleManager::XPLRuleManager(vector<Determinator>* determinators)
 
 XPLRuleManager::XPLRuleManager()
 {
-    this->determinators = new vector<Determinator>();
+    this->determinators = new vector<Determinator*>();
     loadDeterminators(this->determinators );
     //vector< Determinator >* x = loadDeterminators();
     //this->determinators = x;
@@ -38,7 +38,14 @@ XPLRuleManager::XPLRuleManager()
 XPLRuleManager::~XPLRuleManager()
 {
     printf("trying to save determinators\n");
-    saveDeterminators();
+    //saveDeterminators();
+    //cout << "delete rule manager "  << this << " \n";
+    
+    while (determinators->size() > 0 ) {
+	delete determinators->back();
+	determinators->pop_back();
+    }
+    
     delete determinators;
 }
 std::string XPLRuleManager::detToString(){
@@ -55,9 +62,9 @@ void XPLRuleManager::match(XPLMessage msg)
     //match stuff
     for (int i = 0; i < determinators->size(); i++)
     {
-        if (determinators->at(i).match(&msg))
+        if (determinators->at(i)->match(&msg))
         {
-            determinators->at(i).execute();
+            determinators->at(i)->execute();
         }
     }
 }
@@ -87,10 +94,10 @@ void XPLRuleManager::saveDeterminators()
     std::ofstream myfile;
     
     if (ret == 0){
-        for(vector<Determinator>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-            myfile.open ((saveLocation +"/" +(*dit).getGUID() + ".xml").c_str());
-            cout << "Saving " + saveLocation +"/" +(*dit).getGUID() + ".xml\n";
-            myfile << ((*dit).printXML()).c_str();
+        for(vector<Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
+            myfile.open ((saveLocation +"/" +(*dit)->getGUID() + ".xml").c_str());
+            cout << "Saving " + saveLocation +"/" +(*dit)->getGUID() + ".xml\n";
+            myfile << ((*dit)->printXML()).c_str();
             myfile.close();
         }
         cout << "Saved "<< determinators->size() << " determinators\n";
@@ -100,7 +107,7 @@ void XPLRuleManager::saveDeterminators()
         flush(cout);
     }
 }
-void XPLRuleManager::loadDeterminators(vector< Determinator>* loaded) {
+void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
     DIR *dir;
     struct dirent *ent;
     string loadLocation = saveLocation + "bk";
@@ -131,7 +138,7 @@ void XPLRuleManager::loadDeterminators(vector< Determinator>* loaded) {
                 myfile.seekg(0, std::ios::beg);
                 myfile.read(&detstr[0], detstr.size());
                 
-                Determinator d = Determinator(detstr);
+                Determinator* d = new Determinator(detstr);
 
                 loaded->push_back(d);
                 myfile.close();

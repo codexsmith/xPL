@@ -9,7 +9,7 @@
 //default constructor
 Determinator::Determinator()
 {
-
+    //cout << "create determinator " << this << " \n";
 }
 
 //Determinators should be constructed by the DeterminatorFactory only.
@@ -17,7 +17,10 @@ Determinator::Determinator()
 //New Determinators are always enabled.
 Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action )
 {
-	condition_ = condition;
+  
+    //cout << "create determinator from args\n";
+	//condition_ = condition;
+	conditions.push_back(condition);
 // 	action_ = action;
   actions.push_back(action);
 	enabled_ = true;
@@ -26,7 +29,7 @@ Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action 
 Determinator::Determinator( string  detin)
 {
 
-    
+    //cout << "create determinator from xml: " << this << " \n" ;
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load(detin.c_str(), detin.length());
     if (result)
@@ -69,7 +72,8 @@ Determinator::Determinator( string  detin)
         {
             if (!strcmp("xplCondition",ait->name())) {
                 //actions.push_back(new XPLCondition(*ait));
-                condition_ = new XPLCondition(*ait);
+                //condition_ = new XPLCondition(*ait);
+		conditions.push_back(new XPLCondition(*ait));
             }
         }
         //cout << "\tloaded " << actions.size() << " conditions\n";
@@ -79,8 +83,12 @@ Determinator::Determinator( string  detin)
         pugi::xml_node outnode =detnode.child("output"); 
         for (pugi::xml_node_iterator ait = outnode.begin(); ait != outnode.end(); ++ait)
         {
+	    //cout << "\t add action: " << (*ait).name() << "\n";
             if (!strcmp("xplAction",ait->name())) {
-                actions.push_back(new XPLAction(*ait));
+	      XPLAction* xa = new XPLAction(*ait);
+                actions.push_back(xa);
+		//cout << "action added: " << xa << "\n";
+      
             }
             if (!strcmp("logAction",ait->name())) {
                 actions.push_back(new LogAction(*ait));
@@ -95,7 +103,23 @@ Determinator::Determinator( string  detin)
 
 Determinator::~Determinator()
 {
-
+  
+  //cout << actions.size() << " actions to delete\n";
+  while(actions.size() > 0) {
+      DeterminatorAction* de = actions.back();
+      actions.pop_back();
+      //cout << "want to delete action: " << de << "\n";
+      delete(de);
+  }
+  while(conditions.size() > 0) {
+      XPLCondition* de = conditions.back();
+      conditions.pop_back();
+      //cout << "want to delete condition: " << de << "\n";
+      delete(de);
+  }
+  
+  //cout << "delete determinator: " << this << " \n";
+  
 }
 
 
@@ -185,7 +209,11 @@ string Determinator::printXML()
     pugi::xml_node inputnode = det.append_child("input");
     inputnode.append_attribute("match") = "any";
     
-    condition_->appendCondition(&inputnode);
+    for (vector<XPLCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
+            
+            (*dit)->appendCondition(&inputnode);
+        }
+    //condition_->appendCondition(&inputnode);
     
     pugi::xml_node outputnode = det.append_child("output");
     

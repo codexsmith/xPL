@@ -13,8 +13,7 @@ using namespace std;
 //Should only be used in an appropriate factory.
 XPLAction::XPLAction(vector<XPLMessage>* responses)
 {
-	responses_ = responses;
-  message = (*responses)[0];
+ message = (*responses)[0];
 }
 
 //A constructor that builds the XPLAction from XML, passed in from the Action node down.
@@ -90,7 +89,8 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
 
 XPLAction::~XPLAction()
 {
-	delete responses_;
+	//cout << "deleting xplation: " << this << "\n";
+	
 }
 
 //Method to execute the determinator.
