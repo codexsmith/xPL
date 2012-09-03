@@ -3,6 +3,8 @@
 
 #include "XPLHal.h"
 #include "XPLMessage.h"
+#include "DeterminatorCondition.h"
+
 #include <string>
 #include "pugixml/pugixml.hpp"
 
@@ -10,28 +12,28 @@
 using namespace std;
 static const string tabs = "\t\t";
 
-class XPLCondition {
-	public:
-		XPLCondition( std::vector< XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType );
+class XPLCondition : public DeterminatorCondition {
+public:
+    XPLCondition( std::vector< XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType );
     XPLCondition(pugi::xml_node);
     XPLCondition();
-		~XPLCondition();
-		bool match(XPLMessage* message);
-		bool equals(XPLCondition* condition);
+    ~XPLCondition();
+    bool match(XPLMessage* message);
+    bool equals(XPLCondition* condition);
     void appendCondition( pugi::xml_node* inputnode );
-		string printXML();
+    string printXML();
 
-	protected:
-		vector<XPLValuePair>* getAttributes();
+protected:
+    vector<XPLValuePair>* getAttributes();
 
-	private:
-      string display_name;
-		vector<XPLValuePair> attributes_;
-		XPLAddress sourceAddress_;
-		XPLAddress destinationAddress_;
-		XPLSchema schema_;
-		string msgType_;
-		int hops_;
+private:
+    string display_name;
+    vector<XPLValuePair> attributes_;
+    XPLAddress sourceAddress_;
+    XPLAddress destinationAddress_;
+    XPLSchema schema_;
+    string msgType_;
+    int hops_;
 
 
 };

@@ -1,5 +1,6 @@
 #include "Determinator.h"
 #include "XPLCondition.h"
+#include "TimeCondition.h"
 #include "DeterminatorAction.h"
 #include "LogAction.h"
 
@@ -71,9 +72,9 @@ Determinator::Determinator( string  detin)
         for (pugi::xml_node_iterator ait = innode.begin(); ait != innode.end(); ++ait)
         {
             if (!strcmp("xplCondition",ait->name())) {
-                //actions.push_back(new XPLCondition(*ait));
-                //condition_ = new XPLCondition(*ait);
-		conditions.push_back(new XPLCondition(*ait));
+              conditions.push_back(new XPLCondition(*ait));
+            } else if (!strcmp("timeCondition",ait->name())) {
+                conditions.push_back(new TimeCondition(*ait));
             }
         }
         //cout << "\tloaded " << actions.size() << " conditions\n";
@@ -112,7 +113,7 @@ Determinator::~Determinator()
       delete(de);
   }
   while(conditions.size() > 0) {
-      XPLCondition* de = conditions.back();
+      DeterminatorCondition* de = conditions.back();
       conditions.pop_back();
       //cout << "want to delete condition: " << de << "\n";
       delete(de);
@@ -122,11 +123,6 @@ Determinator::~Determinator()
   
 }
 
-
-XPLCondition* Determinator::getCondition()
-{
-	return condition_;
-}
 
 string Determinator::getGUID()
 {
@@ -142,9 +138,14 @@ void Determinator::setGUID(string GUID)
 //Always fails when the Determinator is disabled.
 bool Determinator::match(XPLMessage* message)
 {
+	bool result = false;
 	if(enabled_)
 	{
-		return condition_->match(message);
+	    for (vector<DeterminatorCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
+		
+		result |= (*dit)->match(message);
+	    }
+	
 	}
 	return false;
 }
@@ -209,7 +210,7 @@ string Determinator::printXML()
     pugi::xml_node inputnode = det.append_child("input");
     inputnode.append_attribute("match") = "any";
     
-    for (vector<XPLCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
+    for (vector<DeterminatorCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
             
             (*dit)->appendCondition(&inputnode);
         }
