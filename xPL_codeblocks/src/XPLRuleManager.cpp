@@ -114,7 +114,8 @@ void XPLRuleManager::saveDeterminators()
 void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
     DIR *dir;
     struct dirent *ent;
-    string loadLocation = saveLocation + "bk";
+    //string loadLocation = saveLocation + "bk";
+    string loadLocation = saveLocation;
     dir = opendir ((loadLocation + "/").c_str());
     
     if (dir != NULL) {

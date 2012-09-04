@@ -164,6 +164,8 @@ bool Determinator::match(DeterminatorEnvironment* env)
             result |= (*dit)->match(env);
         } else {
             result &= (*dit)->match(env);
+            //early exit
+            if (!result) return false;
         }
 	    }
 	

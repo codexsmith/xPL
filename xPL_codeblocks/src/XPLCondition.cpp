@@ -132,6 +132,9 @@ XPLCondition::~XPLCondition()
 //matching values in the passed in message.
 bool XPLCondition::match(DeterminatorEnvironment* env)
 {
+    if (env->message == NULL) {
+        return false;
+    }
     XPLMessage* message = env->message;
 	XPLAddress sourceAddress = message->getSource();
 	XPLAddress destinationAddress = message->getDestination();
