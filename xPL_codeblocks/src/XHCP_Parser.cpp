@@ -1,5 +1,6 @@
 #include "XHCP_Parser.h"
 #include <iostream>
+#include <algorithm>
 
 //XHCP_Parser Constructor
 //Maps inbound xHCP commands to a function that will create a proper response
@@ -23,23 +24,29 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     std::string command;
     std::string item;
     std::vector<std::string> theList;
+    
+    
+    while (!theString.empty() && ((theString[theString.length()-1] == '\n') || (theString[theString.length()-1] == '\r'))) {
+        theString.erase(theString.length()-1);
+    }
+    
+    cout << "got line: " << theString << ".\n";
     std::stringstream ss(theString);
     while(std::getline(ss,item, ' '))
         theList.push_back(item);
     Dispatcher aParser;
 
-    //Check for extra carriage returns and line returns
-    if(theList.size() == 1){
-        if (theList[0].substr(theList[0].size()-2, 2).compare("\r\n")==0)
-            theList[0] = theList[0].substr(0, theList[0].size()-2);
+    
+    if(theList.size() < 1){
+        cout << "no line\n";
+        return;
     }
-    else if(theList.size() == 2){
-        if (theList[1].substr(theList[1].size()-2, 2).compare("\r\n")==0)
-            theList[1] = theList[1].substr(0, theList[1].size()-2);
-        command = theList[1];
+    map<string,pt2Member>::iterator mit = theMap.find(theList[0]);
+    if (mit == theMap.end()){
+        cout << "command \"" << theList[0] << "\" not in list\n";
+        return;
     }
-
-    else command = "No Argument";
+    
     std::string buffer = (aParser.*theMap[theList[0]])(command);
     int sendMsgSize = buffer.size();
     pcClientSocket->SendData(buffer.c_str(), sendMsgSize);

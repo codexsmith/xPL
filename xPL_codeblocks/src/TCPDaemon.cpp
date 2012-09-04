@@ -346,7 +346,7 @@ Daemon::~Daemon()
 void
 Daemon::RunDaemon()
 {
-//     Start();
+     Start();
 
     condSignal.LockMutEx();
     while (!bKillFlag)
