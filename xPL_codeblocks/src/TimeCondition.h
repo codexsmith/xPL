@@ -4,7 +4,7 @@
 #include "XPLHal.h"
 #include "XPLMessage.h"
 #include "DeterminatorCondition.h"
-
+#include "DeterminatorEnvironment.h"
 #include <string>
 #include "pugixml/pugixml.hpp"
 
@@ -16,7 +16,7 @@ public:
     TimeCondition(pugi::xml_node);
     TimeCondition();
     ~TimeCondition();
-    bool match(XPLMessage* message);
+    bool match(DeterminatorEnvironment* env );
     bool equals(TimeCondition* condition);
     void appendCondition( pugi::xml_node* inputnode );
     
@@ -25,7 +25,8 @@ protected:
 private:
     string display_name;
     string toprator;
-    string timeVal;
+    int thours;
+    int tminutes;
 
 };
 

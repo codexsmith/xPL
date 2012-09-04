@@ -5,7 +5,7 @@
 #include "XPLMessage.h"
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
-
+#include "DeterminatorEnvironment.h"
 using namespace std;
 
 class XPLAction : public DeterminatorAction {
@@ -13,7 +13,7 @@ class XPLAction : public DeterminatorAction {
 		XPLAction(vector<XPLMessage>* responses);
     XPLAction(pugi::xml_node);
 		~XPLAction();
-		void execute();
+    void execute(DeterminatorEnvironment* env);
     void appendAction(pugi::xml_node* outputnode);
 		bool equals(XPLAction* action);
     XPLMessage message;

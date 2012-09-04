@@ -5,6 +5,7 @@
 #include "XPLAction.h"
 #include "XPLCondition.h"
 #include "XPLMessage.h"
+#include "DeterminatorEnvironment.h"
 
 #include <vector>
 
@@ -16,8 +17,8 @@ public:
     explicit Determinator( XPLCondition* condition, DeterminatorAction* action );
     explicit Determinator( string );
     ~Determinator();
-    bool match(XPLMessage* message);
-    void execute();
+    bool match( DeterminatorEnvironment* env );
+    void execute(DeterminatorEnvironment*);
     void setEnabled(bool enable);
     bool isEnabled();
 //     void setAction(DeterminatorAction* action);
@@ -26,6 +27,7 @@ public:
     string getGUID();
     vector<DeterminatorAction*> actions;
     vector<DeterminatorCondition*> conditions;
+    bool matchany;
 //     DeterminatorAction* getAction();
 
 private:

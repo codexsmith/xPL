@@ -1,7 +1,7 @@
 #include "XPLRuleManager.h"
 #include <vector>
 #include <fstream>
-
+#include "DeterminatorEnvironment.h"
 
 #include <syslog.h>
 
@@ -59,12 +59,16 @@ std::string XPLRuleManager::detToString(){
 
 void XPLRuleManager::match(XPLMessage msg)
 {
+    cout << "rules engine matching \n";
     //match stuff
+    
+    DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
+    
     for (int i = 0; i < determinators->size(); i++)
     {
-        if (determinators->at(i)->match(&msg))
+        if (determinators->at(i)->match(&env))
         {
-            determinators->at(i)->execute();
+            determinators->at(i)->execute(&env);
         }
     }
 }

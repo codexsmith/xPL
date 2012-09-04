@@ -5,6 +5,7 @@
 #include "XPLMessage.h"
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
+#include "DeterminatorEnvironment.h"
 
 using namespace std;
 static const string tabLevel = "\t\t";
@@ -14,7 +15,7 @@ class LogAction : public DeterminatorAction {
     LogAction(string name, string message);
     LogAction(pugi::xml_node);
     ~LogAction();
-    void execute();
+    void execute(DeterminatorEnvironment* env);
     void appendAction(pugi::xml_node* outputnode);
     bool equals(LogAction* action);
     string messageText;

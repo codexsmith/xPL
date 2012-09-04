@@ -44,7 +44,7 @@ LogAction::~LogAction()
 //Method to execute the determinator.
 //@return returns a vector of XPLMessages for the xPLStack to send out
 //on the network.
- void LogAction::execute()
+void LogAction::execute(DeterminatorEnvironment* env)
 {
     syslog(LOG_INFO, messageText.c_str());
   

@@ -130,8 +130,9 @@ XPLCondition::~XPLCondition()
 
 //Matches a message. Returns true when all of the CONDITION'S parameters have
 //matching values in the passed in message.
-bool XPLCondition::match(XPLMessage* message)
+bool XPLCondition::match(DeterminatorEnvironment* env)
 {
+    XPLMessage* message = env->message;
 	XPLAddress sourceAddress = message->getSource();
 	XPLAddress destinationAddress = message->getDestination();
 	int hops = message->getHops();
@@ -141,15 +142,20 @@ bool XPLCondition::match(XPLMessage* message)
 //	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0) || sourceAddress == NULL;
 //	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0) || destinationAddress == NULL;
 	bool membersMatch = true;
+  
 	for(int i = 0; i < attributes_.size(); i++)
 	{
+
 		XPLValuePair memberToFind = attributes_.at(i);
 		string value = message->findMember(memberToFind.member);
+
 		if(!(memberToFind.value.compare(value) == 0))
 		{
+        //cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << value << ": false\n";
 			membersMatch = false;
 			break;
 		}
+		//cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << value << ": true\n";
 	}
 	return membersMatch;
 }

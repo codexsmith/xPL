@@ -4,7 +4,7 @@
 #include "XPLHal.h"
 #include "XPLMessage.h"
 #include "DeterminatorCondition.h"
-
+#include "DeterminatorEnvironment.h"
 #include <string>
 #include "pugixml/pugixml.hpp"
 
@@ -18,7 +18,7 @@ public:
     XPLCondition(pugi::xml_node);
     XPLCondition();
     ~XPLCondition();
-    bool match(XPLMessage* message);
+    bool match(DeterminatorEnvironment* env);
     bool equals(XPLCondition* condition);
     void appendCondition( pugi::xml_node* inputnode );
     string printXML();

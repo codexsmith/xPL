@@ -69,6 +69,14 @@ Determinator::Determinator( string  detin)
     
     if(detnode.child("input")) {
         pugi::xml_node innode =detnode.child("input"); 
+        
+        if (innode.attribute("match")) {
+            if (!strcmp(innode.attribute("match").as_string(), "any")) matchany=true;
+            else matchany = false;
+        } else {
+            failed = true;
+        }
+        
         for (pugi::xml_node_iterator ait = innode.begin(); ait != innode.end(); ++ait)
         {
             if (!strcmp("xplCondition",ait->name())) {
@@ -136,27 +144,41 @@ void Determinator::setGUID(string GUID)
 
 //Passthrough to XPLCondition to test if the message matches. 
 //Always fails when the Determinator is disabled.
-bool Determinator::match(XPLMessage* message)
+bool Determinator::match(DeterminatorEnvironment* env)
 {
+    
 	bool result = false;
+  if(matchany){
+      //cout << "match any:\n";
+      result =false;
+  } else {
+      //cout << "match all:\n";
+      result = true;
+  }
+  
+  
 	if(enabled_)
 	{
 	    for (vector<DeterminatorCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
-		
-		result |= (*dit)->match(message);
+        if(matchany){
+            result |= (*dit)->match(env);
+        } else {
+            result &= (*dit)->match(env);
+        }
 	    }
 	
 	}
-	return false;
+	return result;
 }
 
 //pass through to XPLActions.
 //TODO: we need to handle order.
-void Determinator::execute()
+void Determinator::execute(DeterminatorEnvironment* env)
 {
     if (isEnabled()){
+        cout << "executing determinator " << GUID_ << ": " << name << ": " << description << "\n";
         for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
-                (*dit)->execute();
+                (*dit)->execute(env);
                 flush(cout);
         }
     }
@@ -208,7 +230,11 @@ string Determinator::printXML()
    
     
     pugi::xml_node inputnode = det.append_child("input");
-    inputnode.append_attribute("match") = "any";
+    if(matchany) {
+        inputnode.append_attribute("match") = "any";
+    } else {
+        inputnode.append_attribute("match") = "all";
+    }
     
     for (vector<DeterminatorCondition*>::iterator dit = conditions.begin(); dit != conditions.end(); ++dit) {
             

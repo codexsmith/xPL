@@ -1,11 +1,12 @@
 #include "TimeCondition.h"
 #include "XPLHal.h"
 #include "XPLMessage.h"
-
+#include "DeterminatorEnvironment.h"
 
 #include <string>
 #include <iostream>
-
+#include <sstream> 
+#include <stdio.h>
 using namespace std;
 
 
@@ -30,7 +31,16 @@ TimeCondition::TimeCondition(pugi::xml_node condnode) {
         failed = true;
     }
     if (condnode.attribute("value")) {
-        timeVal = condnode.attribute("value").as_string();
+        string timeVal = condnode.attribute("value").as_string();
+        int splitc = timeVal.find_first_of(":");
+        
+        stringstream convert(timeVal.substr(0,splitc));
+        convert>>thours;
+        stringstream convert2(timeVal.substr(splitc+1));
+        convert2>>tminutes;
+
+
+        
     } else {
         failed = true;
     }
@@ -45,16 +55,42 @@ TimeCondition::~TimeCondition()
 
 //Matches a message. Returns true when all of the CONDITION'S parameters have
 //matching values in the passed in message.
-bool TimeCondition::match(XPLMessage* message)
+bool TimeCondition::match(DeterminatorEnvironment* env)
 {
-	return false;
+    bool ret;
+    //cout << "\t\ttime cond testing: time: " << env->mtime->tm_hour <<" : " <<  env->mtime->tm_min << " " << toprator <<" " << thours << ":" << tminutes << "  ";
+
+    int etime = ( 60  * env->mtime->tm_hour ) + env->mtime->tm_min;
+    int ttime = ( 60 * thours ) + tminutes;
+    //cout << "\t\ttime cond testing: time: " << etime << " " << toprator <<" " << ttime << "  ";
+    
+    if ( !strcmp(toprator.c_str(), "=")) {
+        ret =  (etime == ttime);
+    } else if ( !strcmp(toprator.c_str(), "!=")) {
+        ret =  (etime != ttime);
+    } else if ( !strcmp(toprator.c_str(), ">")) {
+        ret =  (etime > ttime);
+    } else if ( !strcmp(toprator.c_str(), "<")) {
+        ret =  (etime < ttime);
+    } else if ( !strcmp(toprator.c_str(), ">=")) {
+        ret =  (etime >= ttime);
+    } else if ( !strcmp(toprator.c_str(), "<=")) {
+        ret =  (etime <= ttime);
+    } else {
+        cout << "no idea what that operator is: " << toprator << "\n";
+        return false;   
+    }
+    
+    //cout << ret << "\n";
+    return ret;
 }
 
 //Compares conditions based on the equivalencey of each of their member variables.
 bool TimeCondition::equals(TimeCondition* condition)
 {
-	  if ((condition->timeVal == timeVal)
-	    && (condition ->display_name == display_name)
+    if ((condition->thours == thours)
+        && (condition ->tminutes == tminutes)
+      && (condition ->display_name == display_name)
 	    && (condition -> toprator == toprator)) {
 	      return true;
 	  }
@@ -69,6 +105,8 @@ void TimeCondition::appendCondition(pugi::xml_node* inputnode) {
     
     condnode.append_attribute("display_name") = display_name.c_str();
     condnode.append_attribute("operator") = toprator.c_str();
-    condnode.append_attribute("value") = timeVal.c_str();
+    char str[7];
+    snprintf (str, 6, "%02d:%02d", thours, tminutes);
+    condnode.append_attribute("value") = str;
 }
 

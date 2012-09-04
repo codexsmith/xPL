@@ -96,7 +96,7 @@ XPLAction::~XPLAction()
 //Method to execute the determinator.
 //@return returns a vector of XPLMessages for the xPLStack to send out
 //on the network.
- void XPLAction::execute()
+void XPLAction::execute(DeterminatorEnvironment* env)
 {
   XPLParser::Instance()->sendMsg(message);
   

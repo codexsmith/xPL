@@ -1,5 +1,5 @@
 
-
+#include "DeterminatorEnvironment.h"
 #include "XPLCondition.h"
 #include "XPLHal.h"
 #include "XPLMessage.h"
@@ -10,11 +10,15 @@
 
 using namespace std;
 
-public:
-DeterminatorEnvrionment::DeterminatorEnvrionment() {
-  message = null;
+
+DeterminatorEnvironment::DeterminatorEnvironment() {
+  message = NULL;
+  time_t stime = time(0);
+  mtime = localtime(&stime);
 }
-DeterminatorEnvrionment::DeterminatorEnvrionment(XPLMessage* messagein) {
+DeterminatorEnvironment::DeterminatorEnvironment( XPLMessage* messagein) {
   message = messagein;
+  time_t stime = time(0);
+  mtime = localtime(&stime);
 }
 

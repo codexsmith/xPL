@@ -1,20 +1,25 @@
-#ifndef DeterminatorEnvrionment_H
-#define DeterminatorEnvrionment_H
+#ifndef DeterminatorEnvironment_H
+#define DeterminatorEnvironment_H
 
+#include "XPLHal.h"
 #include "XPLMessage.h"
-#include <time.h>
+#include <string>
+#include "pugixml/pugixml.hpp"
+#include <ctime>
 
 using namespace std;
 
-class DeterminatorEnvrionment {
-	public:
-        DeterminatorEnvrionment();
-        DeterminatorEnvrionment(XPLMessage*);
-	//~XPLRuleManager();
-	
-	XPLMessage* message;
-	
+class DeterminatorEnvironment
+{
+public:
+    DeterminatorEnvironment();
+    DeterminatorEnvironment ( XPLMessage* );
 
-        };
+    //~XPLRuleManager();
 
-#endif //DeterminatorEnvrionment_H
+    XPLMessage* message;
+    struct tm * mtime;
+
+};
+
+#endif //DeterminatorEnvironment_h

@@ -6,14 +6,14 @@
 #include "XPLMessage.h"
 #include <string>
 #include "pugixml/pugixml.hpp"
-
+#include "DeterminatorEnvironment.h"
 
 using namespace std;
 class DeterminatorCondition {
 	public:
 		DeterminatorCondition() {};
 		~DeterminatorCondition() {};
-		virtual bool match(XPLMessage* message) = 0;
+    virtual bool match(DeterminatorEnvironment*) = 0;
 		//bool equals(DeterminatorCondition* condition);
 		virtual void appendCondition( pugi::xml_node* inputnode ) = 0;
 
