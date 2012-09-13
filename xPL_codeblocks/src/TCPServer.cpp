@@ -36,7 +36,7 @@
 /******************************************************************************/
 #include "TCPServer.h"
 #include "XHCP_Parser.h"
-
+#include <iostream>
 
 /******************************************************************************/
 /* Include global variables                                                   */
@@ -185,16 +185,20 @@ TCPServer::TCPServer(IPAddress &cServerAddress, int iPortNumber, int iBacklog,
 /******************************************************************************/
 TCPServer::~TCPServer()
 {
+    
+    std::cout << "g1\n";
     TCPServerThread::DeActivateServer();
-
+    std::cout << "g2\n";
     delete pcListeningSocket;
-
+    std::cout << "g3\n";
     condWakeThread.LockMutEx();
+    std::cout << "g4\n";
     bTerminate = true;
     condWakeThread.Signal();
     condWakeThread.UnlockMutEx();
-
+    std::cout << "going to wait\n";
     WaitThread();
+    std::cout << "done\n";
 }
 
 /******************************************************************************/

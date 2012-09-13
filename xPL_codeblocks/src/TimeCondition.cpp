@@ -1,5 +1,5 @@
 #include "TimeCondition.h"
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 #include "DeterminatorEnvironment.h"
 
@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream> 
 #include <stdio.h>
+#include <string.h>
 using namespace std;
 
 

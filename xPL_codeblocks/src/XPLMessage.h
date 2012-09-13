@@ -1,7 +1,7 @@
 #ifndef XPLMessage_H
 #define XPLMessage_H
 
-#include "XPLHal.h"
+#include "XPLCommon.h"
 
 using namespace std;
 

@@ -1,10 +1,11 @@
 #include "XPLCondition.h"
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 
 
 #include <string>
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 

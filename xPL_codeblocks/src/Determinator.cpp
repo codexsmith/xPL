@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string.h>
 
 //default constructor
 Determinator::Determinator()

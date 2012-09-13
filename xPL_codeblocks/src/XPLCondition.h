@@ -1,7 +1,7 @@
 #ifndef XPLCondition_H
 #define XPLCondition_H
 
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 #include "DeterminatorCondition.h"
 #include "DeterminatorEnvironment.h"

@@ -1,0 +1,3 @@
+[submodule "xPL_codeblocks/src/xPLsdk"]
+	path = xPL_codeblocks/src/xPLsdk
+	url = git@github.com:zeroping/xPLsdk-poco.git

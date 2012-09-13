@@ -5,10 +5,11 @@
 //XHCP_Parser Constructor
 //Maps inbound xHCP commands to a function that will create a proper response
 XHCP_Parser::XHCP_Parser(){
-    theMap["SETRULE"] = &Dispatcher::addRule;
-    theMap["LISTRULE"] = &Dispatcher::listRule;
-    theMap["DELRULE"]= &Dispatcher::deleteRule;
-    theMap["CAPABILITIES"]= &Dispatcher::capCommand;
+    theMap["SETRULE"] = &XHCPDispatcher::addRule;
+    theMap["LISTRULES"] = &XHCPDispatcher::listRules;
+    theMap["DELRULE"]= &XHCPDispatcher::deleteRule;
+    theMap["CAPABILITIES"]= &XHCPDispatcher::capCommand;
+    
 }
 
 //XHCP_Parser Destructor
@@ -22,6 +23,7 @@ XHCP_Parser::~XHCP_Parser()
 void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     std::string theString(msg, msgSize);
     std::string command;
+    std::string remainder;
     std::string item;
     std::vector<std::string> theList;
     
@@ -34,20 +36,31 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
     std::stringstream ss(theString);
     while(std::getline(ss,item, ' '))
         theList.push_back(item);
-    Dispatcher aParser;
+
 
     
     if(theList.size() < 1){
         cout << "no line\n";
         return;
     }
-    map<string,pt2Member>::iterator mit = theMap.find(theList[0]);
+    
+    command = theList[0];
+    std::transform(command.begin(), command.end(),command.begin(), ::toupper);
+    
+    map<string,pt2Member>::iterator mit = theMap.find(command);
     if (mit == theMap.end()){
-        cout << "command \"" << theList[0] << "\" not in list\n";
+        cout << "command \"" << command << "\" not in list\n";
         return;
     }
     
-    std::string buffer = (aParser.*theMap[theList[0]])(command);
+    remainder = theString;
+    if (theString.size() > command.size() + 1) {
+        remainder.erase(0, command.size()+1);
+    } else {
+        remainder = "";
+    }
+    
+    std::string buffer = (aParser.*theMap[command])(remainder);
     int sendMsgSize = buffer.size();
     pcClientSocket->SendData(buffer.c_str(), sendMsgSize);
 }

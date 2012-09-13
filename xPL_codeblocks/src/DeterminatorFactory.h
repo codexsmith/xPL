@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "Determinator.h"
 #include "XPLMessage.h"
 #include "DeterminatorAction.h"

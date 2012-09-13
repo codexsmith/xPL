@@ -5,7 +5,10 @@
 #include "XPLMessage.h"
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
-#include "DeterminatorEnvironment.h"
+//#include "DeterminatorEnvironment.h"
+
+class DeterminatorEnvironment;
+
 using namespace std;
 
 class XPLAction : public DeterminatorAction {

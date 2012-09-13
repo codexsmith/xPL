@@ -5,6 +5,12 @@
 
 #include <string>
 #include <vector>
+#include "XPLCommon.h"
+#include "XPLRuleManager.h"
+
+#include "Poco/SharedPtr.h"
+
+using namespace Poco;
 
 extern "C" {
 
@@ -14,29 +20,17 @@ extern "C" {
 
 using namespace std;
 
-class XPLAddress
-{
+
+
+
+
+class XPLHal {
     public:
-    string vendor, device, instance;
-    XPLAddress(){
-            vendor="*";
-            device="*";
-            instance="*";
-    }
+        XPLHal();
+        ~XPLHal();
+    void saveDeterminators();
+    Poco::SharedPtr<XPLRuleManager> ruleMgr;
 };
 
-class XPLSchema
-{
-    public:
-    string schema, type;
-};
-
-class XPLValuePair
-{
-    public:
-    string member, value;
-};
-
-extern xPL_ServicePtr theService;
 
 #endif // XPLHal_H

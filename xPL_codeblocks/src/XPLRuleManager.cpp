@@ -13,10 +13,23 @@
 //#include <string.h>
 //#include "sysstat.h"    /* Fix up for Windows - inc mode_t */
 #include <dirent.h>
+#include <errno.h>
 
 using namespace std;
 
 const string XPLRuleManager::saveLocation = "/tmp/determinators";
+
+XPLRuleManager* XPLRuleManager::m_pInstance = NULL;
+
+XPLRuleManager* XPLRuleManager::Instance()
+{
+    if(!m_pInstance){
+        m_pInstance = new XPLRuleManager;
+    }
+    
+    return m_pInstance;
+}
+
 
 XPLRuleManager::XPLRuleManager(vector<Determinator*>* determinators)
 {

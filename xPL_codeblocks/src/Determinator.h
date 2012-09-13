@@ -25,6 +25,8 @@ public:
     string printXML();
     void setGUID(string GUID);
     string getGUID();
+    string name;
+    string description;
     vector<DeterminatorAction*> actions;
     vector<DeterminatorCondition*> conditions;
     bool matchany;
@@ -32,8 +34,7 @@ public:
 
 private:
     string GUID_;
-    string name;
-    string description;
+
 //     DeterminatorAction* action_;
     bool enabled_;
 };

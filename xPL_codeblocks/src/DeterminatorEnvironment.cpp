@@ -1,7 +1,7 @@
 
 #include "DeterminatorEnvironment.h"
 #include "XPLCondition.h"
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 
 

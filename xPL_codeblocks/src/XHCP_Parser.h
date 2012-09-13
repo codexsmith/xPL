@@ -3,10 +3,10 @@
 #include <map>
 #include <sstream>
 #include "TCPServer.h"
-#include "Dispatcher.h"
+#include "XHCPDispatcher.h"
 #include "XPLRuleManager.h"
 
-typedef std::string (Dispatcher::*pt2Member)(std::string);
+typedef std::string (XHCPDispatcher::*pt2Member)(std::string);
 class XHCP_Parser
 {
     public:
@@ -26,6 +26,7 @@ class XHCP_Parser
         std::map<std::string,pt2Member> theMap;
         static XHCP_Parser* singleton;
         XHCP_Parser();
+        XHCPDispatcher aParser;
 
 };
 

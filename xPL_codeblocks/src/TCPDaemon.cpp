@@ -87,15 +87,21 @@ Condition   Daemon::condSignal;
 void
 Daemon::SignalHandler(int iSig)
 {
+    std::cout << "getting mutex\n";
     condSignal.LockMutEx();
+    std::cout << "Got mutex\n";
     switch (iSig)
     {
+        
         case SIGINT:
-        case SIGTERM:   bKillFlag = true; break;
+        case SIGTERM:   bKillFlag = true;
+            std::cout << "stopping\n";
+            std::flush(std::cout);
+            break;
         case SIGHUP:    bRestartFlag = true; break;
     }
     condSignal.UnlockMutEx();
-    condSignal.Signal();
+    condSignal.Broadcast();
 }
 
 /******************************************************************************/
@@ -287,8 +293,11 @@ Daemon::Start()
 void
 Daemon::Stop()
 {
+    std::cout << "stop\n";
     syslog(LOG_INFO, "Daemon::Stop() attempting to delete pcTheServer...");
+    std::cout << "logged\n";
     delete pcTheServer;
+    std::cout << "deleted\n";
     syslog(LOG_INFO, "Daemon Terminated");
 }
 
@@ -316,8 +325,8 @@ Daemon::Daemon(const char *pcConfigFile)
     //sigaction(SIGINT, &sigIntHandler, NULL);
     //sigaction(SIGTERM, &sigIntHandler, NULL);
     
-    signal(SIGINT, &SignalHandler);
-    signal(SIGTERM, &SignalHandler);
+    //signal(SIGINT, &SignalHandler);
+    //signal(SIGTERM, &SignalHandler);
     //signal(SIGHUP, &SignalHandler);
 }
 
@@ -352,6 +361,7 @@ Daemon::RunDaemon()
     while (!bKillFlag)
     {
         condSignal.Wait();
+        std::cout << "signaled.\n";
         if (bRestartFlag)
         {
             Stop();
@@ -360,11 +370,14 @@ Daemon::RunDaemon()
         }
         //syslog(LOG_INFO, "condSignal.Signal() received.");
     }
+    std::cout << "killing.\n";
     condSignal.UnlockMutEx();
-
-    //pthread_exit(NULL);
-    syslog(LOG_INFO, "Exiting xHCP Thread");
+    std::cout << "killing2.\n";
+    
+    //syslog(LOG_INFO, "Exiting xHCP Thread");
     Stop();
+    std::cout << "killing3.\n";
+    pthread_exit(NULL);
 }
 
 /******************************************************************************/

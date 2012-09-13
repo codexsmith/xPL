@@ -58,18 +58,18 @@ int XPLParser::sendMsg(XPLMessage msg)
     //Create a new message
     if (msg.isBroadcast())
     {
-        if ((theMessage = xPL_createBroadcastMessage(theService, msgType)) == NULL) {
-            fprintf(stderr, "Unable to create broadcast message\n");
-            return FALSE;
-        }
+//         if ((theMessage = xPL_createBroadcastMessage(theService, msgType)) == NULL) {
+//             fprintf(stderr, "Unable to create broadcast message\n");
+//             return FALSE;
+//         }
     }
     else
     {
-        if ((theMessage = xPL_createTargetedMessage(theService, msgType, uc(msg.getDestination().vendor),
-                uc(msg.getDestination().device), uc(msg.getDestination().instance))) == NULL) {
-            fprintf(stderr, "Unable to create targeted message\n");
-            return FALSE;
-        }
+//         if ((theMessage = xPL_createTargetedMessage(theService, msgType, uc(msg.getDestination().vendor),
+//                 uc(msg.getDestination().device), uc(msg.getDestination().instance))) == NULL) {
+//             fprintf(stderr, "Unable to create targeted message\n");
+//             return FALSE;
+//         }
     }
 
     //Setup the schema in the message

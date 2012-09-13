@@ -1,7 +1,7 @@
 #ifndef DeterminatorCondition_H
 #define DeterminatorCondition_H
 
-#include "XPLHal.h"
+#include "XPLCommon.h"
 
 #include "XPLMessage.h"
 #include <string>

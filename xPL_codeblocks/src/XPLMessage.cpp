@@ -8,7 +8,7 @@
 #include <time.h>
 #include <syslog.h>
 
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 
 using namespace std;

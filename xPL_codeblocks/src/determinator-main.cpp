@@ -24,6 +24,10 @@
 #include "XPLAction.h"
 #include "XPLCondition.h"
 
+#include "Poco/Thread.h"
+
+using namespace Poco;
+
 /******************************************************************************/
 /* Include header files for TCPServer and StreamerThread classes.             */
 /******************************************************************************/
@@ -42,29 +46,37 @@ vector<Determinator>* createDeterminator();
 pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
 XPLRuleManager* ruleMgr;
-Daemon cDaemon(CONFIG_FILE);
+// disxhcp  Daemon cDaemon(CONFIG_FILE);
 
-void saveDeterminators(void) {
-    printf("trying to save determinators\n");
-    ruleMgr->saveDeterminators();
-}
+
 
 
 void shutdown_handler(int s){
     printf("\nCaught signal %d\n",s);
-    
-    saveDeterminators();
-    
+    /*
     xPL_setServiceEnabled(theService, FALSE);
     xPL_releaseService(theService);
-    printf("Shutting down xPLLib\n");
-    xPL_shutdown();
+    xPL_shutdown();*/
+    cout << "xPL service down\n";
     
+//     xPL_setServiceEnabled(theService, FALSE);
+//     xPL_releaseService(theService);
+//     printf("Shutting down xPLLib\n");
+//     xPL_shutdown();
+//     
     int ret = 0;
     //ret = pthread_kill(xHCP_thread, s);
-    cDaemon.SignalHandler(s);
+    cout << "sig hand\n";
+    // disxhcp cDaemon.SignalHandler(s);
+    cout << "sig hand2\n";
+
+    cout << "join\n";
+    //pthread_join(xHCP_thread,NULL);
+    // disxhcp ret = pthread_cancel(xHCP_thread);
+    cout << "joined\n";
+
+//     saveDeterminators();
     closelog();
-    
     exit(0); 
     
 }
@@ -85,29 +97,53 @@ int main(int argc,const char * argv[])
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
     openlog("xplhallite", LOG_PID, LOG_DAEMON);
     
-    pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
-
-    syslog(LOG_INFO, "Main Thread Created.");
-
-    setup_singnal_handler();
+    XPLHal hal;
     
-    //Load XML Determinators from disk.
-    ruleMgr = new XPLRuleManager();
+
+    
+
+    
+    //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
+    
+    syslog(LOG_INFO, "Main Thread Created.");
+    
+    setup_singnal_handler();
     //cout << "rule manager addr: " << ruleMgr << " \n";
     //Source Address
+
+    while(1) {
+        
+        Thread::sleep(1000);
+        cout << "test app sleeping\n";
+        
+    }
+
+	closelog();
+	
+	
+  //cout << "del rule manager: " << ruleMgr << " \n";
+  //ruleMgr->saveDeterminators();
+   // return 0;
+    exit(0);
+}
+
+Condition xplCond;
+
+void* xplService(void*)
+{
     const std::string srcVendor = "HAL9000";
     const std::string srcDeviceID = "xPLHAL";
     const std::string srcInstanceID = "1";
-
+    
     /* Start xPL up */
     if (!xPL_initialize(xPL_getParsedConnectionType())) {
         fprintf(stderr, "Unable to start xPL\n");
         //exit(1);
     }
-
+    
     /* And a listener for all xPL messages */
     xPL_addMessageListener(XPLParser::recvMsg, NULL);
-
+    
     /* Create a service so the hubs know to send things to us        */
     /* While we are not really using the service, xPL hubs will not  */
     /* forward messages to us until they have seen an xPL-looking    */
@@ -116,30 +152,43 @@ int main(int argc,const char * argv[])
     theService = xPL_createConfigurableService(srcVendor.c_str(), srcDeviceID.c_str(), "hal.xpl");
     //theService = xPL_createConfigurableService(srcVendor.c_str(),"b", "hal.xpl");
     xPL_setServiceVersion(theService, HAL_VERSION);
-
+    
     xPL_setServiceEnabled(theService, TRUE);
-
+    
     /* Hand control over to xPLLib */
     /* Main thread is processing xPL messages */
     /* xHCP_thread is processing xHCP messages */
-    xPL_processMessages(-1);
+    
+    xplCond.LockMutEx();
+//     while (!bKillFlag)
+    {
+        xPL_processMessages(100);
+        xplCond.Wait();
+//         xplCond.
+//         std::cout << "xsignaled.\n";
 
-    pthread_join(xHCP_thread,NULL);
+    }
+    std::cout << "xkilling.\n";
+    xplCond.UnlockMutEx();
+    std::cout << "xkilling2.\n";
+    
+    //syslog(LOG_INFO, "Exiting xHCP Thread");
+//     Stop();
+    std::cout << "xkilling3.\n";
+    pthread_exit(NULL);
+    
+    
 
-	closelog();
-	
-	
-  //cout << "del rule manager: " << ruleMgr << " \n";
-  ruleMgr->saveDeterminators();
-  delete(ruleMgr);
-    return 0;
+    cout << "xpl processing down\n";
+    
 }
+
 
 //The xHCP thread executes this function
 void* xHCPService(void*)
 {
 
-    cDaemon.RunDaemon();
+    // disxhcp  cDaemon.RunDaemon();
 }
 
 

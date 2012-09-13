@@ -1,5 +1,5 @@
 #include "DeterminatorFactory.h"
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "Determinator.h"
 #include "XPLCondition.h"
 #include "XPLMessage.h"

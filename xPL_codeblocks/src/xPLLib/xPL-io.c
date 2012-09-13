@@ -700,7 +700,11 @@ Bool xPL_processMessages(int theTimeout) {
       
     /* Poll for an active device */
     SYSCALL(activeDevices = poll(pollInfo, pollInfoCount, thisTimeout));
-    if (xPLFD == -1) break;
+    printf("polled\n");
+    if (xPLFD == -1) {
+        printf("fl\n");
+        break;
+    }
 
     /* Handle errors */
     if (activeDevices == -1) {
@@ -720,7 +724,7 @@ Bool xPL_processMessages(int theTimeout) {
       timeoutsSoFar += thisTimeout;
       continue;
     }
-
+    printf("betw\n");
     /* Clear timeouts so far */
     timeoutsSoFar = 0;
 
@@ -740,7 +744,7 @@ Bool xPL_processMessages(int theTimeout) {
       if (!(--activeDevices)) break;
     }
   }
-
+  printf("here\n");
   /* Return final status */
   if (!timeoutDone) doTimeouts();
   return xPLMessageProcessed;

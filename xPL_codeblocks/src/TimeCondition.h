@@ -1,7 +1,7 @@
 #ifndef TimeCondition_H
 #define TimeCondition_H
 
-#include "XPLHal.h"
+#include "XPLCommon.h"
 #include "XPLMessage.h"
 #include "DeterminatorCondition.h"
 #include "DeterminatorEnvironment.h"

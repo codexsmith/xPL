@@ -111,7 +111,7 @@ static Bool parseCmdLine( int *argc, char *argv[]) {
     else {
        /* Check for debug mode */
       if (!strcmp(argv[swptr],"-debug")) {
-	debugMode = TRUE;
+	debugMode = FALSE;
 	daemonMode = FALSE;
 	writeDebug("Debuging mode enabled");
 	continue;
