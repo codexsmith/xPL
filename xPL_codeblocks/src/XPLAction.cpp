@@ -11,9 +11,9 @@ using namespace std;
 
 //XPLActions are directly constructed their vector of messages.
 //Should only be used in an appropriate factory.
-XPLAction::XPLAction(vector<XPLMessage>* responses)
+XPLAction::XPLAction()
 {
- message = (*responses)[0];
+
 }
 
 //A constructor that builds the XPLAction from XML, passed in from the Action node down.
@@ -87,18 +87,14 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
     
 }
 
-XPLAction::~XPLAction()
-{
-	//cout << "deleting xplation: " << this << "\n";
-	
-}
+
 
 //Method to execute the determinator.
 //@return returns a vector of XPLMessages for the xPLStack to send out
 //on the network.
 void XPLAction::execute(DeterminatorEnvironment* env)
 {
-  XPLParser::Instance()->sendMsg(message);
+  XPLParser::instance().sendMsg(message);
   
 }
 

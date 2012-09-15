@@ -6,24 +6,26 @@
 #include "XPLParser.h"
 #include "XPLMessage.h"
 #include "XPLRuleManager.h"
+#include "Poco/SingletonHolder.h"
 
 
-
-extern XPLRuleManager* ruleMgr;
+// extern XPLRuleManager* ruleMgr;
 
 XPLParser::XPLParser()
 {
+
 }
 
-XPLParser* XPLParser::m_pInstance = NULL;
-
-XPLParser* XPLParser::Instance()
+XPLParser::~XPLParser()
 {
-    if(!m_pInstance){
-        m_pInstance = new XPLParser;
-    }
     
-    return m_pInstance;
+}
+
+
+const XPLParser& XPLParser::instance()
+{
+    static Poco::SingletonHolder<XPLParser> sh;
+    return *sh.get();
 }
 
 char* uc(string str)
@@ -158,7 +160,7 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     syslog(LOG_DEBUG , " " );
     
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
-    ruleMgr->match(msg);
+    XPLRuleManager::instance().match(msg);
 
 
     ///////////////////////////////////////////////////////////////////////////

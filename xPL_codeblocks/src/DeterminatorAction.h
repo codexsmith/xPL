@@ -13,7 +13,7 @@ class DeterminatorAction {
       virtual void execute(DeterminatorEnvironment* env) = 0;
       virtual void appendAction(pugi::xml_node* outputnode) = 0;
     //bool equals(XPLAction* action);
-      virtual ~DeterminatorAction() {cout << "ttewsres\n";};
+      virtual ~DeterminatorAction(){};
       string display_name;
       int executeOrder;
 };

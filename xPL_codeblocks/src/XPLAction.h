@@ -13,19 +13,15 @@ using namespace std;
 
 class XPLAction : public DeterminatorAction {
 	public:
-		XPLAction(vector<XPLMessage>* responses);
+		XPLAction();
     XPLAction(pugi::xml_node);
-		~XPLAction();
+		virtual ~XPLAction(){};
     void execute(DeterminatorEnvironment* env);
     void appendAction(pugi::xml_node* outputnode);
 		bool equals(XPLAction* action);
     XPLMessage message;
 
-	protected:
-		vector<XPLMessage>* getResponses();
 
-	private:
-		vector<XPLMessage>* responses_;
 
     
 };

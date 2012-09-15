@@ -60,7 +60,7 @@ void XHCP_Parser::recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize){
         remainder = "";
     }
     
-    std::string buffer = (aParser.*theMap[command])(remainder);
+    std::string buffer = (aParser->*theMap[command])(remainder);
     int sendMsgSize = buffer.size();
     pcClientSocket->SendData(buffer.c_str(), sendMsgSize);
 }

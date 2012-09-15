@@ -123,10 +123,7 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
     //cout << "\t\tloaded " << attributes_.size() << " attributes\n";
 }
 
-XPLCondition::~XPLCondition()
-{
- 	//delete attributes_;
-}
+
 
 
 //Matches a message. Returns true when all of the CONDITION'S parameters have

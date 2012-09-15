@@ -9,7 +9,8 @@
 #include "XPLRuleManager.h"
 
 #include "Poco/SharedPtr.h"
-
+//#include "xplUDP.h"
+#include "xplComms.h"
 using namespace Poco;
 
 extern "C" {
@@ -28,8 +29,10 @@ class XPLHal {
     public:
         XPLHal();
         ~XPLHal();
-    void saveDeterminators();
-    Poco::SharedPtr<XPLRuleManager> ruleMgr;
+        void saveDeterminators();
+        Poco::SharedPtr<XPLRuleManager> ruleMgr;
+    private:
+        xplComms;
 };
 
 

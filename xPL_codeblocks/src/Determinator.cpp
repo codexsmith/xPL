@@ -113,8 +113,8 @@ Determinator::Determinator( string  detin)
 
 Determinator::~Determinator()
 {
-  
-  //cout << actions.size() << " actions to delete\n";
+/*  
+  cout << actions.size() << " actions to delete\n";*/
   while(actions.size() > 0) {
       DeterminatorAction* de = actions.back();
       actions.pop_back();
@@ -128,7 +128,7 @@ Determinator::~Determinator()
       delete(de);
   }
   
-  //cout << "delete determinator: " << this << " \n";
+//   cout << "delete determinator: " << this << " \n";
   
 }
 

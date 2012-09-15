@@ -6,8 +6,8 @@
     XHCPDispatcher::XHCPDispatcher(std::string aName){
         name = aName;
     }
-    XHCPDispatcher::XHCPDispatcher(){
-
+    XHCPDispatcher::XHCPDispatcher(SharedPtr<XPLRuleManager> ruleMgrIn){
+        ruleMgr = ruleMgrIn;
     }
     std::string XHCPDispatcher::addRule(std::string aString){
         std::string theString = "";
@@ -18,7 +18,7 @@
     }
     std::string XHCPDispatcher::listRules(std::string aString){
         std::string theString;
-        XPLRuleManager* ruleMgr = XPLRuleManager::Instance();
+        
         
         theString +=  "237 List of Determinator Rules follows\r\n";
         

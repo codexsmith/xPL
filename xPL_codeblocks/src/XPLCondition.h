@@ -17,7 +17,6 @@ public:
     XPLCondition( std::vector< XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType );
     XPLCondition(pugi::xml_node);
     XPLCondition();
-    ~XPLCondition();
     bool match(DeterminatorEnvironment* env);
     bool equals(XPLCondition* condition);
     void appendCondition( pugi::xml_node* inputnode );

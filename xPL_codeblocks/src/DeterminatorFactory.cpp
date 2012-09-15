@@ -79,7 +79,7 @@ XPLAction* DeterminatorFactory::createXPLAction(vector<XPLMessage>* messages)
 	{
 		actionVector->push_back(messages->at(i));
 	}
-	XPLAction* action = new XPLAction(actionVector);
+	XPLAction* action = new XPLAction();//broken!
 	return action;
 }
 

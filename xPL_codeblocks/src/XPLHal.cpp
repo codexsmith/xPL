@@ -17,17 +17,20 @@ using namespace std;
 XPLHal::XPLHal() {
     cout << "XPLHal Created\n";
     //Load XML Determinators from disk.
-    Poco::SharedPtr<XPLRuleManager> ruleMgr = XPLRuleManager::Instance();
+    ruleMgr = new XPLRuleManager();
+    
+    
+    
     
 }
 XPLHal::~XPLHal() {
-    cout << "XPLHal Destroying\n";
-    saveDeterminators();
+//     cout << "XPLHal Destroying\n";
+//     saveDeterminators();
     cout << "XPLHal Destroyed\n";
 }
 
 
 void XPLHal::saveDeterminators(void) {
-    cout << "trying to save determinators\n";
+    cout << "trying to save determinators (hal)\n";
     ruleMgr->saveDeterminators();
 }

@@ -19,23 +19,6 @@
 #define CONFIG_HEARTBEAT_INTERVAL 60
 #define HUB_DISCOVERY_INTERVAL 3
 
-/* Some helpful types */
-#ifndef COMMON_TYPES
-typedef enum { FALSE, TRUE }  Bool;
-typedef char * String;
-
-#define COMMON_TYPES
-#endif
-
-/* Some helpful constants */
-#ifndef TRUE
-//#define TRUE 1
-//#define FALSE 0
-#endif
-
-#ifndef NULL
-#define NULL 0
-#endif
 
 #ifndef INADDR_NONE
   #define INADDR_NONE 0xffffffff

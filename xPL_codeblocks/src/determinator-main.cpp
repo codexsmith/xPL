@@ -45,9 +45,10 @@ vector<Determinator>* createDeterminator();
 
 pthread_t xHCP_thread;
 xPL_ServicePtr theService = NULL;
-XPLRuleManager* ruleMgr;
+// XPLRuleManager* ruleMgr;
 // disxhcp  Daemon cDaemon(CONFIG_FILE);
 
+bool running = true;
 
 
 
@@ -76,9 +77,9 @@ void shutdown_handler(int s){
     cout << "joined\n";
 
 //     saveDeterminators();
-    closelog();
-    exit(0); 
-    
+//     closelog();
+//     exit(0); 
+    running = false;
 }
 
 void setup_singnal_handler() {
@@ -99,9 +100,6 @@ int main(int argc,const char * argv[])
     
     XPLHal hal;
     
-
-    
-
     
     //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
     
@@ -111,20 +109,16 @@ int main(int argc,const char * argv[])
     //cout << "rule manager addr: " << ruleMgr << " \n";
     //Source Address
 
-    while(1) {
+    while(running) {
         
         Thread::sleep(1000);
         cout << "test app sleeping\n";
         
     }
-
-	closelog();
-	
-	
-  //cout << "del rule manager: " << ruleMgr << " \n";
-  //ruleMgr->saveDeterminators();
-   // return 0;
-    exit(0);
+  
+  closelog();
+    return 0;
+   // exit(0);
 }
 
 Condition xplCond;

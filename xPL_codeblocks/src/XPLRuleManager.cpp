@@ -15,20 +15,18 @@
 #include <dirent.h>
 #include <errno.h>
 
+#include "Poco/File.h"
+#include "Poco/DirectoryIterator.h"
+#include "Poco/FileStream.h"
+#include "Poco/SingletonHolder.h"
+
+using namespace Poco;
+
 using namespace std;
 
-const string XPLRuleManager::saveLocation = "/tmp/determinators";
+const string XPLRuleManager::saveLocation = "/tmp/determinators/";
 
-XPLRuleManager* XPLRuleManager::m_pInstance = NULL;
 
-XPLRuleManager* XPLRuleManager::Instance()
-{
-    if(!m_pInstance){
-        m_pInstance = new XPLRuleManager;
-    }
-    
-    return m_pInstance;
-}
 
 
 XPLRuleManager::XPLRuleManager(vector<Determinator*>* determinators)
@@ -50,17 +48,29 @@ XPLRuleManager::XPLRuleManager()
 
 XPLRuleManager::~XPLRuleManager()
 {
-    printf("trying to save determinators\n");
-    //saveDeterminators();
-    //cout << "delete rule manager "  << this << " \n";
+    cout << "trying to save determinators\n";
+    saveDeterminators();
+//     cout << "delete determinators from  "  << this << " ";
     
     while (determinators->size() > 0 ) {
-	delete determinators->back();
-	determinators->pop_back();
+//         cout << ".";
+        delete determinators->back();
+        determinators->pop_back();
     }
     
     delete determinators;
+//     cout << "\n";
 }
+
+
+namespace{
+    static Poco::SingletonHolder<XPLRuleManager> sh;
+}
+    
+XPLRuleManager& XPLRuleManager::instance() {
+    return *sh.get();
+}
+
 std::string XPLRuleManager::detToString(){
     std::string theString;
     for (int i = 0; i < determinators->size();i++){
@@ -86,36 +96,24 @@ void XPLRuleManager::match(XPLMessage msg)
     }
 }
 
-int XPLRuleManager::makeDeterminatorDir()
-{
-    struct stat      st;
-    int             status = 0;
-    if (stat(saveLocation.c_str(), &st) != 0)
-    {
-        /* Directory does not exist. EEXIST for race condition */
-        if (mkdir(saveLocation.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0 && errno != EEXIST)
-            status = -1;
-    }
-    else if (!S_ISDIR(st.st_mode))
-    {
-        errno = ENOTDIR;
-        status = -1;
-    }
-    
-    return(status);
-}
 
 void XPLRuleManager::saveDeterminators()
 {
-    int ret = makeDeterminatorDir();
-    std::ofstream myfile;
+
+    int ret = 0;
     
     if (ret == 0){
         for(vector<Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-            myfile.open ((saveLocation +"/" +(*dit)->getGUID() + ".xml").c_str());
-            cout << "Saving " + saveLocation +"/" +(*dit)->getGUID() + ".xml\n";
-            myfile << ((*dit)->printXML()).c_str();
-            myfile.close();
+
+            File detFile = ((saveLocation  +(*dit)->getGUID() + ".xml"));
+            //create all parent directories if needed
+            detFile.createDirectories();
+            FileOutputStream detStream (detFile.path());
+            
+            //myfile.open (detFile.path().c_str());
+            cout << "Saving " + saveLocation  +(*dit)->getGUID() + ".xml\n";
+            detStream << ((*dit)->printXML());
+            detStream.close();
         }
         cout << "Saved "<< determinators->size() << " determinators\n";
         flush(cout);
@@ -128,47 +126,43 @@ void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
     DIR *dir;
     struct dirent *ent;
     //string loadLocation = saveLocation + "bk";
-    string loadLocation = saveLocation;
-    dir = opendir ((loadLocation + "/").c_str());
     
-    if (dir != NULL) {
-        /* print all the files and directories within directory */
-        cout << "determinators:\n";
+    Path loadLocation(saveLocation);
+//     string loadLocation = saveLocation;
+//     dir = opendir ((loadLocation + "/").c_str());
+    
+    if (!loadLocation.isDirectory()) {
+        cout << "no such dir\n";
+        return;
+    }
+    
+    DirectoryIterator it(loadLocation);
+    DirectoryIterator end;
+    while (it != end)
+    {
+        std::cout << it.name();
        
-        while ((ent = readdir (dir)) != NULL) {
+        
+        Path p(it.path());
+        File f(p);
+        if(p.isFile() && f.canRead() && (p.getExtension() == "xml")){
+            std::cout << f.getSize();
+            
+             FileInputStream detFile(f.path());
+             
+          
             std::ifstream myfile;
             std::string detstr;
-            string filename = (loadLocation + "/" + ent->d_name);
-            string ending = ".xml";
-            string ending2 = loadLocation + "/" +".xml";
-            if (filename.length() >  ending2.length() && (filename.compare (filename.length() - ending.length(), ending.length(), ending) == 0)) {
-                cout << "\tloading: "+  filename + "\n"; 
             
-                myfile.open(filename.c_str(),std::ios::in | std::ios::binary);
-
-                if(myfile.bad()) {
-                    cout<<"fail\n";
-                }
-
-                myfile.seekg(0, std::ios::end);
-                int leng = myfile.tellg();
-                detstr.resize(leng);
-                myfile.seekg(0, std::ios::beg);
-                myfile.read(&detstr[0], detstr.size());
-                
-                Determinator* d = new Determinator(detstr);
-
-                loaded->push_back(d);
-                myfile.close();
-            }
-            
+            detstr.resize ( f.getSize() );
+            detFile.read ( &detstr[0], detstr.size() );
+            Determinator* d = new Determinator ( detstr );
+            loaded->push_back ( d );
+            detFile.close();
         }
-        closedir (dir);
-
-    } else {
-        /* could not open directory */
-        syslog(LOG_ERR, ("Failed to open determinator directory " + loadLocation).c_str());
-        cout << ("Failed to open determinator directory " + loadLocation);
+        std::cout << std::endl;
+        ++it;
     }
+
     cout << "loaded " << loaded->size() << " determinators\n";
 }

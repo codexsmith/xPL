@@ -5,6 +5,7 @@
 #include "TCPServer.h"
 #include "XHCPDispatcher.h"
 #include "XPLRuleManager.h"
+#include "Poco/SharedPtr.h"
 
 typedef std::string (XHCPDispatcher::*pt2Member)(std::string);
 class XHCP_Parser
@@ -26,7 +27,7 @@ class XHCP_Parser
         std::map<std::string,pt2Member> theMap;
         static XHCP_Parser* singleton;
         XHCP_Parser();
-        XHCPDispatcher aParser;
+        SharedPtr<XHCPDispatcher> aParser;
 
 };
 
