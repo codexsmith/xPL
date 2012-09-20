@@ -7,22 +7,6 @@
 
 using namespace std;
 
-class XPLAddress
-{
-    public:
-    string vendor, device, instance;
-    XPLAddress(){
-            vendor="*";
-            device="*";
-            instance="*";
-    }
-};
-
-class XPLSchema
-{
-    public:
-    string schema, type;
-};
 
 class XPLValuePair
 {

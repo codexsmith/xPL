@@ -7,11 +7,6 @@
 
 class XPLRulesManager;
 
-extern "C" {
-
-    #include "xPLLib/xPL.h"
-
-}
 
 using namespace Poco;
 using namespace std;
@@ -31,9 +26,9 @@ class XPLParser
     
     static const XPLParser& instance();
 
-    static void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue);
+    //static void recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue); FIXME
 
-    static int sendMsg(XPLMessage msg);
+    //static int sendMsg(XPLMessage msg); FIXME
     
     private:
 

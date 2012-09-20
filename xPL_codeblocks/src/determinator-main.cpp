@@ -33,18 +33,18 @@ using namespace Poco;
 /******************************************************************************/
 #include "TCPDaemon.h"
 
-extern "C" {
-
-    #include "xPLLib/xPL.h"
-
-}
+// extern "C" {
+// 
+//     #include "xPLLib/xPL.h"
+// 
+// }
 
 //Prototypes
 void* xHCPService(void*);
 vector<Determinator>* createDeterminator();
 
-pthread_t xHCP_thread;
-xPL_ServicePtr theService = NULL;
+// pthread_t xHCP_thread;
+// xPL_ServicePtr theService = NULL;
 // XPLRuleManager* ruleMgr;
 // disxhcp  Daemon cDaemon(CONFIG_FILE);
 
@@ -123,59 +123,59 @@ int main(int argc,const char * argv[])
 
 Condition xplCond;
 
-void* xplService(void*)
-{
-    const std::string srcVendor = "HAL9000";
-    const std::string srcDeviceID = "xPLHAL";
-    const std::string srcInstanceID = "1";
+// void* xplService(void*)
+// {
+//     const std::string srcVendor = "HAL9000";
+//     const std::string srcDeviceID = "xPLHAL";
+//     const std::string srcInstanceID = "1";
     
     /* Start xPL up */
-    if (!xPL_initialize(xPL_getParsedConnectionType())) {
-        fprintf(stderr, "Unable to start xPL\n");
-        //exit(1);
-    }
+//     if (!xPL_initialize(xPL_getParsedConnectionType())) {
+//         fprintf(stderr, "Unable to start xPL\n");
+//         //exit(1);
+//     }
     
     /* And a listener for all xPL messages */
-    xPL_addMessageListener(XPLParser::recvMsg, NULL);
+//     xPL_addMessageListener(XPLParser::recvMsg, NULL);
     
     /* Create a service so the hubs know to send things to us        */
     /* While we are not really using the service, xPL hubs will not  */
     /* forward messages to us until they have seen an xPL-looking    */
     /* device on the end of a hub connection. So this just gets us a */
     /* place at the table, so to speak                               */
-    theService = xPL_createConfigurableService(srcVendor.c_str(), srcDeviceID.c_str(), "hal.xpl");
-    //theService = xPL_createConfigurableService(srcVendor.c_str(),"b", "hal.xpl");
-    xPL_setServiceVersion(theService, HAL_VERSION);
-    
-    xPL_setServiceEnabled(theService, TRUE);
-    
-    /* Hand control over to xPLLib */
-    /* Main thread is processing xPL messages */
-    /* xHCP_thread is processing xHCP messages */
-    
-    xplCond.LockMutEx();
-//     while (!bKillFlag)
-    {
-        xPL_processMessages(100);
-        xplCond.Wait();
-//         xplCond.
-//         std::cout << "xsignaled.\n";
-
-    }
-    std::cout << "xkilling.\n";
-    xplCond.UnlockMutEx();
-    std::cout << "xkilling2.\n";
-    
-    //syslog(LOG_INFO, "Exiting xHCP Thread");
-//     Stop();
-    std::cout << "xkilling3.\n";
-    pthread_exit(NULL);
-    
-    
-
-    cout << "xpl processing down\n";
-    
-}
+//     theService = xPL_createConfigurableService(srcVendor.c_str(), srcDeviceID.c_str(), "hal.xpl");
+//     //theService = xPL_createConfigurableService(srcVendor.c_str(),"b", "hal.xpl");
+//     xPL_setServiceVersion(theService, HAL_VERSION);
+//     
+//     xPL_setServiceEnabled(theService, TRUE);
+//     
+//     /* Hand control over to xPLLib */
+//     /* Main thread is processing xPL messages */
+//     /* xHCP_thread is processing xHCP messages */
+//     
+//     xplCond.LockMutEx();
+// //     while (!bKillFlag)
+//     {
+//         xPL_processMessages(100);
+//         xplCond.Wait();
+// //         xplCond.
+// //         std::cout << "xsignaled.\n";
+// 
+//     }
+//     std::cout << "xkilling.\n";
+//     xplCond.UnlockMutEx();
+//     std::cout << "xkilling2.\n";
+//     
+//     //syslog(LOG_INFO, "Exiting xHCP Thread");
+// //     Stop();
+//     std::cout << "xkilling3.\n";
+//     pthread_exit(NULL);
+//     
+//     
+// 
+//     cout << "xpl processing down\n";
+//     
+// }
 
 
 //The xHCP thread executes this function

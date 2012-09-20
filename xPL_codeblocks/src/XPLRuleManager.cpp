@@ -52,6 +52,7 @@ XPLRuleManager::~XPLRuleManager()
     saveDeterminators();
 //     cout << "delete determinators from  "  << this << " ";
     
+    determinatorsMutex.lock();
     while (determinators->size() > 0 ) {
 //         cout << ".";
         delete determinators->back();
@@ -59,6 +60,8 @@ XPLRuleManager::~XPLRuleManager()
     }
     
     delete determinators;
+    determinators = NULL;
+    determinatorsMutex.unlock();
 //     cout << "\n";
 }
 
@@ -73,33 +76,38 @@ XPLRuleManager& XPLRuleManager::instance() {
 
 std::string XPLRuleManager::detToString(){
     std::string theString;
+    determinatorsMutex.lock();
     for (int i = 0; i < determinators->size();i++){
         //string += determinators -> at(i).getID();
         //string += "\r\n";
     }
+    determinatorsMutex.unlock();
     return theString;
 }
 
-void XPLRuleManager::match(XPLMessage msg)
+void XPLRuleManager::match(xplMsg& msg)
 {
-    cout << "rules engine matching \n";
+    //cout << "rules engine matching \n\n";
     //match stuff
     
     DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
-    
+    determinatorsMutex.lock();
     for (int i = 0; i < determinators->size(); i++)
     {
         if (determinators->at(i)->match(&env))
         {
+            //cout << "matched\n";
             determinators->at(i)->execute(&env);
         }
+        //cout << "\n";
     }
+    determinatorsMutex.unlock();
 }
 
 
 void XPLRuleManager::saveDeterminators()
 {
-
+    determinatorsMutex.lock();
     int ret = 0;
     
     if (ret == 0){
@@ -121,6 +129,7 @@ void XPLRuleManager::saveDeterminators()
         cout << "Cannot save determinators\n";
         flush(cout);
     }
+    determinatorsMutex.unlock();
 }
 void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
     DIR *dir;
@@ -157,7 +166,9 @@ void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
             detstr.resize ( f.getSize() );
             detFile.read ( &detstr[0], detstr.size() );
             Determinator* d = new Determinator ( detstr );
+            determinatorsMutex.lock();
             loaded->push_back ( d );
+            determinatorsMutex.unlock();
             detFile.close();
         }
         std::cout << std::endl;

@@ -28,15 +28,7 @@ const XPLParser& XPLParser::instance()
     return *sh.get();
 }
 
-char* uc(string str)
-{
-    char *newChar=new char[str.size()+1];
-    newChar[str.size()]=0;
-    memcpy(newChar,str.c_str(),str.size());
-
-    return newChar;
-}
-
+/*
 int XPLParser::sendMsg(XPLMessage msg)
 {
     vector<XPLValuePair> members = msg.getMembers();
@@ -164,4 +156,4 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
 
 
     ///////////////////////////////////////////////////////////////////////////
-}
+}*/

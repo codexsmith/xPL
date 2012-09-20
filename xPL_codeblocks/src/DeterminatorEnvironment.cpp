@@ -16,7 +16,7 @@ DeterminatorEnvironment::DeterminatorEnvironment() {
   time_t stime = time(0);
   mtime = localtime(&stime);
 }
-DeterminatorEnvironment::DeterminatorEnvironment( XPLMessage* messagein) {
+DeterminatorEnvironment::DeterminatorEnvironment( xplMsg* messagein) {
   message = messagein;
   time_t stime = time(0);
   mtime = localtime(&stime);

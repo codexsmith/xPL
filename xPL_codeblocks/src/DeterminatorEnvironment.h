@@ -2,24 +2,28 @@
 #define DeterminatorEnvironment_H
 
 #include "XPLCommon.h"
+#include "Poco/AutoPtr.h"
 //#include "XPLMessage.h"
 #include <string>
 #include "pugixml/pugixml.hpp"
 #include <ctime>
+#include "xplMsg.h"
 
 using namespace std;
-
-class XPLMessage;
+using namespace Poco;
+using namespace xpl;
+/*
+class xplMsg;*/
 
 class DeterminatorEnvironment
 {
 public:
     DeterminatorEnvironment();
-    DeterminatorEnvironment ( XPLMessage* );
+    DeterminatorEnvironment ( xplMsg*  );
 
     //~XPLRuleManager();
 
-    XPLMessage* message;
+    xplMsg* message;
     struct tm * mtime;
 
 };

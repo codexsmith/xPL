@@ -9,15 +9,18 @@
 #include "XPLRuleManager.h"
 
 #include "Poco/SharedPtr.h"
-//#include "xplUDP.h"
+#include "xplUDP.h"
 #include "xplComms.h"
-using namespace Poco;
+#include "xplDevice.h"
 
+using namespace Poco;
+using namespace xpl;
+/*
 extern "C" {
 
     #include "xPLLib/xPL.h"
 
-}
+}*/
 
 using namespace std;
 
@@ -30,9 +33,16 @@ class XPLHal {
         XPLHal();
         ~XPLHal();
         void saveDeterminators();
-        Poco::SharedPtr<XPLRuleManager> ruleMgr;
+        XPLRuleManager ruleMgr;
+        
+        void HandleDeviceMessages(MessageRxNotification*);
+        void HandleAllMessages(MessageRxNotification*);
+        
     private:
-        xplComms;
+        xplUDP* myComms;
+        //xplDevice* pDevice;
+        SharedPtr<xplDevice> pDevice;
+
 };
 
 

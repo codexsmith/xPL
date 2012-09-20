@@ -169,9 +169,9 @@ bool Determinator::match(DeterminatorEnvironment* env)
             if (!result) return false;
         }
 	    }
-	
+	    return result;
 	}
-	return result;
+  return false;
 }
 
 //pass through to XPLActions.

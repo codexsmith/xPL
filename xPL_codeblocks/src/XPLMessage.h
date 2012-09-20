@@ -2,6 +2,7 @@
 #define XPLMessage_H
 
 #include "XPLCommon.h"
+#include "xplCore.h"
 
 using namespace std;
 

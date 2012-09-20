@@ -130,13 +130,12 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
 //matching values in the passed in message.
 bool XPLCondition::match(DeterminatorEnvironment* env)
 {
-    if (env->message == NULL) {
-        return false;
-    }
-    XPLMessage* message = env->message;
-	XPLAddress sourceAddress = message->getSource();
-	XPLAddress destinationAddress = message->getDestination();
-	int hops = message->getHops();
+
+    xplMsg* message = env->message;
+    
+	XPLAddress sourceAddress = message->GetSource();
+	XPLAddress destinationAddress = message->GetTarget();
+	int hops = message->GetHop();
 
 //	bool msgMatch = (msgType_.compare(message->getMsgType()) == 0);
 //	bool hopsMatch = (hops_ == hops) || hops_ == NULL;
@@ -148,16 +147,23 @@ bool XPLCondition::match(DeterminatorEnvironment* env)
 	{
 
 		XPLValuePair memberToFind = attributes_.at(i);
-		string value = message->findMember(memberToFind.member);
+		//string value = message->findMember(memberToFind.member);
+    const xplMsgItem* itemp = message->GetMsgItem(memberToFind.member);
+    if(!itemp) {
+        cout<<"\t\tXPL cond testing: " << memberToFind.member << " : false\n";
+        membersMatch = false;
+        break;
+    }
 
-		if(!(memberToFind.value.compare(value) == 0))
+    if(!(memberToFind.value.compare(itemp->GetValue(0)) == 0))
 		{
-        //cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << value << ": false\n";
+        cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : false\n";
 			membersMatch = false;
 			break;
 		}
-		//cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << value << ": true\n";
+		cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : true\n";
 	}
+	cout << "cond matched: " << membersMatch << "\n";
 	return membersMatch;
 }
 

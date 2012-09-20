@@ -4,7 +4,7 @@
 #include "DeterminatorAction.h"
 #include "XPLAction.h"
 #include "XPLCondition.h"
-#include "XPLMessage.h"
+#include "xplMsg.h"
 #include "DeterminatorEnvironment.h"
 
 #include <vector>
