@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<determinator guid="4201" name="noname" description="on dim" enabled="Y" groupName="" isGroup="N">
+	<input match="all">
+		<xplCondition display_name="test" msg_type="" source_vendor="*" source_device="*" source_instance="*" target_vendor="*" target_device="*" target_instance="*" schema_class="control" schema_type="basic">
+			<param name="device" operator="=" value="pwm" />
+			<param name="current" operator="=" value="2" />
+		</xplCondition>
+		<timeCondition display_name="timetest" operator="&lt;=" value="23:00" />
+	</input>
+	<output>
+		<logAction display_name="display-nameddddd" executeOrder="2" logText="text to log" />
+		<xplAction display_name="test" executeOrder="001" msg_type="cmnd" msg_target="smgpoe-lamp.1" msg_schema="control.basic">
+			<xplActionParam expression="device=pwm" />
+			<xplActionParam expression="type=variable" />
+			<xplActionParam expression="current=200" />
+		</xplAction>
+		<xplAction display_name="test" executeOrder="001" msg_type="cmnd" msg_target="smgpoe-lamp.3" msg_schema="control.basic">
+			<xplActionParam expression="device=pwm" />
+			<xplActionParam expression="type=variable" />
+			<xplActionParam expression="current=200" />
+		</xplAction>
+	</output>
+</determinator>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<determinator guid="4202" name="noname" description="off" enabled="Y" groupName="" isGroup="N">
+	<input match="any">
+		<xplCondition display_name="test" msg_type="" source_vendor="*" source_device="*" source_instance="*" target_vendor="*" target_device="*" target_instance="*" schema_class="control" schema_type="basic">
+			<param name="device" operator="=" value="pwm" />
+			<param name="current" operator="=" value="1" />
+		</xplCondition>
+	</input>
+	<output>
+		<xplAction display_name="test" executeOrder="001" msg_type="cmnd" msg_target="smgpoe-lamp.*" msg_schema="control.basic">
+			<xplActionParam expression="device=pwm" />
+			<xplActionParam expression="type=variable" />
+			<xplActionParam expression="current=0" />
+		</xplAction>
+	</output>
+</determinator>

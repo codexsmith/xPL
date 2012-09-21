@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<determinator guid="42031" name="Lightson" description="Turn on the lights (high)" enabled="Y" groupName="" isGroup="N">
+	<input match="all">
+		<xplCondition display_name="test" msg_type="" source_vendor="smgpoe" source_device="lamp" source_instance="3" target_vendor="*" target_device="*" target_instance="*" schema_class="control" schema_type="basic">
+			<param name="device" operator="=" value="button2" />
+			<param name="current" operator="=" value="HIGH" />
+		</xplCondition>
+		<timeCondition display_name="sanetimetest" operator="&gt;=" value="08:00" />
+	</input>
+	<output>
+		<logAction display_name="Lights on" executeOrder="2" logText="Lights on" />
+		<xplAction display_name="test" executeOrder="001" msg_type="cmnd" msg_target="smgpoe-lamp.3" msg_schema="control.basic">
+			<xplActionParam expression="device=pwm" />
+			<xplActionParam expression="type=variable" />
+			<xplActionParam expression="current=200" />
+		</xplAction>
+	</output>
+</determinator>
