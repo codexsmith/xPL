@@ -7,16 +7,33 @@
 
 #include "XPLAction.h"
 #include "XPLParser.h"
+#include "Poco/Net/ServerSocket.h"
+#include "Poco/Net/TCPServer.h"
+#include "Poco/Net/TCPServerConnection.h"
+#include "Poco/Net/TCPServerConnectionFactory.h"
+#include "Poco/Net/TCPServerParams.h"
+#include "XHCPServerConnection.h"
+
 #include <xplMsg.h>
 
 
 
 using namespace std;
+using Poco::Net::ServerSocket;
+using Poco::Net::TCPServer;
+using Poco::Net::TCPServerConnection;
+using Poco::Net::TCPServerConnectionFactory;
+using Poco::Net::TCPServerConnectionFactoryImpl;
+using Poco::Net::TCPServerParams;
+using Poco::Net::IPAddress;
 
 XPLHal::XPLHal() {
     cout << "XPLHal Created\n";
     //Load XML Determinators from disk.
-    //ruleMgr = new XPLRuleManager();
+    ruleMgr.assign(new XPLRuleManager());
+    dispatch.assign(new XHCPDispatcher(ruleMgr));
+    
+
     
     
     xplUDP::instance()->rxNotificationCenter.addObserver(Observer<XPLHal, MessageRxNotification>(*this,&XPLHal::HandleAllMessages));
@@ -30,10 +47,13 @@ XPLHal::XPLHal() {
         return;
     }
     
-    
     pDevice->rxNotificationCenter.addObserver(Observer<XPLHal, MessageRxNotification>(*this,&XPLHal::HandleDeviceMessages));
     
     pDevice->Init();
+
+    startXHCP();
+    
+
     
     
     
@@ -41,6 +61,7 @@ XPLHal::XPLHal() {
 XPLHal::~XPLHal() {
      cout << "XPLHal Destroying\n";
     cout << "XPLHal Destroyed\n";
+    srv->stop();
 }
 
 //messages that are local to us
@@ -52,7 +73,7 @@ void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
 //messages for anyone, to be processed by the rules engine
 void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
     cout << "got message: " << mNot->message->GetSchemaClass() << " " <<mNot->message->GetSchemaType() << "\n";
-    ruleMgr.match(*(mNot->message));
+    ruleMgr->match(*(mNot->message));
     
     cout<<"here1 " << mNot->message->GetSource().device << "\n";
     mNot->release();
@@ -62,5 +83,22 @@ void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
 
 void XPLHal::saveDeterminators(void) {
     cout << "trying to save determinators (hal)\n";
-    ruleMgr.saveDeterminators();
+    ruleMgr->saveDeterminators();
 }
+
+
+void XPLHal::startXHCP()
+{
+    
+    
+    ServerSocket sckt(3865);
+    
+//     srv.assign(new TCPServer(new TCPServerConnectionFactoryImpl<XHCPServerConnection>(ruleMgr), sckt));
+    srv.assign(new TCPServer(new XHCPServerConnectionFactory(dispatch), sckt));
+    //TCPServer srv(new XHCPServerConnectionFactory(), sckt);
+    
+    srv->start();
+    cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
+    
+}
+

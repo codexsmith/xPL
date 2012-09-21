@@ -1,7 +1,7 @@
 # Cmake Build dir
 ###################
-xPL_codeblocks/build/*
-xPL_codeblocks/bin/*
+build/*
+bin/*
 
 *kdev4
 

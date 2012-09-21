@@ -149,20 +149,20 @@ bool XPLCondition::match(DeterminatorEnvironment* env)
 		//string value = message->findMember(memberToFind.member);
     const xplMsgItem* itemp = message->GetMsgItem(memberToFind.member);
     if(!itemp) {
-        cout<<"\t\tXPL cond testing: " << memberToFind.member << " : false\n";
+        //cout<<"\t\tXPL cond testing: " << memberToFind.member << " : false\n";
         membersMatch = false;
         break;
     }
 
     if(!(memberToFind.value.compare(itemp->GetValue(0)) == 0))
 		{
-        cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : false\n";
+        //cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : false\n";
 			membersMatch = false;
 			break;
 		}
-		cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : true\n";
+		//cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : true\n";
 	}
-	cout << "cond matched: " << membersMatch << "\n";
+	//cout << "cond matched: " << membersMatch << "\n";
 	return membersMatch;
 }
 

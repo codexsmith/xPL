@@ -12,9 +12,12 @@
 #include "xplUDP.h"
 #include "xplComms.h"
 #include "xplDevice.h"
+#include "XHCPDispatcher.h"
+#include "Poco/Net/TCPServer.h"
 
 using namespace Poco;
 using namespace xpl;
+using Poco::Net::TCPServer;
 /*
 extern "C" {
 
@@ -33,7 +36,8 @@ class XPLHal {
         XPLHal();
         ~XPLHal();
         void saveDeterminators();
-        XPLRuleManager ruleMgr;
+        SharedPtr<XPLRuleManager> ruleMgr;
+        SharedPtr<XHCPDispatcher> dispatch;
         
         void HandleDeviceMessages(MessageRxNotification*);
         void HandleAllMessages(MessageRxNotification*);
@@ -42,6 +46,8 @@ class XPLHal {
         xplUDP* myComms;
         //xplDevice* pDevice;
         SharedPtr<xplDevice> pDevice;
+    SharedPtr<TCPServer> srv;
+    void startXHCP();
 
 };
 
