@@ -29,14 +29,14 @@ using Poco::Thread;
 
 using namespace std;
 
-typedef std::string (XHCPDispatcher::*pt2Member)(std::string);
+typedef std::string (XHCPDispatcher::*pt2Member)(std::string, SocketStream&);
 
 class XHCPServerConnection: public TCPServerConnection
 {
 public:
-    XHCPServerConnection ( const StreamSocket& s ,SharedPtr<XHCPDispatcher> dispatchin );
+    XHCPServerConnection ( const StreamSocket& s ,XPLHal* halin );
     void run();
-    SharedPtr<XHCPDispatcher> dispatch;
+    XPLHal* hal;
     std::map<std::string,pt2Member> theMap;
 };
 
@@ -44,16 +44,13 @@ class XHCPServerConnectionFactory: public TCPServerConnectionFactory
 // A factory for TimeServerConnection.
 {
 public:
-    SharedPtr<XHCPDispatcher> dispatch;
-    XHCPServerConnectionFactory ( SharedPtr<XHCPDispatcher> dispatchin ) 
+    XPLHal* hal;
+    XHCPServerConnectionFactory ( XPLHal* halin ) 
     {
-        dispatch = dispatchin;
-        cout << "fac created\n";
+        hal = (halin);
     }
-
     TCPServerConnection* createConnection(const StreamSocket& socket) {
-        cout << "create called\n";
-        return new XHCPServerConnection ( socket, dispatch);
+        return new XHCPServerConnection ( socket, hal);
     }
 
 private:

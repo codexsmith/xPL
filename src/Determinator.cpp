@@ -4,9 +4,14 @@
 #include "DeterminatorAction.h"
 #include "LogAction.h"
 
+#include "Poco/UUIDGenerator.h"
+#include "Poco/String.h"
+
 #include <vector>
 #include <iostream>
 #include <string.h>
+
+using namespace Poco;
 
 //default constructor
 Determinator::Determinator()
@@ -42,14 +47,30 @@ Determinator::Determinator( string  detin)
         std::cout << "Error description: " << result.description() << "\n";
         std::cout << "Error offset: " << result.offset << " (error at [..." << (detin.c_str() + result.offset) << "]\n\n";
     }
-    pugi::xml_node detnode = doc.child("determinator");
+    cout << "parsing det\n";
+    
+    
+    pugi::xml_node detnode;
+    //we need to orient ourselves within this block of XML
+    if(doc.child("xplDeterminator") && doc.child("xplDeterminator").child("determinator") ) {
+        detnode = doc.child("xplDeterminator").child("determinator");
+    } else if ( doc.child("determinator")) {
+        detnode = doc.child("determinator");
+    } else {
+        cout << "we have no XML to parse!\n";
+        return;
+    }
+    
+    
+    cout << "detnode " << detnode.text() << "\n";
     
     bool failed = false;
     
     if (detnode.attribute("guid")) {
-        GUID_ = detnode.attribute("guid").as_string();
+        GUID_ = cleanGUID(detnode.attribute("guid").as_string());
     } else {
-        failed = true;
+        //this determinator may not have one yet, we just make one up
+        GUID_ = cleanGUID(UUIDGenerator::defaultGenerator().createOne().toString());
     }
     if (detnode.attribute("name")) {
         name = detnode.attribute("name").as_string();
@@ -67,6 +88,13 @@ Determinator::Determinator( string  detin)
     } else {
         failed = true;
     }
+    if (detnode.attribute("isGroup")) {
+        if (!strcmp(detnode.attribute("isGroup").as_string(), "Y")) isGroup=true;
+        else isGroup = false;
+    } 
+    if (detnode.attribute("groupName")) {
+        groupName = detnode.attribute("groupName").as_string();
+    } 
     
     if(detnode.child("input")) {
         pugi::xml_node innode =detnode.child("input"); 
@@ -140,7 +168,7 @@ string Determinator::getGUID()
 
 void Determinator::setGUID(string GUID)
 {
-	GUID_ = GUID;
+    GUID_ = cleanGUID(GUID);
 }
 
 //Passthrough to XPLCondition to test if the message matches. 
@@ -274,3 +302,16 @@ string Determinator::printXML()
     
 
 }
+
+string Determinator::cleanGUID(const string guidin) {
+    return toLower(guidin);
+}
+
+string Determinator::unescape (const string input )
+{
+    string ret =input;
+    replaceInPlace(ret, "&lt;","<");
+    replaceInPlace(ret, "&gt;",">");
+    return ret;
+}
+

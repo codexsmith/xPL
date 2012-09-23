@@ -29,14 +29,18 @@ public:
     string description;
     vector<DeterminatorAction*> actions;
     vector<DeterminatorCondition*> conditions;
+    bool isGroup;
+    string groupName;
     bool matchany;
 //     DeterminatorAction* getAction();
-
+    static string cleanGUID(string guidin);
+    static string unescape( const string input );
 private:
     string GUID_;
 
 //     DeterminatorAction* action_;
     bool enabled_;
+
 };
 
 #endif //Determinator_H

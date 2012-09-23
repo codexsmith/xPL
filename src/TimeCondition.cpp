@@ -7,6 +7,7 @@
 #include <sstream> 
 #include <stdio.h>
 #include <string.h>
+#include "Determinator.h"
 using namespace std;
 
 
@@ -26,7 +27,7 @@ TimeCondition::TimeCondition(pugi::xml_node condnode) {
         failed = true;
     }
     if (condnode.attribute("operator")) {
-        toprator = condnode.attribute("operator").as_string();
+        toprator = Determinator::unescape(condnode.attribute("operator").as_string());
     } else {
         failed = true;
     }
@@ -103,7 +104,8 @@ void TimeCondition::appendCondition(pugi::xml_node* inputnode) {
     
     pugi::xml_node condnode = inputnode->append_child("timeCondition");
     
-    condnode.append_attribute("display_name") = display_name.c_str();
+    condnode.append_attribute("display_name") = display_name.c_str();/*
+    condnode.append_attribute("category") = "time"; //FIXME this isn't in the spec*/
     condnode.append_attribute("operator") = toprator.c_str();
     char str[7];
     snprintf (str, 6, "%02d:%02d", thours, tminutes);

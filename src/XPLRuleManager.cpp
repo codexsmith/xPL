@@ -1,6 +1,8 @@
 #include "XPLRuleManager.h"
 #include <vector>
 #include <fstream>
+#include <list>
+#include <set>
 #include "DeterminatorEnvironment.h"
 
 #include <syslog.h>
@@ -19,6 +21,7 @@
 #include "Poco/DirectoryIterator.h"
 #include "Poco/FileStream.h"
 #include "Poco/SingletonHolder.h"
+#include "Poco/String.h"
 
 using namespace Poco;
 
@@ -29,7 +32,7 @@ const string XPLRuleManager::saveLocation = "/tmp/determinators/";
 
 
 
-XPLRuleManager::XPLRuleManager(vector<Determinator*>* determinators)
+XPLRuleManager::XPLRuleManager(map<string, Determinator*>* determinators)
 {
     //loadDeterminators();
     this->determinators = determinators;
@@ -39,8 +42,9 @@ XPLRuleManager::XPLRuleManager(vector<Determinator*>* determinators)
 
 XPLRuleManager::XPLRuleManager()
 {
-    this->determinators = new vector<Determinator*>();
-    loadDeterminators(this->determinators );
+    this->determinators = new map<string, Determinator*>();
+    //loadDeterminators(this->determinators );
+    loadDeterminators();
     //vector< Determinator >* x = loadDeterminators();
     //this->determinators = x;
     //delete x;
@@ -52,16 +56,18 @@ XPLRuleManager::~XPLRuleManager()
     saveDeterminators();
 //     cout << "delete determinators from  "  << this << " ";
     
-    determinatorsMutex.lock();
-    while (determinators->size() > 0 ) {
-//         cout << ".";
-        delete determinators->back();
-        determinators->pop_back();
-    }
+    detLock.writeLock();
     
-    delete determinators;
-    determinators = NULL;
-    determinatorsMutex.unlock();
+    map<string, Determinator*>::iterator i = determinators->begin();
+    while( i != determinators->end())
+    {
+        delete i->second;
+        i->second = 0; // I don't think this is strictly necessary...
+        ++i;
+    }
+    determinators->clear();
+    
+    detLock.unlock();
 //     cout << "\n";
 }
 
@@ -76,14 +82,88 @@ XPLRuleManager& XPLRuleManager::instance() {
 
 std::string XPLRuleManager::detToString(){
     std::string theString;
-    determinatorsMutex.lock();
+    detLock.readLock();
     for (int i = 0; i < determinators->size();i++){
         //string += determinators -> at(i).getID();
         //string += "\r\n";
     }
-    determinatorsMutex.unlock();
+    detLock.unlock();
     return theString;
 }
+
+Determinator* XPLRuleManager::retrieveDeterminator(string GUID) {
+    detLock.readLock();
+
+    if (determinators->count( GUID ) ==1) {
+        Determinator* detp = (*determinators)[GUID];
+        detLock.unlock();
+        return detp;
+    }
+    detLock.unlock();
+    return NULL;
+}
+
+void XPLRuleManager::setDeterminator(string GUID, Determinator* detin) {
+    detLock.writeLock();
+    if (determinators->count( GUID ) ==1) {
+        Determinator* detp = (*determinators)[GUID];
+        (*determinators)[GUID] = detin;
+        delete detp;
+    } else {
+        (*determinators)[GUID] = detin;
+    }
+    cout << "Rulemgr: modified " << (*determinators)[GUID]->name << "\n";
+    detLock.unlock();
+}
+
+bool XPLRuleManager::removeDeterminator( string GUID ){
+    detLock.writeLock();
+    map<string,Determinator*>::iterator dit;
+    for (dit = determinators->begin(); dit != determinators->end();) {
+        if(dit->first == Determinator::cleanGUID(GUID)) {
+            Determinator* detp = dit->second;
+            cout <<"f1\n";
+            determinators->erase(dit);
+            cout <<"f2\n";
+            delete detp;
+            cout <<"f3\n";
+            detLock.unlock();   
+            cout <<"f4\n";
+            return true;
+        }
+        cout <<"not it\n";
+        ++dit;
+    }
+    
+    /*
+    if (determinators->count( GUID ) ==1) {
+        Determinator* detp = (*determinators)[GUID];
+        determinators->erase(detp);
+        delete detp;
+        detLock.unlock();   
+        return true;
+    }*/
+    detLock.unlock();   
+    cout << "Warning: determinator " << GUID << "doesn't exist, so not deleting\n";
+    return false;
+}
+bool XPLRuleManager::runDeterminator( string GUID ){
+    detLock.readLock();
+    if (determinators->count( GUID ) ==1) {
+        Determinator* detp = (*determinators)[GUID];
+        DeterminatorEnvironment env;
+        detp->execute(&env); //FIXME this is against spec - we're supposed to check the conditions first?
+        detLock.unlock();   
+        return true;
+    }
+    detLock.unlock();   
+    cout << "Warning: determinator " << GUID << "doesn't exist, so not deleting\n";
+    return false;
+}
+
+
+
+
 
 void XPLRuleManager::match(xplMsg& msg)
 {
@@ -91,36 +171,64 @@ void XPLRuleManager::match(xplMsg& msg)
     //match stuff
     
     DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
-    determinatorsMutex.lock();
-    for (int i = 0; i < determinators->size(); i++)
-    {
-        if (determinators->at(i)->match(&env))
+    detLock.readLock();
+    
+    for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
+        
+        if (dit->second->match(&env))
         {
             //cout << "matched\n";
-            determinators->at(i)->execute(&env);
+            dit->second->execute(&env);
         }
-        //cout << "\n";
     }
-    determinatorsMutex.unlock();
+   
+    detLock.unlock();
 }
 
 
 void XPLRuleManager::saveDeterminators()
 {
-    determinatorsMutex.lock();
+    detLock.readLock();
     int ret = 0;
     
+    
+    
+    Path loadLocation(saveLocation);
+    //     string loadLocation = saveLocation;
+    //     dir = opendir ((loadLocation + "/").c_str());
+    loadLocation.makeDirectory();
+    if (!loadLocation.isDirectory()) {
+        cout << "no such dir\n";
+        return;
+    }
+    
+    //delete all current .xml files
+    DirectoryIterator it(loadLocation);
+    DirectoryIterator end;
+    while (it != end)
+    {
+        Path p(it.path());
+        File f(p);
+        if(p.isFile() && f.canWrite() && (p.getExtension() == "xml")){
+            f.remove();
+        }
+        ++it;
+    }
+    
     if (ret == 0){
-        for(vector<Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-
-            File detFile = ((saveLocation  +(*dit)->getGUID() + ".xml"));
-            //create all parent directories if needed
-            detFile.createDirectories();
+        for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
+            string savename = dit->first;
+            if (savename==""){
+                continue;
+            }
+            trimInPlace(replaceInPlace(savename," ", "_"));
+            File detFile = ((saveLocation  + savename + ".xml"));
+            detFile.createFile();
             FileOutputStream detStream (detFile.path());
             
             //myfile.open (detFile.path().c_str());
-            cout << "Saving " + saveLocation  +(*dit)->getGUID() + ".xml\n";
-            detStream << ((*dit)->printXML());
+            cout << "Saving " + detFile.path() <<"\n";
+            detStream << (dit->second->printXML());
             detStream.close();
         }
         cout << "Saved "<< determinators->size() << " determinators\n";
@@ -129,14 +237,16 @@ void XPLRuleManager::saveDeterminators()
         cout << "Cannot save determinators\n";
         flush(cout);
     }
-    determinatorsMutex.unlock();
+    detLock.unlock();
 }
-void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
+void XPLRuleManager::loadDeterminators( ) {
     DIR *dir;
     struct dirent *ent;
     //string loadLocation = saveLocation + "bk";
     
     Path loadLocation(saveLocation);
+    File loadLocationDir(loadLocation);
+    loadLocationDir.createDirectory();
 //     string loadLocation = saveLocation;
 //     dir = opendir ((loadLocation + "/").c_str());
     
@@ -166,14 +276,16 @@ void XPLRuleManager::loadDeterminators(vector< Determinator*>* loaded) {
             detstr.resize ( f.getSize() );
             detFile.read ( &detstr[0], detstr.size() );
             Determinator* d = new Determinator ( detstr );
-            determinatorsMutex.lock();
-            loaded->push_back ( d );
-            determinatorsMutex.unlock();
+            detLock.writeLock();
+            (*determinators)[d->getGUID()] = d;
+            detLock.unlock();
             detFile.close();
         }
         std::cout << std::endl;
         ++it;
     }
 
-    cout << "loaded " << loaded->size() << " determinators\n";
+    cout << "loaded " << determinators->size() << " determinators\n";
 }
+
+

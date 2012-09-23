@@ -1,7 +1,7 @@
 #include "XPLCondition.h"
 #include "XPLCommon.h"
 
-
+#include "Determinator.h"
 #include <string>
 #include <iostream>
 #include <string.h>
@@ -104,7 +104,7 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
             if ((*ait).attribute("name") && (*ait).attribute("operator") && (*ait).attribute("value")) {
                 
                 string mname = (*ait).attribute("name").as_string();
-                string moper = (*ait).attribute("operator").as_string();
+                string moper = Determinator::unescape((*ait).attribute("operator").as_string());
                 string mvalue = (*ait).attribute("value").as_string();
                 if(moper == "="){
                     XPLValuePair* pair = new XPLValuePair();  //FIXME this appears to not get cleaned up??

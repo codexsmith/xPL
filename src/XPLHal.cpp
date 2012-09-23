@@ -12,6 +12,7 @@
 #include "Poco/Net/TCPServerConnection.h"
 #include "Poco/Net/TCPServerConnectionFactory.h"
 #include "Poco/Net/TCPServerParams.h"
+#include "Poco/String.h"
 #include "XHCPServerConnection.h"
 
 #include <xplMsg.h>
@@ -31,7 +32,7 @@ XPLHal::XPLHal() {
     cout << "XPLHal Created\n";
     //Load XML Determinators from disk.
     ruleMgr.assign(new XPLRuleManager());
-    dispatch.assign(new XHCPDispatcher(ruleMgr));
+    dispatch.assign(new XHCPDispatcher(this));
     
 
     
@@ -62,6 +63,7 @@ XPLHal::~XPLHal() {
      cout << "XPLHal Destroying\n";
     cout << "XPLHal Destroyed\n";
     srv->stop();
+
 }
 
 //messages that are local to us
@@ -74,16 +76,45 @@ void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
 void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
     cout << "got message: " << mNot->message->GetSchemaClass() << " " <<mNot->message->GetSchemaType() << "\n";
     ruleMgr->match(*(mNot->message));
-    
-    cout<<"here1 " << mNot->message->GetSource().device << "\n";
     mNot->release();
-    cout<<"here2\n";
+
 }
 
 
 void XPLHal::saveDeterminators(void) {
     cout << "trying to save determinators (hal)\n";
     ruleMgr->saveDeterminators();
+}
+
+
+
+string XPLHal::cleanGlobalName(string name ){
+    return toLower(name);
+}
+
+bool XPLHal::deleteGlobal(string name) {
+    name = cleanGlobalName(name);
+    bool removed = false;
+    globalLock.lock();
+    if(globalVars.erase(name) != 0 ) {
+        removed = true;
+    }
+    globalLock.unlock();
+    return removed;
+}
+
+map<string, string> XPLHal::getGlobals() {
+    globalLock.lock();
+    map<string, string> globalcopy(globalVars);
+    globalLock.unlock();
+    return globalcopy;
+}
+void XPLHal::setGlobal(string name, string value) {
+    globalLock.lock();
+    string realName = cleanGlobalName(name);
+    cout << "set " << realName << "\n";
+    globalVars[realName] = value;
+    globalLock.unlock();
 }
 
 
@@ -94,11 +125,13 @@ void XPLHal::startXHCP()
     ServerSocket sckt(3865);
     
 //     srv.assign(new TCPServer(new TCPServerConnectionFactoryImpl<XHCPServerConnection>(ruleMgr), sckt));
-    srv.assign(new TCPServer(new XHCPServerConnectionFactory(dispatch), sckt));
+    cout << "dispactchmaster: " << dispatch << " pt " << dispatch.get() << "\n";
+    srv.assign(new TCPServer(new XHCPServerConnectionFactory(this), sckt));
     //TCPServer srv(new XHCPServerConnectionFactory(), sckt);
     
     srv->start();
     cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
     
 }
+
 
