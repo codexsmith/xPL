@@ -17,8 +17,6 @@
 
 #include <xplMsg.h>
 
-
-
 using namespace std;
 using Poco::Net::ServerSocket;
 using Poco::Net::TCPServer;
@@ -84,37 +82,6 @@ void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
 void XPLHal::saveDeterminators(void) {
     cout << "trying to save determinators (hal)\n";
     ruleMgr->saveDeterminators();
-}
-
-
-
-string XPLHal::cleanGlobalName(string name ){
-    return toLower(name);
-}
-
-bool XPLHal::deleteGlobal(string name) {
-    name = cleanGlobalName(name);
-    bool removed = false;
-    globalLock.lock();
-    if(globalVars.erase(name) != 0 ) {
-        removed = true;
-    }
-    globalLock.unlock();
-    return removed;
-}
-
-map<string, string> XPLHal::getGlobals() {
-    globalLock.lock();
-    map<string, string> globalcopy(globalVars);
-    globalLock.unlock();
-    return globalcopy;
-}
-void XPLHal::setGlobal(string name, string value) {
-    globalLock.lock();
-    string realName = cleanGlobalName(name);
-    cout << "set " << realName << "\n";
-    globalVars[realName] = value;
-    globalLock.unlock();
 }
 
 

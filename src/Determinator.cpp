@@ -39,15 +39,16 @@ Determinator::Determinator( string  detin)
     //cout << "create determinator from xml: " << this << " \n" ;
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load(detin.c_str(), detin.length());
-    if (result)
-        std::cout << "XML [" <<  "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
+    if (result){
+//         std::cout << "XML [" <<  "] parsed without errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n\n";
+    }
     else
     {
         std::cout << "XML [" <<  "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
         std::cout << "Error description: " << result.description() << "\n";
         std::cout << "Error offset: " << result.offset << " (error at [..." << (detin.c_str() + result.offset) << "]\n\n";
     }
-    cout << "parsing det\n";
+//     cout << "parsing det\n";
     
     
     pugi::xml_node detnode;
@@ -62,7 +63,7 @@ Determinator::Determinator( string  detin)
     }
     
     
-    cout << "detnode " << detnode.text() << "\n";
+//     cout << "detnode " << detnode.text() << "\n";
     
     bool failed = false;
     

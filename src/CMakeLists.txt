@@ -31,13 +31,20 @@ add_subdirectory (xPLsdk/src)
 find_package (Threads)
 
 
+find_library(POCO_FOUNDATION PocoFoundation)
+find_library(POCO_NET PocoNet)
+find_library(POCO_XML PocoXML)
+find_library(POCO_UTIL PocoUtil)
+
 #Sends the -std=c99 flag to the gcc compiler
 #add_definitions(-std=c99)
 #This tells CMake to fib.c and name it fibonacci
-add_executable(xplhallite Determinator.cpp XPLAction.cpp XPLCondition.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp TimeCondition.cpp DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp XHCPServerConnection.cpp determinator-main.cpp)
+add_executable(xplhallite Determinator.cpp XPLAction.cpp XPLCondition.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp TimeCondition.cpp DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp XHCPServerConnection.cpp determinator-main.cpp)
 # target_link_libraries (xplhallite pthreadcc)
 # target_link_libraries (xplhallite socketcc)
 # target_link_libraries (xplhallite xPLLib)
 target_link_libraries (xplhallite pugixml)
 target_link_libraries (xplhallite xplsdk)
 target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
+
+target_link_libraries(xplhallite ${POCO_FOUNDATION} ${POCO_NET} ${POCO_XML} ${POCO_UTIL})

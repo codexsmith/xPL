@@ -27,7 +27,7 @@ using namespace Poco;
 
 using namespace std;
 
-const string XPLRuleManager::saveLocation = "/tmp/determinators/";
+const string XPLRuleManager::saveLocation = "/home/scott/.xPL/xplhallite/determinators/";
 
 
 
@@ -66,6 +66,7 @@ XPLRuleManager::~XPLRuleManager()
         ++i;
     }
     determinators->clear();
+    delete determinators;
     
     detLock.unlock();
 //     cout << "\n";
@@ -191,12 +192,9 @@ void XPLRuleManager::saveDeterminators()
     detLock.readLock();
     int ret = 0;
     
-    
-    
     Path loadLocation(saveLocation);
-    //     string loadLocation = saveLocation;
-    //     dir = opendir ((loadLocation + "/").c_str());
-    loadLocation.makeDirectory();
+    File loadFile(loadLocation.parent());
+    loadFile.createDirectories();
     if (!loadLocation.isDirectory()) {
         cout << "no such dir\n";
         return;
@@ -246,7 +244,7 @@ void XPLRuleManager::loadDeterminators( ) {
     
     Path loadLocation(saveLocation);
     File loadLocationDir(loadLocation);
-    loadLocationDir.createDirectory();
+    loadLocationDir.createDirectories();
 //     string loadLocation = saveLocation;
 //     dir = opendir ((loadLocation + "/").c_str());
     
@@ -259,7 +257,7 @@ void XPLRuleManager::loadDeterminators( ) {
     DirectoryIterator end;
     while (it != end)
     {
-        std::cout << it.name();
+        std::cout << "Parsing determinator " << it.name() << std::endl;
        
         
         Path p(it.path());

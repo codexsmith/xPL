@@ -59,7 +59,7 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
 
     message = new xplMsg(type_str, source_str, target_str, schemaClass_str, schemaType_str);
     
-    cout << "target: " << target_str << "\n";
+//     cout << "target: " << target_str << "\n";
     
    //pugi::xml_node outnode =actionnode.child("output"); 
    for (pugi::xml_node_iterator ait = actionnode.begin(); ait != actionnode.end(); ++ait)

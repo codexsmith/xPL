@@ -7,6 +7,7 @@
 #include <vector>
 #include "XPLCommon.h"
 #include "XPLRuleManager.h"
+#include "GlobalManager.h"
 
 #include "Poco/SharedPtr.h"
 #include "xplUDP.h"
@@ -43,19 +44,14 @@ public:
     void HandleDeviceMessages ( MessageRxNotification* );
     void HandleAllMessages ( MessageRxNotification* );
 
-    string cleanGlobalName(string name );
-    bool deleteGlobal(string name);
-    //gets a copy
-    map<string, string> getGlobals();
-    void setGlobal(string name, string value);
-
+    GlobalManager globals;
+    
 private:
     xplUDP* myComms;
+    
     //xplDevice* pDevice;
     SharedPtr<xplDevice> pDevice;
     SharedPtr<XPLHal> sharedThis;
-    Mutex globalLock;
-    map<string, string> globalVars;
     SharedPtr<TCPServer> srv;
     void startXHCP();
 
