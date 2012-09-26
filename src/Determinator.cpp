@@ -1,9 +1,10 @@
 #include "Determinator.h"
 #include "XPLCondition.h"
 #include "TimeCondition.h"
+#include "GlobalCondition.h"
+
 #include "DeterminatorAction.h"
 #include "GlobalAction.h"
-
 #include "LogAction.h"
 
 #include "Poco/UUIDGenerator.h"
@@ -115,6 +116,8 @@ Determinator::Determinator( string  detin)
               conditions.push_back(new XPLCondition(*ait));
             } else if (!strcmp("timeCondition",ait->name())) {
                 conditions.push_back(new TimeCondition(*ait));
+            } else if (!strcmp("globalCondition",ait->name())) {
+                conditions.push_back(new GlobalCondition(*ait));
             }
         }
         //cout << "\tloaded " << actions.size() << " conditions\n";

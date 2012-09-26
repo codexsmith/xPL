@@ -28,7 +28,8 @@ public:
     void saveDeterminators();
     
     static string cleanGlobalName(string name );
-    
+    bool hasGlobal(string name);
+    string getGlobal(string name);
     bool deleteGlobal(string name);
     
     //gets a copy

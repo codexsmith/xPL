@@ -148,6 +148,24 @@ string GlobalManager::cleanGlobalName(string name ){
     return toLower(name);
 }
 
+bool GlobalManager::hasGlobal(string name) {
+    bool ret;
+    globalLock.lock();
+    ret = globalVars.count(name);
+    globalLock.unlock();
+    return ret;
+}
+string GlobalManager::getGlobal(string name){
+    string ret = "";
+    globalLock.lock();
+    if (globalVars.count(name)) {
+        ret = globalVars[name];
+    }
+    globalLock.unlock();
+    return ret;   
+}
+
+
 bool GlobalManager::deleteGlobal(string name) {
     name = cleanGlobalName(name);
     bool removed = false;

@@ -2,6 +2,7 @@
 #define DeterminatorEnvironment_H
 
 #include "XPLCommon.h"
+#include "GlobalManager.h"
 #include "Poco/AutoPtr.h"
 //#include "XPLMessage.h"
 #include <string>
@@ -22,7 +23,7 @@ public:
     DeterminatorEnvironment ( xplMsg*  );
 
     //~XPLRuleManager();
-
+    GlobalManager* globals;
     xplMsg* message;
     struct tm * mtime;
 
