@@ -88,7 +88,7 @@ int main(int argc,const char * argv[])
     fprintf(stderr, "Starting up %d.%d \n", 1, 1);
     openlog("xplhallite", LOG_PID, LOG_DAEMON);
     
-    XPLHal hal;
+    XPLHal& hal = XPLHal::instance();
     
     
     //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);

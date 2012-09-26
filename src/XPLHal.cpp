@@ -64,6 +64,14 @@ XPLHal::~XPLHal() {
 
 }
 
+namespace{
+    static Poco::SingletonHolder<XPLHal> sh;
+}
+
+XPLHal& XPLHal::instance() {
+    return *sh.get();
+}
+
 //messages that are local to us
 void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
     cout << "got directed message: " << mNot->message->GetSchemaClass() << " " <<mNot->message->GetSchemaType() << "\n";

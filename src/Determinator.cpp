@@ -2,6 +2,8 @@
 #include "XPLCondition.h"
 #include "TimeCondition.h"
 #include "DeterminatorAction.h"
+#include "GlobalAction.h"
+
 #include "LogAction.h"
 
 #include "Poco/UUIDGenerator.h"
@@ -122,15 +124,15 @@ Determinator::Determinator( string  detin)
         pugi::xml_node outnode =detnode.child("output"); 
         for (pugi::xml_node_iterator ait = outnode.begin(); ait != outnode.end(); ++ait)
         {
-	    //cout << "\t add action: " << (*ait).name() << "\n";
             if (!strcmp("xplAction",ait->name())) {
-	      XPLAction* xa = new XPLAction(*ait);
+                XPLAction* xa = new XPLAction(*ait);
                 actions.push_back(xa);
-		//cout << "action added: " << xa << "\n";
-      
             }
             if (!strcmp("logAction",ait->name())) {
                 actions.push_back(new LogAction(*ait));
+            }
+            if (!strcmp("globalAction",ait->name())) {
+                actions.push_back(new GlobalAction(*ait));
             }
         }
         cout << "\tloaded " << actions.size() << " actions\n";

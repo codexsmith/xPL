@@ -16,11 +16,13 @@
 #include "Poco/DOM/NodeFilter.h"
 #include "Poco/DOM/NodeList.h"
 #include <Poco/FileStream.h>
+#include "Poco/SAX/SAXException.h"
 using namespace Poco::XML;
 
 using namespace std;
 
 static string globalFile = "xplhal.xml";
+
 static string globalproperty = "globalVars";
 
 
@@ -35,7 +37,7 @@ GlobalManager::~GlobalManager() {
     
 
 void GlobalManager::loadGlobals() {
-    
+    globalLock.lock();
     globalvarpath = Path(Path::home());
     
     globalvarpath.pushDirectory(".xPL");
@@ -48,49 +50,62 @@ void GlobalManager::loadGlobals() {
     cout << "made file"<< std::endl;
     if(globalvarfile.exists() && globalvarfile.canRead() && globalvarfile.isFile()) {
         cout << "global files exists "<< globalvarfile.path() <<  std::endl;
-        DOMParser xmlParser;
-        AutoPtr<Document> gDoc = xmlParser.parse(globalvarfile.path());
-
-        NodeIterator it(gDoc, NodeFilter::SHOW_ALL);
-        Node* pNode = it.nextNode();
-        while (pNode)
-        {
-
-            std::cout << pNode->nodeName() << ":" << pNode->nodeValue() << std::endl;
-            pNode = it.nextNode();
-        }
         
-        AutoPtr<Element> rootElem = gDoc->documentElement();
-        if(rootElem->nodeName() != "xPLHalGlobals") {
-            cout << "something is wrong with the globals root element" << std::endl;
-            return;
-        }
+        try {
+            DOMParser xmlParser;
+            AutoPtr<Document> gDoc = xmlParser.parse(globalvarfile.path());
 
-        AutoPtr<NodeList> glist = rootElem->getElementsByTagName("global");
-        cout << "got"  << glist->length() << std::endl;
-        for (int gn = 0; gn<glist->length(); gn++){
-            Element* gnode = (Element*) glist->item(gn);
-            if(gnode->hasAttribute("name") && gnode->hasAttribute("value")) {
-                globalVars[cleanGlobalName(fromXMLString(gnode->getAttribute("name")))] = fromXMLString(gnode->getAttribute("value"));
+//             NodeIterator it(gDoc, NodeFilter::SHOW_ALL);
+    //         AutoPtr<Node> pNode = it.nextNode();
+    //         while (pNode)
+    //         {
+    // 
+    //             std::cout << pNode->nodeName() << ":" << pNode->nodeValue() << std::endl;
+    //             pNode = it.nextNode();
+    //         }
+            
+            Element* rootElem = gDoc->documentElement();
+            if(rootElem->nodeName() != "xPLHalGlobals") {
+                cout << "something is wrong with the globals root element" << std::endl;
+                
+                return;
             }
             
+            cout << "list" << std::endl;
+            NodeIterator it(rootElem, NodeFilter::SHOW_ELEMENT);
+            Element* pNode = (Element*) it.nextNode();
+            while (pNode)
+            {
+                if(pNode->hasAttribute("name") && pNode->hasAttribute("value")) {
+                    std::cout << fromXMLString(pNode->getAttribute("name")) << ":" << fromXMLString(pNode->getAttribute("value")) << std::endl;
+                    globalVars[cleanGlobalName(fromXMLString(pNode->getAttribute("name")))] = fromXMLString(pNode->getAttribute("value"));
+                }
+                
+                pNode = (Element*) it.nextNode();
+            }
+            cout << "end of list" << std::endl;
+            
+        } catch (Poco::XML::SAXParseException e) {
+                globalLock.unlock();
+                cout << "XML read error" << std::endl;
+                return;
         }
-
+        
     } else {
         cout << "GLOBAL vars XML files doesn't exist"<< std::endl;
     }
-    
+    globalLock.unlock();
 }
     
     
 void GlobalManager::saveGlobals() {
-
+    globalLock.lock();
     globalvarpath = Path(Path::home());
     
     globalvarpath.pushDirectory(".xPL");
     globalvarpath.pushDirectory("xplhallite");
-    globalvarpath.setFileName(globalFile);
-    
+    globalvarpath.setFileName("xplhal.xml");
+    //globalFile
     cout << "path is " << globalvarpath.toString() << std::endl;
     
     File globalvarfile = File(globalvarpath);
@@ -126,7 +141,7 @@ void GlobalManager::saveGlobals() {
         writer.writeNode(saveFile, pDoc);
     }
     
-    
+    globalLock.unlock();
 }
 
 string GlobalManager::cleanGlobalName(string name ){

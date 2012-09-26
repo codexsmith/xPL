@@ -35,6 +35,8 @@ using namespace std;
 class XPLHal
 {
 public:
+    static XPLHal& instance();
+    
     XPLHal();
     ~XPLHal();
     void saveDeterminators();
