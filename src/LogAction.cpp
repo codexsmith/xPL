@@ -8,13 +8,15 @@
 using namespace std;
 
 
-LogAction::LogAction(string namein, string messagein)
+LogAction::LogAction(string namein, string messagein):
+actlog(Logger::get("rulemanager.determinator.logaction"))
 {
     display_name = namein;
     messageText = messagein;
 }
 
-LogAction::LogAction(pugi::xml_node actionnode)
+LogAction::LogAction(pugi::xml_node actionnode):
+actlog(Logger::get("rulemanager.determinator.logaction"))
 {
  
     bool failed = false;
@@ -46,8 +48,8 @@ LogAction::~LogAction()
 //on the network.
 void LogAction::execute(DeterminatorEnvironment* env)
 {
-    syslog(LOG_INFO, messageText.c_str());
-  
+    //syslog(LOG_INFO, messageText.c_str());
+    poco_warning(actlog, messageText);
 }
 
 

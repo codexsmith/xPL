@@ -9,14 +9,16 @@
 using namespace std;
 
 
-GlobalAction::GlobalAction(string namein, string globalNameIn, string globalValueIn)
+GlobalAction::GlobalAction(string namein, string globalNameIn, string globalValueIn):
+actlog(Logger::get("rulemanager.determinator.globalaction"))
 {
     display_name = namein;
     globalName = globalNameIn;
     globalValue = globalValueIn;
 }
 
-GlobalAction::GlobalAction(pugi::xml_node actionnode)
+GlobalAction::GlobalAction(pugi::xml_node actionnode):
+actlog(Logger::get("rulemanager.determinator.globalaction"))
 {
  
     bool failed = false;
@@ -33,13 +35,13 @@ GlobalAction::GlobalAction(pugi::xml_node actionnode)
     }
     if (actionnode.attribute("name")) {
         globalName = (actionnode.attribute("name").as_string());
-        cout << "name " << globalName << std::endl;
+        poco_debug(actlog, "Global name: " + globalName);
     } else {
         failed = true;
     }
     if (actionnode.attribute("value")) {
         globalValue = (actionnode.attribute("value").as_string());
-        cout <<"value " << globalValue << std::endl;
+        poco_debug(actlog, "Global value: " + globalValue);
     } else {
         failed = true;
     }
@@ -55,7 +57,7 @@ GlobalAction::~GlobalAction()
 //on the network.
 void GlobalAction::execute(DeterminatorEnvironment* env)
 {
-    cout << "global action: " << globalName << " = " << globalValue << std::endl;
+    poco_debug(actlog, "Global action executing: " + globalName + " <- " globalValue);
     XPLHal::instance().globals.setGlobal(globalName, globalValue);
 }
 
@@ -77,8 +79,6 @@ bool GlobalAction::equals(GlobalAction* other)
 void GlobalAction::appendAction(pugi::xml_node* outputnode) {
 
     pugi::xml_node actionnode = outputnode->append_child("globalAction");
-    cout << "name " << globalName << std::endl;
-    cout << "value " << globalValue << std::endl;
     actionnode.append_attribute("display_name") = display_name.c_str();
     actionnode.append_attribute("executeOrder") = executeOrder;
     actionnode.append_attribute("name") = globalName.c_str();

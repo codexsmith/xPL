@@ -5,6 +5,8 @@
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
 #include "DeterminatorEnvironment.h"
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
 
 using namespace std;
 static const string tabLevel = "\t\t";
@@ -22,7 +24,9 @@ class LogAction : public DeterminatorAction {
   protected:
 
   private:
-
+      
+      Logger& actlog;
+      
     
 };
 

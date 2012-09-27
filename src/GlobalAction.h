@@ -5,6 +5,8 @@
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
 #include "DeterminatorEnvironment.h"
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
 
 using namespace std;
 
@@ -23,6 +25,7 @@ class GlobalAction : public DeterminatorAction {
   private:
       string globalName;
       string globalValue;
+      Logger& actlog;
     
 };
 

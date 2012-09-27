@@ -15,6 +15,8 @@
 #include "xplDevice.h"
 #include "XHCPDispatcher.h"
 #include "Poco/Net/TCPServer.h"
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
 
 using namespace Poco;
 using namespace xpl;
@@ -36,6 +38,8 @@ class XPLHal
 {
 public:
     static XPLHal& instance();
+    static XPLHal& createInstance();
+    static void deleteInstance() ;
     
     XPLHal();
     ~XPLHal();
@@ -50,6 +54,8 @@ public:
     
 private:
     xplUDP* myComms;
+    
+    Logger& hallog;
     
     //xplDevice* pDevice;
     SharedPtr<xplDevice> pDevice;

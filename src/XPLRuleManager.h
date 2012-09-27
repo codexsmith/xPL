@@ -8,7 +8,8 @@
 #include "XPLCommon.h"
 #include "xplMsg.h"
 #include "Poco/RWLock.h"
-
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
 //class XPLMessage;
 
 class Determinator;
@@ -42,7 +43,7 @@ class XPLRuleManager {
   map< string, Determinator*>* determinators;
   
 	private:
-    
+    Logger& rulelog;
     static const string saveLocation ;
     void loadDeterminators( );
     static XPLRuleManager* m_pInstance;

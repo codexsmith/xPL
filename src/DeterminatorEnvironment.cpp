@@ -15,12 +15,13 @@ DeterminatorEnvironment::DeterminatorEnvironment() {
   message = NULL;
   time_t stime = time(0);
   mtime = localtime(&stime);
-  globals = &XPLHal::instance().globals;
+  globals = XPLHal::instance().globals;
 }
 DeterminatorEnvironment::DeterminatorEnvironment( xplMsg* messagein) {
   message = messagein;
   time_t stime = time(0);
   mtime = localtime(&stime);
-  globals = &XPLHal::instance().globals;
+  globals = XPLHal::instance().globals;
 }
+
 

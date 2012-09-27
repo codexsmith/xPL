@@ -33,7 +33,8 @@ const string XPLRuleManager::saveLocation = "/home/scott/.xPL/xplhallite/determi
 
 
 
-XPLRuleManager::XPLRuleManager(map<string, Determinator*>* determinators)
+XPLRuleManager::XPLRuleManager(map<string, Determinator*>* determinators):
+rulelog(Logger::get("rulemanager"))
 {
     //loadDeterminators();
     this->determinators = determinators;
@@ -41,7 +42,8 @@ XPLRuleManager::XPLRuleManager(map<string, Determinator*>* determinators)
 }
 
 
-XPLRuleManager::XPLRuleManager()
+XPLRuleManager::XPLRuleManager():
+rulelog(Logger::get("rulemanager"))
 {
     this->determinators = new map<string, Determinator*>();
     //loadDeterminators(this->determinators );
@@ -53,7 +55,6 @@ XPLRuleManager::XPLRuleManager()
 
 XPLRuleManager::~XPLRuleManager()
 {
-    cout << "trying to save determinators\n";
     saveDeterminators();
 //     cout << "delete determinators from  "  << this << " ";
     
@@ -114,7 +115,8 @@ void XPLRuleManager::setDeterminator(string GUID, Determinator* detin) {
     } else {
         (*determinators)[GUID] = detin;
     }
-    cout << "Rulemgr: modified " << (*determinators)[GUID]->name << "\n";
+    poco_debug(rulelog, "Modified " + (*determinators)[GUID]->name);
+//     cout << "Rulemgr: modified " << (*determinators)[GUID]->name << "\n";
     detLock.unlock();
 }
 
@@ -124,16 +126,13 @@ bool XPLRuleManager::removeDeterminator( string GUID ){
     for (dit = determinators->begin(); dit != determinators->end();) {
         if(dit->first == Determinator::cleanGUID(GUID)) {
             Determinator* detp = dit->second;
-            cout <<"f1\n";
             determinators->erase(dit);
-            cout <<"f2\n";
-            delete detp;
-            cout <<"f3\n";
+            delete detp;;
             detLock.unlock();   
-            cout <<"f4\n";
+            
+            poco_debug(rulelog, "Deleted " + GUID);
             return true;
         }
-        cout <<"not it\n";
         ++dit;
     }
     
@@ -146,11 +145,13 @@ bool XPLRuleManager::removeDeterminator( string GUID ){
         return true;
     }*/
     detLock.unlock();   
-    cout << "Warning: determinator " << GUID << "doesn't exist, so not deleting\n";
+    
+    poco_notice(rulelog, "determinator " + GUID + "doesn't exist, so not deleting\n");
     return false;
 }
 bool XPLRuleManager::runDeterminator( string GUID ){
     detLock.readLock();
+    GUID = Determinator::cleanGUID(GUID);
     if (determinators->count( GUID ) ==1) {
         Determinator* detp = (*determinators)[GUID];
         DeterminatorEnvironment env;
@@ -159,7 +160,7 @@ bool XPLRuleManager::runDeterminator( string GUID ){
         return true;
     }
     detLock.unlock();   
-    cout << "Warning: determinator " << GUID << "doesn't exist, so not deleting\n";
+    poco_notice(rulelog, "determinator " + GUID + "doesn't exist, so not running\n");
     return false;
 }
 
@@ -179,7 +180,7 @@ void XPLRuleManager::match(xplMsg& msg)
         
         if (dit->second->match(&env))
         {
-            //cout << "matched\n";
+            poco_debug(rulelog, "determinator " + dit->second->getGUID() + "matched");
             dit->second->execute(&env);
         }
     }
@@ -197,7 +198,7 @@ void XPLRuleManager::saveDeterminators()
     File loadFile(loadLocation.parent());
     loadFile.createDirectories();
     if (!loadLocation.isDirectory()) {
-        cout << "no such dir\n";
+        poco_error(rulelog, "No directory to save determinators to " + loadLocation.getFileName());
         return;
     }
     
@@ -226,15 +227,14 @@ void XPLRuleManager::saveDeterminators()
             FileOutputStream detStream (detFile.path());
             
             //myfile.open (detFile.path().c_str());
-            cout << "Saving " + detFile.path() <<"\n";
+            poco_notice(rulelog, "saving determinators to" + detFile.path());
             detStream << (dit->second->printXML());
             detStream.close();
         }
-        cout << "Saved "<< determinators->size() << " determinators\n";
-        flush(cout);
+        poco_debug(rulelog, "Saved " + NumberFormatter::format(determinators->size()) + " determinators");
+        
     } else {
-        cout << "Cannot save determinators\n";
-        flush(cout);
+        poco_error(rulelog, "Cannot save determinators");
     }
     detLock.unlock();
 }
@@ -250,7 +250,7 @@ void XPLRuleManager::loadDeterminators( ) {
 //     dir = opendir ((loadLocation + "/").c_str());
     
     if (!loadLocation.isDirectory()) {
-        cout << "no such dir\n";
+        poco_error(rulelog, "No directory to load determinators from: " + loadLocation.getFileName());
         return;
     }
     
@@ -258,13 +258,11 @@ void XPLRuleManager::loadDeterminators( ) {
     DirectoryIterator end;
     while (it != end)
     {
-        std::cout << "Parsing determinator " << it.name() << std::endl;
-       
+        poco_information(rulelog, "reading determinator from " + it.name());
         
         Path p(it.path());
         File f(p);
         if(p.isFile() && f.canRead() && (p.getExtension() == "xml")){
-            std::cout << f.getSize();
             
              FileInputStream detFile(f.path());
              
@@ -280,11 +278,10 @@ void XPLRuleManager::loadDeterminators( ) {
             detLock.unlock();
             detFile.close();
         }
-        std::cout << std::endl;
         ++it;
     }
-
-    cout << "loaded " << determinators->size() << " determinators\n";
+    poco_debug(rulelog, "loaded " + NumberFormatter::format(determinators->size()) + " determinators");
+//     cout << "loaded " << determinators->size() << " determinators\n";
 }
 
 

@@ -22,12 +22,17 @@
 #include "DeterminatorAction.h"
 #include "XPLAction.h"
 #include "XPLCondition.h"
+#include "Poco/Logger.h"
+
+#include "Poco/ConsoleChannel.h"
+#include "Poco/PatternFormatter.h"
+#include "Poco/FormattingChannel.h"
 
 #include "Poco/Thread.h"
 
 using namespace Poco;
 
-
+Logger& rootlogger = Logger::root();
 
 //Prototypes
 void* xHCPService(void*);
@@ -43,32 +48,9 @@ bool running = true;
 
 
 void shutdown_handler(int s){
-    printf("\nCaught signal %d\n",s);
-    /*
-    xPL_setServiceEnabled(theService, FALSE);
-    xPL_releaseService(theService);
-    xPL_shutdown();*/
-    cout << "xPL service down\n";
     
-//     xPL_setServiceEnabled(theService, FALSE);
-//     xPL_releaseService(theService);
-//     printf("Shutting down xPLLib\n");
-//     xPL_shutdown();
-//     
-    int ret = 0;
-    //ret = pthread_kill(xHCP_thread, s);
-    cout << "sig hand\n";
-    // disxhcp cDaemon.SignalHandler(s);
-    cout << "sig hand2\n";
+    poco_information(rootlogger, "caught signal" + s);
 
-    cout << "join\n";
-    //pthread_join(xHCP_thread,NULL);
-    // disxhcp ret = pthread_cancel(xHCP_thread);
-    cout << "joined\n";
-
-//     saveDeterminators();
-//     closelog();
-//     exit(0); 
     running = false;
 }
 
@@ -84,16 +66,31 @@ void setup_singnal_handler() {
 
 int main(int argc,const char * argv[])
 {
-    //fprintf(stderr, "Starting up %d.%d \n", xplhallite_VERSION_MAJOR, xplhallite_VERSION_MINOR);
-    fprintf(stderr, "Starting up %d.%d \n", 1, 1);
+    
+    
+    AutoPtr<ConsoleChannel> pCons(new ConsoleChannel);
+    AutoPtr<PatternFormatter> pPF(new PatternFormatter);
+    //pPF->setProperty("pattern", "%p %I-%T %H:%M:%S %s: %t");
+    pPF->setProperty("pattern", "%H:%M:%S %s %I-%T %p: %t");
+    AutoPtr<FormattingChannel> pFC(new FormattingChannel(pPF, pCons));
+    Logger::root().setChannel(pFC);
+    
+    rootlogger.setLevel("debug");
+    
+    poco_warning(rootlogger, "starting logger");
+    
+    
+    poco_information(rootlogger, "Starting up version 1.1");
+    
     openlog("xplhallite", LOG_PID, LOG_DAEMON);
     
-    XPLHal& hal = XPLHal::instance();
+    //XPLHal& hal = XPLHal::instance();
+    XPLHal& hal = XPLHal::createInstance();
     
     
     //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
     
-    syslog(LOG_INFO, "Main Thread Created.");
+    poco_information(rootlogger, "Main thread created");
     
     setup_singnal_handler();
     //cout << "rule manager addr: " << ruleMgr << " \n";
@@ -106,6 +103,7 @@ int main(int argc,const char * argv[])
         
     }
   
+  XPLHal::deleteInstance();
   closelog();
     return 0;
    // exit(0);

@@ -6,7 +6,7 @@
 #include "XPLCondition.h"
 #include "xplMsg.h"
 #include "DeterminatorEnvironment.h"
-
+#include "Poco/Logger.h"
 #include <vector>
 
 using namespace std;
@@ -37,7 +37,7 @@ public:
     static string unescape( const string input );
 private:
     string GUID_;
-
+    Logger& detlog;
 //     DeterminatorAction* action_;
     bool enabled_;
 

@@ -51,11 +51,11 @@ GlobalCondition::GlobalCondition(pugi::xml_node condnode) {
 //by the way, this is a mess. I don't like it, but I don't have any better ideas at the moment
 bool GlobalCondition::match(DeterminatorEnvironment* env)
 {
-    if(!env->globals->hasGlobal(globalName)) {
+    if(!env->globals.hasGlobal(globalName)) {
         return false;
     }
     
-    string currentVal = env->globals->getGlobal(globalName);
+    string currentVal = env->globals.getGlobal(globalName);
     
     //first try to think of these both as strings.
     if(globalOperator==DeterminatorOperator(DeterminatorOperator::Equals)) {

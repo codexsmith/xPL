@@ -12,6 +12,9 @@
 #include "Poco/Util/XMLConfiguration.h"
 #include <Poco/Path.h>
 #include <vector>
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
+
 
 using Poco::Util::XMLConfiguration;
 using Poco::Util::AbstractConfiguration;
@@ -25,8 +28,11 @@ class GlobalManager
 public:
     GlobalManager();
     ~GlobalManager();
-    void saveDeterminators();
     
+    GlobalManager& operator=(const GlobalManager&);
+    GlobalManager(const GlobalManager&);
+    
+    void saveDeterminators();
     static string cleanGlobalName(string name );
     bool hasGlobal(string name);
     string getGlobal(string name);
@@ -35,12 +41,11 @@ public:
     //gets a copy
     map<string, string> getGlobals();
     void setGlobal(string name, string value);
-
-private:
     void loadGlobals();
     void saveGlobals();
+private:
+    Logger& globallog;
     Path globalvarpath;
-    XMLConfiguration *cfg;
     Mutex globalLock;
     map<string, string> globalVars;
 

@@ -26,13 +26,35 @@ static string globalFile = "xplhal.xml";
 static string globalproperty = "globalVars";
 
 
-GlobalManager::GlobalManager() {
-    loadGlobals();
+GlobalManager::GlobalManager():
+globallog(Logger::get("globalmanager")) {
+//     loadGlobals();
+}
+
+//copy
+GlobalManager& GlobalManager::operator=(const GlobalManager& other) {
+    
+    //make a copy
+    //other.globalLock.lock();
+    //globalVars = other.getGlobals();
+    globalVars = other.globalVars;
+    //other.globalLock.unlock();
+    return *this;
+}
+
+GlobalManager::GlobalManager(const GlobalManager& other):
+globallog(Logger::get("globalmanager")) {
+
+    //make a copy
+    //other.globalLock.lock();
+    //globalVars = other.getGlobals();
+    globalVars = other.globalVars;
+    //other.globalLock.unlock();
 }
 
 
 GlobalManager::~GlobalManager() {
-    saveGlobals();    
+    /*saveGlobals(); */
 }
     
 
@@ -44,13 +66,14 @@ void GlobalManager::loadGlobals() {
     globalvarpath.pushDirectory("xplhallite");
     globalvarpath.setFileName(globalFile);
     
-    cout << "path is " << globalvarpath.toString() << std::endl;
+    //cout << "path is " << globalvarpath.toString() << std::endl;
+    poco_information(globallog, "Loading globals from " + globalvarpath.toString());
     
     File globalvarfile = File(globalvarpath);
-    cout << "made file"<< std::endl;
+    
     if(globalvarfile.exists() && globalvarfile.canRead() && globalvarfile.isFile()) {
-        cout << "global files exists "<< globalvarfile.path() <<  std::endl;
         
+        poco_debug(globallog, "global files exists " + globalvarfile.path() );
         try {
             DOMParser xmlParser;
             AutoPtr<Document> gDoc = xmlParser.parse(globalvarfile.path());
@@ -66,12 +89,11 @@ void GlobalManager::loadGlobals() {
             
             Element* rootElem = gDoc->documentElement();
             if(rootElem->nodeName() != "xPLHalGlobals") {
-                cout << "something is wrong with the globals root element" << std::endl;
-                
+                //cout << "something is wrong with the globals root element" << std::endl;
+                poco_warning(globallog, "something is wrong with the globals root element");
                 return;
             }
             
-            cout << "list" << std::endl;
             NodeIterator it(rootElem, NodeFilter::SHOW_ELEMENT);
             Element* pNode = (Element*) it.nextNode();
             while (pNode)
@@ -92,7 +114,7 @@ void GlobalManager::loadGlobals() {
         }
         
     } else {
-        cout << "GLOBAL vars XML files doesn't exist"<< std::endl;
+        poco_notice(globallog, "GLOBAL vars XML files doesn't exist"  );
     }
     globalLock.unlock();
 }
@@ -106,13 +128,14 @@ void GlobalManager::saveGlobals() {
     globalvarpath.pushDirectory("xplhallite");
     globalvarpath.setFileName("xplhal.xml");
     //globalFile
-    cout << "path is " << globalvarpath.toString() << std::endl;
+    
+    poco_information(globallog, "Saving globals to " + globalvarpath.toString());
     
     File globalvarfile = File(globalvarpath);
     cout << "make file"<< std::endl;
     cout << "exist: " <<globalvarfile.exists() << std::endl;
     if( globalvarfile.exists() && globalvarfile.canWrite()) {
-        cout << "globals: removing previous save file" << std::endl;
+        poco_notice(globallog, "removing previous save file");
         globalvarfile.remove();        
     }
     globalvarfile.createFile();
@@ -135,10 +158,11 @@ void GlobalManager::saveGlobals() {
     writer.writeNode(std::cout, pDoc);
     
     if( globalvarfile.exists() && globalvarfile.canRead() && globalvarfile.isFile()) {
-        cout << "globals: can write"<< std::endl;
-        
+        poco_trace(globallog, "writing globals file");
         FileOutputStream saveFile(globalvarfile.path());
         writer.writeNode(saveFile, pDoc);
+    } else {
+        poco_warning(globallog, "failed to write globals file");   
     }
     
     globalLock.unlock();

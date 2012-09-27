@@ -10,6 +10,9 @@
 #include "Poco/UUIDGenerator.h"
 #include "Poco/String.h"
 
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
+
 #include <vector>
 #include <iostream>
 #include <string.h>
@@ -17,7 +20,8 @@
 using namespace Poco;
 
 //default constructor
-Determinator::Determinator()
+Determinator::Determinator():
+detlog(Logger::get("rulemanager.determinator"))
 {
     //cout << "create determinator " << this << " \n";
 }
@@ -25,9 +29,9 @@ Determinator::Determinator()
 //Determinators should be constructed by the DeterminatorFactory only.
 //User must have already created the appropriate condition and action.
 //New Determinators are always enabled.
-Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action )
+Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action ):
+detlog(Logger::get("rulemanager.determinator"))
 {
-  
     //cout << "create determinator from args\n";
 	//condition_ = condition;
 	conditions.push_back(condition);
@@ -36,9 +40,11 @@ Determinator::Determinator( XPLCondition* condition, DeterminatorAction* action 
 	enabled_ = true;
 }
 
-Determinator::Determinator( string  detin)
+Determinator::Determinator( string  detin):
+detlog(Logger::get("rulemanager.determinator"))
 {
-
+    
+    poco_debug(detlog, "Creating determinator from xml.");
     //cout << "create determinator from xml: " << this << " \n" ;
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load(detin.c_str(), detin.length());
@@ -47,9 +53,13 @@ Determinator::Determinator( string  detin)
     }
     else
     {
-        std::cout << "XML [" <<  "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
-        std::cout << "Error description: " << result.description() << "\n";
-        std::cout << "Error offset: " << result.offset << " (error at [..." << (detin.c_str() + result.offset) << "]\n\n";
+        poco_error(detlog, "Determinator had parse errors: ");
+        poco_error(detlog, "Error description: " + string(result.description()));
+        //poco_error(detlog, "Error offset: " + result.offset + " (error at [..." + (detin.c_str() + result.offset) + "]");
+        
+        //std::cout << "XML [" <<  "] parsed with errors, attr value: [" << doc.child("node").attribute("attr").value() << "]\n";
+//         std::cout << "Error description: " << result.description() << "\n";
+//         std::cout << "Error offset: " << result.offset << " (error at [..." << (detin.c_str() + result.offset) << "]\n\n";
     }
 //     cout << "parsing det\n";
     
@@ -61,7 +71,7 @@ Determinator::Determinator( string  detin)
     } else if ( doc.child("determinator")) {
         detnode = doc.child("determinator");
     } else {
-        cout << "we have no XML to parse!\n";
+        poco_error(detlog, "Determinator XML is empty");
         return;
     }
     
@@ -138,7 +148,7 @@ Determinator::Determinator( string  detin)
                 actions.push_back(new GlobalAction(*ait));
             }
         }
-        cout << "\tloaded " << actions.size() << " actions\n";
+        poco_notice(detlog, "Loaded " + NumberFormatter::format(actions.size()) + " actions");
     }
 
     
@@ -181,13 +191,13 @@ void Determinator::setGUID(string GUID)
 //Always fails when the Determinator is disabled.
 bool Determinator::match(DeterminatorEnvironment* env)
 {
-    
+  
 	bool result = false;
   if(matchany){
-      //cout << "match any:\n";
+      poco_trace(detlog, "Match Any");
       result =false;
   } else {
-      //cout << "match all:\n";
+      poco_trace(detlog, "Match All");
       result = true;
   }
   
@@ -213,7 +223,8 @@ bool Determinator::match(DeterminatorEnvironment* env)
 void Determinator::execute(DeterminatorEnvironment* env)
 {
     if (isEnabled()){
-        cout << "executing determinator " << GUID_ << ": " << name << ": " << description << "\n";
+        poco_notice(detlog, "executing determinator " + GUID_ + ": " + name + ": " + description );
+        //cout << "executing determinator " << GUID_ << ": " << name << ": " << description << "\n";
         for (vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit) {
                 (*dit)->execute(env);
                 flush(cout);
@@ -287,26 +298,11 @@ string Determinator::printXML()
         }
     
 
-/*    
-    // add description node with text child
-    pugi::xml_node descr = node.append_child("description");
-    descr.append_child(pugi::node_pcdata).set_value("Simple node");
-    
-    // add param node before the description
-    pugi::xml_node param = node.insert_child_before("param", descr);
-    
-    // add attributes to param node
-    param.append_attribute("name") = "version";
-    param.append_attribute("value") = 1.1;
-    param.insert_attribute_after("type", param.attribute("name")) = "float";*/
-    
     xml_string_writer xmlwrite;
-    
     
     doc.save(xmlwrite);
     return xmlwrite.result;
     
-
 }
 
 string Determinator::cleanGUID(const string guidin) {

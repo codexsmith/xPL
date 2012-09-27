@@ -23,7 +23,8 @@ public:
     DeterminatorEnvironment ( xplMsg*  );
 
     //~XPLRuleManager();
-    GlobalManager* globals;
+    // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
+    GlobalManager globals;
     xplMsg* message;
     struct tm * mtime;
 

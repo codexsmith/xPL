@@ -5,6 +5,8 @@
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
 #include "xplMsg.h"
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
 //#include "DeterminatorEnvironment.h"
 
 class DeterminatorEnvironment;
@@ -21,6 +23,7 @@ class XPLAction : public DeterminatorAction {
 		bool equals(XPLAction* action);
     //XPLMessage message;
     AutoPtr<xplMsg> message;
+    Logger& actlog;
     
 };
 

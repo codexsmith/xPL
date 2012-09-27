@@ -11,13 +11,15 @@ using namespace std;
 
 //XPLActions are directly constructed their vector of messages.
 //Should only be used in an appropriate factory.
-XPLAction::XPLAction()
+XPLAction::XPLAction():
+actlog(Logger::get("rulemanager.determinator.xplaction"))
 {
 
 }
 
 //A constructor that builds the XPLAction from XML, passed in from the Action node down.
-XPLAction::XPLAction(pugi::xml_node actionnode)
+XPLAction::XPLAction(pugi::xml_node actionnode):
+actlog(Logger::get("rulemanager.determinator.xplaction"))
 {
     bool failed = false;
     string type_str;
@@ -79,10 +81,8 @@ XPLAction::XPLAction(pugi::xml_node actionnode)
             } 
         }
     }
-    
-    
-    
     //cout << "\t\tloaded " << message.getMembers().size() << " members\n";
+    poco_debug(actlog, "Loaded " + NumberFormatter::format(message.getMembers().size()) + " members");
     
     
 }
@@ -97,7 +97,8 @@ void XPLAction::execute(DeterminatorEnvironment* env)
   //XPLParser::instance().sendMsg(message); //FIXME
   xplUDP* comm = xplUDP::instance();
   comm->TxMsg(*message);
-  cout << "sending message\n";
+  poco_information(actlog, "Action \"" + display_name + "\" sending a message");
+  poco_trace(actlog, message->GetRawData());
 }
 
 

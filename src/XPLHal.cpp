@@ -26,23 +26,23 @@ using Poco::Net::TCPServerConnectionFactoryImpl;
 using Poco::Net::TCPServerParams;
 using Poco::Net::IPAddress;
 
-XPLHal::XPLHal() {
-    cout << "XPLHal Created\n";
+XPLHal::XPLHal() :
+hallog(Logger::get("xplhal")){
     //Load XML Determinators from disk.
     ruleMgr.assign(new XPLRuleManager());
     dispatch.assign(new XHCPDispatcher(this));
     
 
-    
+    globals.loadGlobals();
     
     xplUDP::instance()->rxNotificationCenter.addObserver(Observer<XPLHal, MessageRxNotification>(*this,&XPLHal::HandleAllMessages));
     
-    cout << "app: xplUDP created\n";
+    poco_debug(hallog, "xplUDP created");
     //pDevice = xplDevice( "smgpoe", "xplhal", "1.2", true, true, myComms );
     pDevice.assign(new xplDevice( "smgpoe", "xplhal", "1.2", true, true, xplUDP::instance() ));
     if( NULL == pDevice )
     {
-        cout << "error\n\n";
+        poco_error(hallog, "no device");
         return;
     }
     
@@ -58,29 +58,40 @@ XPLHal::XPLHal() {
     
 }
 XPLHal::~XPLHal() {
-     cout << "XPLHal Destroying\n";
-    cout << "XPLHal Destroyed\n";
+    poco_debug(hallog, "destroying xplHal");
     srv->stop();
+    globals.saveGlobals();
 
 }
 
 namespace{
-    static Poco::SingletonHolder<XPLHal> sh;
+    //static Poco::SingletonHolder<XPLHal> sh;
+    static XPLHal* halp;
 }
 
 XPLHal& XPLHal::instance() {
-    return *sh.get();
+    //return *sh.get();
+    return *halp;
+}
+
+
+XPLHal& XPLHal::createInstance() {
+    halp = new XPLHal();
+    return *halp;
+}
+void XPLHal::deleteInstance() {
+    delete halp;
 }
 
 //messages that are local to us
 void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
-    cout << "got directed message: " << mNot->message->GetSchemaClass() << " " <<mNot->message->GetSchemaType() << "\n";
+    poco_debug(hallog, "got directed message: " + mNot->message->GetSchemaClass() + " " + mNot->message->GetSchemaType());
     mNot->release();
 }
 
 //messages for anyone, to be processed by the rules engine
 void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
-    cout << "got message: " << mNot->message->GetSchemaClass() << " " <<mNot->message->GetSchemaType() << "\n";
+    poco_debug(hallog, "got message: " + mNot->message->GetSchemaClass() + " " + mNot->message->GetSchemaType());
     ruleMgr->match(*(mNot->message));
     mNot->release();
 
@@ -88,7 +99,7 @@ void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
 
 
 void XPLHal::saveDeterminators(void) {
-    cout << "trying to save determinators (hal)\n";
+    poco_debug(hallog, "trying to save determinators");
     ruleMgr->saveDeterminators();
 }
 
@@ -100,12 +111,14 @@ void XPLHal::startXHCP()
     ServerSocket sckt(3865);
     
 //     srv.assign(new TCPServer(new TCPServerConnectionFactoryImpl<XHCPServerConnection>(ruleMgr), sckt));
-    cout << "dispactchmaster: " << dispatch << " pt " << dispatch.get() << "\n";
+//     cout << "dispactchmaster: " << dispatch << " pt " << dispatch.get() << "\n";
+    poco_debug(hallog, "XHCP connection listerner set up");
     srv.assign(new TCPServer(new XHCPServerConnectionFactory(this), sckt));
     //TCPServer srv(new XHCPServerConnectionFactory(), sckt);
     
     srv->start();
-    cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
+    poco_debug(hallog, "XHCP server started at " + sckt.address().toString());
+//     cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
     
 }
 
