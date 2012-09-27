@@ -9,7 +9,6 @@ Currently, it's semi-working. In the least, it supports the most common parts of
 To build, use cmake:
 ```bash
 cd build
-<<<<<<< HEAD
 cmake ../src/CmakeLists.txt
 make
 ``` 
