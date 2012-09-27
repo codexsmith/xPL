@@ -1,14 +1,9 @@
 xPL Hal (lite)
 ==============
 
-<<<<<<< HEAD
 The goal of this project is to get an xPL HAL server running on an embedded ARM device, such as a linux-based router or a NAS. To this end, this code is written in C++ and compiles with GCC. Additionally, to make the code portable, it uses the POCO libraries, as they should be cross platform.
 
 Currently, it's semi-working. In the least, it supports the most common parts of the determinator spec, and the needed parts of XHCP. You should be able to talk to it using the Windows XHCP client, or using telnet. For more info, check the recent changelog.
-=======
-The goal of this project is to get an xPL HAL server running on an embedded ARM device, such as a linux-based router or a NAS. To this end, this code is written in C++ using the POCO libraries, as they should be cross platform.
-
-Currently, it's semi-working. In the least, it supports the most common parts of the determinator spec, and the needed parts of XHCP. You should be able to talk to it using the Windows XHCP client, or using telnet. 
 
 
 To build, use cmake:
