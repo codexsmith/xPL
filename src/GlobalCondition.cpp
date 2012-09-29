@@ -1,7 +1,6 @@
 #include "GlobalCondition.h"
 
 #include "Determinator.h"
-#include "../../../src/heeks/skeleton/prim.h"
 #include <string>
 #include <iostream>
 #include <string.h>

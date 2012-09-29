@@ -5,11 +5,22 @@ The goal of this project is to get an xPL HAL server running on an embedded ARM 
 
 Currently, it's semi-working. In the least, it supports the most common parts of the determinator spec, and the needed parts of XHCP. You should be able to talk to it using the Windows XHCP client, or using telnet. For more info, check the recent changelog.
 
+When fetching, remember to fetch the xPLsdk submodule using either:
+```
+git clone --recursive <this repo>
+```
+or
+```
+git clone <this repo>
+git submodule update --init
+
+```
 
 To build, use cmake:
 ```bash
+mkdir build
 cd build
-cmake ../src/CmakeLists.txt
+cmake ../src
 make
 ``` 
 
@@ -17,6 +28,8 @@ Then try the executable with:
 ```bash
 ./xplhallite
 ```
+Remember that if you ever run cmake from the /src directory, it will dump some files in /src (like CMakeCache.txt) that cause future builds to be there too.
+
 
 What is xPL / an xPLHAL server?
 -------------------------------
