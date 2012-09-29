@@ -98,14 +98,15 @@ void GlobalManager::loadGlobals() {
             Element* pNode = (Element*) it.nextNode();
             while (pNode)
             {
+                poco_debug(globallog, "List of loaded globals:");
                 if(pNode->hasAttribute("name") && pNode->hasAttribute("value")) {
-                    std::cout << fromXMLString(pNode->getAttribute("name")) << ":" << fromXMLString(pNode->getAttribute("value")) << std::endl;
+                    //std::cout << fromXMLString(pNode->getAttribute("name")) << ":" << fromXMLString(pNode->getAttribute("value")) << std::endl;
+                    poco_debug(globallog, fromXMLString(pNode->getAttribute("name")) + ":" + fromXMLString(pNode->getAttribute("value")));
                     globalVars[cleanGlobalName(fromXMLString(pNode->getAttribute("name")))] = fromXMLString(pNode->getAttribute("value"));
                 }
                 
                 pNode = (Element*) it.nextNode();
             }
-            cout << "end of list" << std::endl;
             
         } catch (Poco::XML::SAXParseException e) {
                 globalLock.unlock();
@@ -132,8 +133,8 @@ void GlobalManager::saveGlobals() {
     poco_information(globallog, "Saving globals to " + globalvarpath.toString());
     
     File globalvarfile = File(globalvarpath);
-    cout << "make file"<< std::endl;
-    cout << "exist: " <<globalvarfile.exists() << std::endl;
+//     cout << "make file"<< std::endl;
+//     cout << "exist: " <<globalvarfile.exists() << std::endl;
     if( globalvarfile.exists() && globalvarfile.canWrite()) {
         poco_notice(globallog, "removing previous save file");
         globalvarfile.remove();        

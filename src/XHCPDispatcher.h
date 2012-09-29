@@ -20,7 +20,7 @@ public:
 
     XHCPDispatcher(std::string);
     XHCPDispatcher(XPLHal* halin);
-    ~XHCPDispatcher(){cout<<"del dispatcher\n";};
+    ~XHCPDispatcher(){};
     
     std::string delGlobal(std::string , SocketStream& strm );
     std::string getGlobal(std::string , SocketStream& strm );
