@@ -51,7 +51,7 @@ public:
     void HandleAllMessages ( MessageRxNotification* );
 
     GlobalManager globals;
-    
+    static Path getConfigFileLocation();
 private:
     xplUDP* myComms;
     

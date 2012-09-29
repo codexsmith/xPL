@@ -49,7 +49,7 @@ bool running = true;
 
 void shutdown_handler(int s){
     
-    poco_information(rootlogger, "caught signal" + s);
+    poco_information(rootlogger, "  caught signal" + s);
 
     running = false;
 }

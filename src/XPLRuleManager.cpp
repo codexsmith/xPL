@@ -24,13 +24,11 @@
 #include "Poco/SingletonHolder.h"
 #include "Poco/String.h"
 
+#include "XPLHal.h"
+
 using namespace Poco;
 
 using namespace std;
-
-const string XPLRuleManager::saveLocation = "/home/scott/.xPL/xplhallite/determinators/";
-
-
 
 
 XPLRuleManager::XPLRuleManager(map<string, Determinator*>* determinators):
@@ -194,7 +192,10 @@ void XPLRuleManager::saveDeterminators()
     detLock.readLock();
     int ret = 0;
     
-    Path loadLocation(saveLocation);
+    //Path loadLocation(saveLocation);
+    Path loadLocation = XPLHal::getConfigFileLocation();
+    loadLocation.pushDirectory("determinators");
+    
     File loadFile(loadLocation.parent());
     loadFile.createDirectories();
     if (!loadLocation.isDirectory()) {
@@ -222,7 +223,7 @@ void XPLRuleManager::saveDeterminators()
                 continue;
             }
             trimInPlace(replaceInPlace(savename," ", "_"));
-            File detFile = ((saveLocation  + savename + ".xml"));
+            File detFile = ((loadLocation.getFileName()  + savename + ".xml"));
             detFile.createFile();
             FileOutputStream detStream (detFile.path());
             
@@ -243,7 +244,9 @@ void XPLRuleManager::loadDeterminators( ) {
     struct dirent *ent;
     //string loadLocation = saveLocation + "bk";
     
-    Path loadLocation(saveLocation);
+    Path loadLocation = XPLHal::getConfigFileLocation();
+    loadLocation.pushDirectory("determinators");
+    
     File loadLocationDir(loadLocation);
     loadLocationDir.createDirectories();
 //     string loadLocation = saveLocation;

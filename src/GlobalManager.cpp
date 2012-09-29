@@ -17,6 +17,9 @@
 #include "Poco/DOM/NodeList.h"
 #include <Poco/FileStream.h>
 #include "Poco/SAX/SAXException.h"
+
+#include "XPLHal.h"
+
 using namespace Poco::XML;
 
 using namespace std;
@@ -60,12 +63,13 @@ GlobalManager::~GlobalManager() {
 
 void GlobalManager::loadGlobals() {
     globalLock.lock();
-    globalvarpath = Path(Path::home());
-    
-    globalvarpath.pushDirectory(".xPL");
-    globalvarpath.pushDirectory("xplhallite");
+    globalvarpath = XPLHal::getConfigFileLocation();
+//     globalvarpath = Path(Path::home());
+//     
+//     globalvarpath.pushDirectory(".xPL");
+//     globalvarpath.pushDirectory("xplhallite");
     globalvarpath.setFileName(globalFile);
-    
+//     
     //cout << "path is " << globalvarpath.toString() << std::endl;
     poco_information(globallog, "Loading globals from " + globalvarpath.toString());
     

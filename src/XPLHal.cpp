@@ -14,7 +14,7 @@
 #include "Poco/Net/TCPServerParams.h"
 #include "Poco/String.h"
 #include "XHCPServerConnection.h"
-
+#include <Poco/Path.h>
 #include <xplMsg.h>
 
 using namespace std;
@@ -120,6 +120,14 @@ void XPLHal::startXHCP()
     poco_debug(hallog, "XHCP server started at " + sckt.address().toString());
 //     cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
     
+}
+
+
+Path XPLHal::getConfigFileLocation() {
+    Poco::Path p(Poco::Path::home());
+    p.pushDirectory(".xPL");
+    p.pushDirectory("xplhallite");
+    return p;
 }
 
 
