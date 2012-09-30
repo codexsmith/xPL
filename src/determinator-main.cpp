@@ -32,7 +32,7 @@
 
 using namespace Poco;
 
-Logger& rootlogger = Logger::root();
+//Logger& rootlogger = Logger::root();
 
 //Prototypes
 void* xHCPService(void*);
@@ -45,10 +45,10 @@ vector<Determinator>* createDeterminator();
 
 bool running = true;
 
-
+//Logger& testLog = Logger::get("rulemanager.determinator.timecondition");
 
 void shutdown_handler(int s){
-    
+    Logger& rootlogger = Logger::root();
     poco_information(rootlogger, "  caught signal" + s);
 
     running = false;
@@ -71,12 +71,19 @@ int main(int argc,const char * argv[])
     AutoPtr<ConsoleChannel> pCons(new ConsoleChannel);
     AutoPtr<PatternFormatter> pPF(new PatternFormatter);
     //pPF->setProperty("pattern", "%p %I-%T %H:%M:%S %s: %t");
-    pPF->setProperty("pattern", "%H:%M:%S %s %I-%T %p: %t");
+    //pPF->setProperty("pattern", "%H:%M:%S %s %I-%T %p: %t");
+    pPF->setProperty("pattern", "%H:%M:%S %s %I %p: %t");
     AutoPtr<FormattingChannel> pFC(new FormattingChannel(pPF, pCons));
-    Logger::root().setChannel(pFC);
+    
+    Logger& rootlogger = Logger::root();
+    //Logger::root().setChannel(pFC);
+    rootlogger.setChannel(pFC);
     
     rootlogger.setLevel("debug");
-    
+
+//     Logger& testLog = Logger::get("rulemanager.determinator.timecondition");
+//     testLog.setLevel(Message::PRIO_NOTICE);
+
     poco_warning(rootlogger, "starting logger");
     
     

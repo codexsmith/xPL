@@ -82,7 +82,7 @@ actlog(Logger::get("rulemanager.determinator.xplaction"))
         }
     }
     //cout << "\t\tloaded " << message.getMembers().size() << " members\n";
-    poco_debug(actlog, "Loaded " + NumberFormatter::format(message.getMembers().size()) + " members");
+    poco_debug(actlog, "Loaded " + NumberFormatter::format(message->GetNumMsgItems()) + " members");
     
     
 }

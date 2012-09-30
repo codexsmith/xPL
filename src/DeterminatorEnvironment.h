@@ -4,6 +4,7 @@
 #include "XPLCommon.h"
 #include "GlobalManager.h"
 #include "Poco/AutoPtr.h"
+#include "Poco/Timestamp.h"
 //#include "XPLMessage.h"
 #include <string>
 #include "pugixml/pugixml.hpp"
@@ -26,7 +27,7 @@ public:
     // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
     GlobalManager globals;
     xplMsg* message;
-    struct tm * mtime;
+    Timestamp mtime;
 
 };
 

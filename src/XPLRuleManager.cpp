@@ -173,6 +173,7 @@ void XPLRuleManager::match(xplMsg& msg)
     
     DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
     detLock.readLock();
+    poco_debug(rulelog, "going to match rules ");
     
     for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
         
@@ -223,12 +224,12 @@ void XPLRuleManager::saveDeterminators()
                 continue;
             }
             trimInPlace(replaceInPlace(savename," ", "_"));
-            File detFile = ((loadLocation.getFileName()  + savename + ".xml"));
+            File detFile = ((loadLocation.toString()  + savename + ".xml"));
             detFile.createFile();
             FileOutputStream detStream (detFile.path());
             
             //myfile.open (detFile.path().c_str());
-            poco_notice(rulelog, "saving determinators to" + detFile.path());
+            poco_notice(rulelog, "saving determinators to " + detFile.path());
             detStream << (dit->second->printXML());
             detStream.close();
         }

@@ -30,6 +30,7 @@ add_subdirectory (xPLsdk/src)
 
 find_package (Threads)
 
+add_definitions(-D_DEBUG)
 
 find_library(POCO_FOUNDATION PocoFoundation)
 find_library(POCO_NET PocoNet)
