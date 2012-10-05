@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<determinator guid="4203" name="Roomlightsob" description="off" enabled="Y" groupName="" isGroup="N">
+	<input match="all">
+		<xplCondition display_name="test" msg_type="" source_vendor="*" source_device="*" source_instance="*" target_vendor="*" target_device="*" target_instance="*" schema_class="control" schema_type="basic">
+			<param name="device" operator="=" value="pwm" />
+			<param name="current" operator="=" value="2" />
+		</xplCondition>
+		<timeCondition display_name="display-name" category="time" operator="&gt;=" value="13:44" />
+		<timeCondition display_name="display-name" category="date" operator="&lt;" value="15 Mar 2000" />
+		<timeCondition display_name="display-name" category="day" operator="&gt;" value="15" />
+		<timeCondition display_name="display-name" category="month" operator="&gt;" value="March" />
+		<timeCondition display_name="display-name" category="month" operator="&lt;" value="April" />
+		<timeCondition display_name="display-name" category="year" operator="&gt;" value="2000" />
+	</input>
+	<output>
+		<logAction display_name="log lamp" executeOrder="0" logText="lamp 3-2" />
+	</output>
+</determinator>
