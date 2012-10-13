@@ -23,7 +23,7 @@ class XPLRuleManager {
 
     static XPLRuleManager& instance();
       
-    void match(xplMsg&);
+    void match(DeterminatorEnvironment& env);
         std::string detToString();//XHCP support
         Determinator* retrieveDeterminator(string GUID);
         //takes ownership

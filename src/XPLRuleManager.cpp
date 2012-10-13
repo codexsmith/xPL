@@ -166,12 +166,12 @@ bool XPLRuleManager::runDeterminator( string GUID ){
 
 
 
-void XPLRuleManager::match(xplMsg& msg)
+void XPLRuleManager::match(DeterminatorEnvironment& env)
 {
     //cout << "rules engine matching \n\n";
     //match stuff
     
-    DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
+//     DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
     detLock.readLock();
     poco_debug(rulelog, "going to match rules ");
     

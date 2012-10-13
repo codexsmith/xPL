@@ -22,11 +22,14 @@ class DeterminatorEnvironment
 public:
     DeterminatorEnvironment();
     DeterminatorEnvironment ( xplMsg*  );
-
+    DeterminatorEnvironment ( string globalname  );
     //~XPLRuleManager();
     // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
     //GlobalManager globals;
     SharedPtr<GlobalManager> globals;
+    //populated if a global changed
+    string globalName;
+    //populated if a message came in
     xplMsg* message;
     Timestamp mtime;
 

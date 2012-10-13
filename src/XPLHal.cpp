@@ -103,7 +103,10 @@ void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
 //messages for anyone, to be processed by the rules engine
 void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
     poco_debug(hallog, " " + mNot->message->GetSchemaClass() + " " + mNot->message->GetSchemaType());
-    ruleMgr->match(*(mNot->message));
+    
+    //create an environment for this message
+    DeterminatorEnvironment env((mNot->message));
+    ruleMgr->match(env);
     mNot->release();
 
 }

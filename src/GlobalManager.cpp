@@ -227,9 +227,17 @@ map<string, string> GlobalManager::getGlobals() const {
 
 void GlobalManager::setGlobal(string name, string value) {
     globalLock.lock();
-    string realName = cleanGlobalName(name);
-    globalVars[realName] = value;
+    bool changed = false;
+    if(globalVars[realName] == value) {
+        globalVars[realName] = value;
+        changed = true;
+    }
     globalLock.unlock();
+    
+    if(changed){
+        
+    }
+    
 }
 
 

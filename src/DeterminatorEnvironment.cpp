@@ -21,5 +21,10 @@ DeterminatorEnvironment::DeterminatorEnvironment( xplMsg* messagein) {
   time_t stime = time(0);
   globals = (XPLHal::instance()).globals;
 }
+DeterminatorEnvironment::DeterminatorEnvironment( string globalNameIn) {
+    globalName = globalNameIn;
+    time_t stime = time(0);
+    globals = (XPLHal::instance()).globals;
+}
 
 
