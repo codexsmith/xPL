@@ -1,6 +1,7 @@
 #include "Determinator.h"
 #include "XPLCondition.h"
 #include "TimeCondition.h"
+#include "DayCondition.h"
 #include "GlobalCondition.h"
 
 #include "DeterminatorAction.h"
@@ -126,6 +127,8 @@ detlog(Logger::get("rulemanager.determinator"))
               conditions.push_back(new XPLCondition(*ait));
             } else if (!strcmp("timeCondition",ait->name())) {
                 conditions.push_back(new TimeCondition(*ait));
+            } else if (!strcmp("dayCondition",ait->name())) {
+                conditions.push_back(new DayCondition(*ait));
             } else if (!strcmp("globalCondition",ait->name())) {
                 conditions.push_back(new GlobalCondition(*ait));
             }

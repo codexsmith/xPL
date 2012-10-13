@@ -21,7 +21,7 @@
         toUpperInPlace(trimInPlace(arg));
         string ret;
         cout << "arg is " << arg << "\n";
-        hal->globals.deleteGlobal(arg);
+        hal->globals->deleteGlobal(arg);
         return "233 Global deleted\n";
     }
     std::string XHCPDispatcher::getGlobal(std::string strIn, SocketStream& strm ){
@@ -29,7 +29,7 @@
         string arg = strIn.substr(0,split);
         toUpperInPlace(trimInPlace(arg));
         cout << "arg is " << arg << "\n";
-        map<string,string> globalcp = hal->globals.getGlobals();
+        map<string,string> globalcp = hal->globals->getGlobals();
         
         string ret = "";
         if(globalcp.count(arg)) {
@@ -44,7 +44,7 @@
     }
     std::string XHCPDispatcher::listGlobals(std::string strIn, SocketStream& strm ){
         string ret = "231 List of globals follows" + XHCPCRLF;
-        map<string,string> globalcp = hal->globals.getGlobals();
+        map<string,string> globalcp = hal->globals->getGlobals();
         
         
         map<string,string>::iterator git;
@@ -71,7 +71,7 @@
         
         toUpperInPlace(trimInPlace(arg0));
         
-        hal->globals.setGlobal(arg0,arg1);
+        hal->globals->setGlobal(arg0,arg1);
         
         cout << "arg is " << arg0 << "\n";
         return ("232 Global value updated" + XHCPCRLF);

@@ -27,13 +27,23 @@ using Poco::Net::TCPServerParams;
 using Poco::Net::IPAddress;
 
 XPLHal::XPLHal() :
-hallog(Logger::get("xplhal")){
+hallog(Logger::get("xplhal")) {
+    
+    globals = SharedPtr<GlobalManager>(new GlobalManager());
+   
+    
+    
+    
+}
+
+void XPLHal::start() {
+    
     //Load XML Determinators from disk.
     ruleMgr.assign(new XPLRuleManager());
     dispatch.assign(new XHCPDispatcher(this));
     
-
-    globals.loadGlobals();
+    
+    globals->loadGlobals();
     
     xplUDP::instance()->rxNotificationCenter.addObserver(Observer<XPLHal, MessageRxNotification>(*this,&XPLHal::HandleAllMessages));
     
@@ -49,18 +59,16 @@ hallog(Logger::get("xplhal")){
     pDevice->rxNotificationCenter.addObserver(Observer<XPLHal, MessageRxNotification>(*this,&XPLHal::HandleDeviceMessages));
     
     pDevice->Init();
-
+    
     startXHCP();
-    
-
-    
     
     
 }
+
 XPLHal::~XPLHal() {
     poco_debug(hallog, "destroying xplHal");
     srv->stop();
-    globals.saveGlobals();
+    globals->saveGlobals();
 
 }
 
@@ -71,12 +79,15 @@ namespace{
 
 XPLHal& XPLHal::instance() {
     //return *sh.get();
+//     cout << "halp : " << halp << "\n";
     return *halp;
 }
 
 
 XPLHal& XPLHal::createInstance() {
+//     cout << "creating instance\n";
     halp = new XPLHal();
+    
     return *halp;
 }
 void XPLHal::deleteInstance() {
@@ -91,7 +102,7 @@ void XPLHal::HandleDeviceMessages(MessageRxNotification* mNot) {
 
 //messages for anyone, to be processed by the rules engine
 void XPLHal::HandleAllMessages(MessageRxNotification* mNot) {
-    poco_debug(hallog, "got message: " + mNot->message->GetSchemaClass() + " " + mNot->message->GetSchemaType());
+    poco_debug(hallog, " " + mNot->message->GetSchemaClass() + " " + mNot->message->GetSchemaType());
     ruleMgr->match(*(mNot->message));
     mNot->release();
 

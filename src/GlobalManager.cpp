@@ -37,11 +37,19 @@ globallog(Logger::get("globalmanager")) {
 //copy
 GlobalManager& GlobalManager::operator=(const GlobalManager& other) {
     
-    //make a copy
-    //other.globalLock.lock();
-    //globalVars = other.getGlobals();
-    globalVars = other.globalVars;
-    //other.globalLock.unlock();
+    if (this != &other) // protect against invalid self-assignment
+        {
+            
+            //make a copy
+            cout<< "get lock \n";
+            //other.globalLock.lock();
+            cout<< "got lock \n";
+            cout << "othersize " << other.globalVars.size() << "\n";
+            //globalVars = other.getGlobals();
+            //globalVars = other.globalVars;
+            //other.globalLock.unlock();
+            cout<< "rel lock \n";
+        }
     return *this;
 }
 
@@ -206,9 +214,13 @@ bool GlobalManager::deleteGlobal(string name) {
     return removed;
 }
 
-map<string, string> GlobalManager::getGlobals() {
+map<string, string> GlobalManager::getGlobals() const {
+    cout << "ommmp " << this<< "   " << &globallog << "\n";
+    poco_warning(globallog, "omp p " +  NumberFormatter::format(this) ); 
     globalLock.lock();
+    poco_warning(globallog, "other p " +  NumberFormatter::format(&globalVars) ); 
     map<string, string> globalcopy(globalVars);
+    poco_warning(globallog, "count " +  NumberFormatter::format(globalcopy.size()) );   
     globalLock.unlock();
     return globalcopy;
 }

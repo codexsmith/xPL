@@ -19,7 +19,7 @@ DeterminatorEnvironment::DeterminatorEnvironment() {
 DeterminatorEnvironment::DeterminatorEnvironment( xplMsg* messagein) {
   message = messagein;
   time_t stime = time(0);
-  globals = XPLHal::instance().globals;
+  globals = (XPLHal::instance()).globals;
 }
 
 

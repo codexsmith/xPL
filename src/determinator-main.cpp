@@ -81,8 +81,8 @@ int main(int argc,const char * argv[])
     
     rootlogger.setLevel("debug");
 
-//     Logger& testLog = Logger::get("rulemanager.determinator.timecondition");
-//     testLog.setLevel(Message::PRIO_NOTICE);
+     Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
+     testLog.setLevel(Message::PRIO_TRACE);
 
     poco_warning(rootlogger, "starting logger");
     
@@ -93,7 +93,7 @@ int main(int argc,const char * argv[])
     
     //XPLHal& hal = XPLHal::instance();
     XPLHal& hal = XPLHal::createInstance();
-    
+    hal.start();
     
     //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
     

@@ -43,6 +43,8 @@ public:
     
     XPLHal();
     ~XPLHal();
+
+    void start();
     void saveDeterminators();
     SharedPtr<XPLRuleManager> ruleMgr;
     SharedPtr<XHCPDispatcher> dispatch;
@@ -50,7 +52,7 @@ public:
     void HandleDeviceMessages ( MessageRxNotification* );
     void HandleAllMessages ( MessageRxNotification* );
 
-    GlobalManager globals;
+    SharedPtr<GlobalManager> globals;
     static Path getConfigFileLocation();
 private:
     xplUDP* myComms;

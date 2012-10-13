@@ -39,14 +39,14 @@ public:
     bool deleteGlobal(string name);
     
     //gets a copy
-    map<string, string> getGlobals();
+    map<string, string> getGlobals() const;
     void setGlobal(string name, string value);
     void loadGlobals();
     void saveGlobals();
 private:
     Logger& globallog;
     Path globalvarpath;
-    Mutex globalLock;
+    mutable Mutex globalLock; //this is mutable to allow getGlobals to be const
     map<string, string> globalVars;
 
 };

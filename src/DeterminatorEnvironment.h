@@ -25,7 +25,8 @@ public:
 
     //~XPLRuleManager();
     // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
-    GlobalManager globals;
+    //GlobalManager globals;
+    SharedPtr<GlobalManager> globals;
     xplMsg* message;
     Timestamp mtime;
 
