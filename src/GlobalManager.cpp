@@ -228,15 +228,19 @@ map<string, string> GlobalManager::getGlobals() const {
 void GlobalManager::setGlobal(string name, string value) {
     globalLock.lock();
     bool changed = false;
-    if(globalVars[realName] == value) {
+    string realName = cleanGlobalName(name);
+    if(globalVars[realName] != value) {
         globalVars[realName] = value;
         changed = true;
     }
     globalLock.unlock();
     
     if(changed){
-        
+        poco_warning(globallog, realName + " changed, firing event");   
+        DeterminatorEnvironment env(realName);
+        XPLHal::instance().ruleMgr->match(env);
     }
+    
     
 }
 

@@ -20,8 +20,11 @@ class xplMsg;*/
 class DeterminatorEnvironment
 {
 public:
+    
+    enum determinatorEventType { xPLMessage, globalChanged, none};
+    
     DeterminatorEnvironment();
-    DeterminatorEnvironment ( xplMsg*  );
+    DeterminatorEnvironment ( AutoPtr<xplMsg>  );
     DeterminatorEnvironment ( string globalname  );
     //~XPLRuleManager();
     // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
@@ -30,8 +33,9 @@ public:
     //populated if a global changed
     string globalName;
     //populated if a message came in
-    xplMsg* message;
+    AutoPtr<xplMsg> message;
     Timestamp mtime;
+    determinatorEventType envType;
 
 };
 

@@ -15,16 +15,19 @@ DeterminatorEnvironment::DeterminatorEnvironment() {
   message = NULL;
   time_t stime = time(0);
   globals = XPLHal::instance().globals;
+  envType = none;
 }
-DeterminatorEnvironment::DeterminatorEnvironment( xplMsg* messagein) {
+DeterminatorEnvironment::DeterminatorEnvironment( AutoPtr< xplMsg > messagein) {
   message = messagein;
   time_t stime = time(0);
   globals = (XPLHal::instance()).globals;
+  envType = xPLMessage;
 }
 DeterminatorEnvironment::DeterminatorEnvironment( string globalNameIn) {
     globalName = globalNameIn;
     time_t stime = time(0);
     globals = (XPLHal::instance()).globals;
+    envType = globalChanged;
 }
 
 

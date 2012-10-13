@@ -55,11 +55,9 @@
         return ret;
     }
     std::string XHCPDispatcher::setGlobal(std::string strIn, SocketStream& strm ){
-        cout << "here\n";
-        cout<< "strin :"<<strIn<<":\n";
+
         int split = strIn.find_first_of(" ");
         string arg0 = strIn.substr(0,split);
-        cout<< "arg0  :"<<arg0<<":\n";
         if(!arg0.length() || arg0.length() == strIn.length()) return ("232 Global value updated" + XHCPCRLF);
         string rest = strIn.substr(split);
         trimInPlace(rest);
@@ -67,13 +65,10 @@
         if(!rest.length()) return ("232 Global value updated" + XHCPCRLF);
         split = rest.find_first_of(" ");
         string arg1= rest.substr(0,split);
-        cout<< "arg1  :"<<arg1<<":\n";
         
         toUpperInPlace(trimInPlace(arg0));
-        
         hal->globals->setGlobal(arg0,arg1);
         
-        cout << "arg is " << arg0 << "\n";
         return ("232 Global value updated" + XHCPCRLF);
     }
     

@@ -129,8 +129,11 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
 //matching values in the passed in message.
 bool XPLCondition::match(DeterminatorEnvironment* env)
 {
-
-    xplMsg* message = env->message;
+    //if the determinator env wasn't created due to a message comming in, don't match.
+    if(env->envType != DeterminatorEnvironment::xPLMessage) {
+        return false;
+    }
+    AutoPtr<xplMsg> message = env->message;
     
 	XPLAddress sourceAddress = message->GetSource();
 	XPLAddress destinationAddress = message->GetTarget();

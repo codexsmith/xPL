@@ -24,6 +24,7 @@
 #include "Poco/SingletonHolder.h"
 #include "Poco/String.h"
 
+
 #include "XPLHal.h"
 
 using namespace Poco;
@@ -37,6 +38,9 @@ rulelog(Logger::get("rulemanager"))
     //loadDeterminators();
     this->determinators = determinators;
     //this->determinators = loadDeterminators();
+    
+    //start thread to handle determinator events
+    //ThreadPool::defaultPool().start(this);
 }
 
 
@@ -49,10 +53,21 @@ rulelog(Logger::get("rulemanager"))
     //vector< Determinator >* x = loadDeterminators();
     //this->determinators = x;
     //delete x;
+    
+    //start thread to handle determinator events
+    Runnable& toRun = (Runnable&)*this;
+    eventThread.start(toRun);
+//     ThreadPool::defaultPool().start(toRun);
 }
 
 XPLRuleManager::~XPLRuleManager()
 {
+    //exit work thread
+    determinatorEventQueue.enqueueNotification(new QuitNotification);
+    poco_debug(rulelog, "joining");
+    eventThread.join();
+    poco_debug(rulelog, "joined");
+    
     saveDeterminators();
 //     cout << "delete determinators from  "  << this << " ";
     
@@ -168,23 +183,8 @@ bool XPLRuleManager::runDeterminator( string GUID ){
 
 void XPLRuleManager::match(DeterminatorEnvironment& env)
 {
-    //cout << "rules engine matching \n\n";
-    //match stuff
-    
-//     DeterminatorEnvironment env = DeterminatorEnvironment(&msg);
-    detLock.readLock();
-    poco_debug(rulelog, "going to match rules ");
-    
-    for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-        
-        if (dit->second->match(&env))
-        {
-            poco_debug(rulelog, "determinator " + dit->second->getGUID() + "matched");
-            dit->second->execute(&env);
-        }
-    }
-   
-    detLock.unlock();
+    //make the event and leave it to the work thread
+    determinatorEventQueue.enqueueNotification(new DetetminatorEventNotification(env));
 }
 
 
@@ -286,6 +286,57 @@ void XPLRuleManager::loadDeterminators( ) {
     }
     poco_debug(rulelog, "loaded " + NumberFormatter::format(determinators->size()) + " determinators");
 //     cout << "loaded " << determinators->size() << " determinators\n";
+}
+
+
+
+
+// a thread to run, waiting for someone to post to the determinatorEventQueue, and match against the rules when that happens
+void XPLRuleManager::run()
+{
+    bool running = true;
+    
+    AutoPtr<Notification> pNf;
+    while (running)
+    {
+        pNf = determinatorEventQueue.waitDequeueNotification();
+        if(((Notification*) pNf) == NULL) {
+            poco_debug(rulelog, "got quit notification, exiting work thread");
+            return;
+        }
+        
+        DetetminatorEventNotification::Ptr pWorkNf = pNf.cast<DetetminatorEventNotification>();
+        if (pWorkNf)
+        {
+            DeterminatorEnvironment env = pWorkNf->env;
+            poco_debug(rulelog, "got a determinatorEventNotification, checking against rules");
+            detLock.readLock();
+            if (env.envType == DeterminatorEnvironment::globalChanged) {
+                poco_debug(rulelog, "global changed: " + env.globalName);
+            }
+            if (env.envType == DeterminatorEnvironment::xPLMessage) {
+                poco_debug(rulelog, "msg rxed: " + env.message->GetSchemaClass()+ env.message->GetSchemaType());
+            }
+            
+            for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
+                
+                if (dit->second->match(&env))
+                {
+                    poco_debug(rulelog, "determinator " + dit->second->getGUID() + "matched");
+                    dit->second->execute(&env);
+                }
+            }
+            detLock.unlock();
+            poco_debug(rulelog, "finished checking determinators");
+            continue;
+        }
+        
+        QuitNotification::Ptr pQuitNf = pNf.cast<QuitNotification>();
+        if (pQuitNf){
+            poco_debug(rulelog, "got quit notification, exiting work thread");
+            running = false;
+        }
+    }
 }
 
 

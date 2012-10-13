@@ -81,8 +81,8 @@ int main(int argc,const char * argv[])
     
     rootlogger.setLevel("debug");
 
-     Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
-     testLog.setLevel(Message::PRIO_TRACE);
+     //Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
+     //testLog.setLevel(Message::PRIO_TRACE);
 
     poco_warning(rootlogger, "starting logger");
     
