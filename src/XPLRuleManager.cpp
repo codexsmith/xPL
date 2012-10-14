@@ -26,6 +26,7 @@
 
 
 #include "XPLHal.h"
+#include "../../../src/heeks/skeleton/prim.h"
 
 using namespace Poco;
 
@@ -57,13 +58,21 @@ rulelog(Logger::get("rulemanager"))
     //start thread to handle determinator events
     Runnable& toRun = (Runnable&)*this;
     eventThread.start(toRun);
-//     ThreadPool::defaultPool().start(toRun);
+    
+    //start thread to kick off determinatorEvents once per minute
+    //timerThread.start(RunnableAdapter<XPLRuleManager>(this, &XPLRuleManager::timerThread));
+    TimerCallback<XPLRuleManager> callback(*this, &XPLRuleManager::timerCallback);
+    determinatorEventTimer.setPeriodicInterval(100);
+    determinatorEventTimer.setStartInterval(500);
+    determinatorEventTimer.start(callback);
+    
 }
 
 XPLRuleManager::~XPLRuleManager()
 {
     //exit work thread
     determinatorEventQueue.enqueueNotification(new QuitNotification);
+    determinatorEventTimer.stop();
     poco_debug(rulelog, "joining");
     eventThread.join();
     poco_debug(rulelog, "joined");
@@ -319,6 +328,9 @@ void XPLRuleManager::run()
             if (env.envType == DeterminatorEnvironment::xPLMessage) {
                 poco_debug(rulelog, "msg rxed: " + env.message->GetSchemaClass()+ env.message->GetSchemaType());
             }
+            if (env.envType == DeterminatorEnvironment::none) {
+                poco_debug(rulelog, "once-per-minute timer fired");
+            }
             vector<Determinator*> toExecute;
             for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
              
@@ -354,3 +366,18 @@ void XPLRuleManager::run()
 }
 
 
+// a timer callback kick off a determinator event once per minute
+void XPLRuleManager::timerCallback(Poco::Timer& timer){
+    Timestamp now;
+    int numMS = 60000;
+    numMS *= 1000;
+    int timeInv = now.epochMicroseconds()/numMS;
+    int lastTimeInv = lastDeterminatorTimeEvent.epochMicroseconds()/numMS;
+    //poco_debug(rulelog, "timer called: "+ NumberFormatter::format(timeInv) + " :: "+ NumberFormatter::format(lastTimeInv) );
+    if(timeInv>lastTimeInv) {
+        lastDeterminatorTimeEvent = now;
+        DeterminatorEnvironment env;
+        match(env);
+    }
+   
+}

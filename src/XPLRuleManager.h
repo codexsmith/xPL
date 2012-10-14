@@ -13,6 +13,8 @@
 #include "Poco/Runnable.h"
 #include "Poco/NotificationQueue.h"
 #include <Poco/Thread.h>
+#include "Poco/Timer.h"
+#include "Poco/Timestamp.h"
 //class XPLMessage;
 
 class Determinator;
@@ -77,7 +79,12 @@ class XPLRuleManager : public Runnable{
     static const string saveLocation ;
     void loadDeterminators( );
     static XPLRuleManager* m_pInstance;
+    
+    
     Thread eventThread;
+    Timer determinatorEventTimer;
+    Timestamp lastDeterminatorTimeEvent;
+    void timerCallback(Poco::Timer& timer);
 };
 
 #endif //XPLRuleManager_H
