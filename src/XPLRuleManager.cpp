@@ -305,6 +305,8 @@ void XPLRuleManager::run()
             return;
         }
         
+        
+        
         DetetminatorEventNotification::Ptr pWorkNf = pNf.cast<DetetminatorEventNotification>();
         if (pWorkNf)
         {
@@ -317,15 +319,27 @@ void XPLRuleManager::run()
             if (env.envType == DeterminatorEnvironment::xPLMessage) {
                 poco_debug(rulelog, "msg rxed: " + env.message->GetSchemaClass()+ env.message->GetSchemaType());
             }
-            
+            vector<Determinator*> toExecute;
             for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
-                
+             
                 if (dit->second->match(&env))
                 {
                     poco_debug(rulelog, "determinator " + dit->second->getGUID() + "matched");
-                    dit->second->execute(&env);
+                    //if we want to run now
+                    //dit->second->execute(&env);
+                    
+                    //if we want to test all first, then execute
+                    toExecute.push_back(dit->second);
                 }
             }
+            
+            //if we want to test all first, then execute
+            while(toExecute.size()) {
+                (toExecute.back())->execute(&env);
+                toExecute.pop_back();
+            }
+            
+            
             detLock.unlock();
             poco_debug(rulelog, "finished checking determinators");
             continue;
