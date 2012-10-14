@@ -3,6 +3,7 @@
 #include "TimeCondition.h"
 #include "DayCondition.h"
 #include "GlobalCondition.h"
+#include "GlobalChangedCondition.h"
 
 #include "DeterminatorAction.h"
 #include "GlobalAction.h"
@@ -131,6 +132,8 @@ detlog(Logger::get("rulemanager.determinator"))
                 conditions.push_back(new DayCondition(*ait));
             } else if (!strcmp("globalCondition",ait->name())) {
                 conditions.push_back(new GlobalCondition(*ait));
+            } else if (!strcmp("globalChanged",ait->name())) {
+                conditions.push_back(new GlobalChangedCondition(*ait));
             }
         }
         //cout << "\tloaded " << actions.size() << " conditions\n";

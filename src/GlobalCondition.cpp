@@ -71,7 +71,7 @@ bool GlobalCondition::match(DeterminatorEnvironment* env)
             return false;
         }
         
-        cout << "testing " << globalName << " (" << compIntVal << ") " << globalOperator.toString() << " " << curIntVal << std::endl;
+        //cout << "testing " << globalName << " (" << compIntVal << ") " << globalOperator.toString() << " " << curIntVal << std::endl;
         
         //now compare
         if(globalOperator==DeterminatorOperator(DeterminatorOperator::LessThan)) {

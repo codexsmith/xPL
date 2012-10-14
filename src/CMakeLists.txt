@@ -40,7 +40,7 @@ find_library(POCO_UTIL PocoUtil)
 #Sends the -std=c99 flag to the gcc compiler
 #add_definitions(-std=c99)
 #This tells CMake to fib.c and name it fibonacci
-add_executable(xplhallite Determinator.cpp XPLAction.cpp XPLCondition.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp TimeCondition.cpp DayCondition.cpp DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp GlobalAction.cpp GlobalCondition.cpp XHCPServerConnection.cpp determinator-main.cpp)
+add_executable(xplhallite Determinator.cpp XPLAction.cpp XPLCondition.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp TimeCondition.cpp DayCondition.cpp DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp GlobalAction.cpp GlobalCondition.cpp GlobalChangedCondition.cpp XHCPServerConnection.cpp determinator-main.cpp)
 # target_link_libraries (xplhallite pthreadcc)
 # target_link_libraries (xplhallite socketcc)
 # target_link_libraries (xplhallite xPLLib)
