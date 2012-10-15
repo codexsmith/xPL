@@ -1,0 +1,1 @@
+This is an example set of determinators that will increment and decrement a global variable when sensor.basic buttons are pressed, and based on the value of the global, will control lamps via control.basic messages.
