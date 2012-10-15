@@ -57,8 +57,9 @@ GlobalAction::~GlobalAction()
 //on the network.
 void GlobalAction::execute(DeterminatorEnvironment* env)
 {
-    poco_debug(actlog, "Global action executing: " + globalName + " <- " + globalValue);
-    XPLHal::instance().globals->setGlobal(globalName, globalValue);
+    string toSet = env->handleValueReplacement(globalValue);
+    poco_debug(actlog, "Global action executing: " + globalName + " <- " + toSet);
+    XPLHal::instance().globals->setGlobal(globalName, toSet);
 }
 
 

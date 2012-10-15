@@ -27,7 +27,12 @@ public:
     DeterminatorEnvironment ( AutoPtr<xplMsg>  );
     DeterminatorEnvironment ( string globalname  );
     //~XPLRuleManager();
-    // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions
+    
+    string replaceSingleValue(const string input) ;
+    string handleValueReplacement(const string input);
+    
+    
+    // we keep out own copy so that any GlobalActions don't confuse any GlobalConditions //not anymore
     //GlobalManager globals;
     SharedPtr<GlobalManager> globals;
     //populated if a global changed

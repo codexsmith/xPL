@@ -49,7 +49,7 @@ LogAction::~LogAction()
 void LogAction::execute(DeterminatorEnvironment* env)
 {
     //syslog(LOG_INFO, messageText.c_str());
-    poco_warning(actlog, messageText);
+    poco_warning(actlog, env->handleValueReplacement(messageText));
 }
 
 

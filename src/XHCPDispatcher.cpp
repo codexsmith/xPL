@@ -63,11 +63,11 @@
         trimInPlace(rest);
         
         if(!rest.length()) return ("232 Global value updated" + XHCPCRLF);
-        split = rest.find_first_of(" ");
-        string arg1= rest.substr(0,split);
-        
+//         split = rest.find_first_of(" ");
+//         string arg1= rest.substr(0,split);
+//         
         toUpperInPlace(trimInPlace(arg0));
-        hal->globals->setGlobal(arg0,arg1);
+        hal->globals->setGlobal(arg0,rest);
         
         return ("232 Global value updated" + XHCPCRLF);
     }

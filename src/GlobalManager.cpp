@@ -226,7 +226,12 @@ map<string, string> GlobalManager::getGlobals() const {
 }
 
 void GlobalManager::setGlobal(string name, string value) {
+    
+    DeterminatorEnvironment env;
+    env.handleValueReplacement(value);
+    
     globalLock.lock();
+    poco_warning(globallog, "setting " + name + " to " +value); 
     bool changed = false;
     string realName = cleanGlobalName(name);
     if(globalVars[realName] != value) {
