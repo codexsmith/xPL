@@ -1,19 +1,15 @@
 <?xml version="1.0"?>
-<determinator guid="1a8833ba-0acc-11e2-941a-001e0bb57a46" name="lamp12" description="Lamp Control 1-2" enabled="Y" groupName="" isGroup="N">
+<determinator guid="1a8833ba-0acc-11e2-941a-001e0bb57a46" name="lamp1" description="Lamp Control 1" enabled="Y" groupName="" isGroup="N">
 	<input match="all">
-		<xplCondition display_name="test" msg_type="" source_vendor="smgpoe" source_device="lamp" source_instance="3" target_vendor="*" target_device="*" target_instance="*" schema_class="control" schema_type="basic">
-			<param name="device" operator="=" value="button2" />
-			<param name="current" operator="=" value="HIGH" />
-		</xplCondition>
-		<globalCondition display_name="lampstate" name="lampstate" operator="=" value="1" />
+		<globalCondition display_name="lampstatecheck" name="lampstate" operator="=" value="1" />
+		<globalChanged display_name="lampstatechanged" name="lampstate" />
 	</input>
 	<output>
-		<logAction display_name="log lamp" executeOrder="0" logText="Lamp is now at state med" />
+		<logAction display_name="log lamp" executeOrder="0" logText="Lamps are now at state low" />
 		<xplAction display_name="test" executeOrder="001" msg_type="cmnd" msg_target="smgpoe-lamp.3" msg_schema="control.basic">
 			<xplActionParam expression="device=pwm" />
 			<xplActionParam expression="type=variable" />
-			<xplActionParam expression="current=10" />
+			<xplActionParam expression="current=0" />
 		</xplAction>
-		<globalAction display_name="setlampstate" executeOrder="0" name="lampstate" value="2" />
 	</output>
 </determinator>
