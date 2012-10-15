@@ -80,7 +80,7 @@ string DeterminatorEnvironment::replaceSingleValue(const string inputin) {
             if(split != string::npos && (split + 1 < elementindex.size())){
                 string name = elementindex.substr(0,split);
                 string indexstr = elementindex.substr(split);
-                mylog.debug("i: " + name + " : " + elementindex.substr(split));
+                mylog.trace("i: " + name + " : " + elementindex.substr(split));
                 int index = 0;
                 NumberParser::tryParse(indexstr,index);
                 const xplMsgItem* item = message->GetMsgItem(name);
@@ -102,7 +102,7 @@ string DeterminatorEnvironment::replaceSingleValue(const string inputin) {
     } else if ((input.find_first_of("++") == input.length()-2) || (input.find_first_of("--") == input.length()-2)){ //check for "globalname++" and "globalname--"
             Logger &mylog = Logger::get("valuereplacement");
         string globalName = GlobalManager::cleanGlobalName(input.substr(0,input.length()-2));
-        mylog.debug("globalname = " + globalName);
+        mylog.trace("globalname = " + globalName);
         string toRet = globals->getGlobal(globalName);
         int currNumber;
         if (globals->hasGlobal(globalName) && NumberParser::tryParse(toRet,currNumber)) {
@@ -126,7 +126,7 @@ string DeterminatorEnvironment::replaceSingleValue(const string inputin) {
 string DeterminatorEnvironment::handleValueReplacement(const string input) {
     string output = input;
     Logger &mylog = Logger::get("valuereplacement");
-    mylog.debug("input: " + input);
+    mylog.trace("input: " + input);
     
     vector< pair <int,int > > toReplace;
     int lastopen = -1;
@@ -140,12 +140,12 @@ string DeterminatorEnvironment::handleValueReplacement(const string input) {
     }
     
     if(toReplace.size()) {
-        mylog.debug("count: " + NumberFormatter::format(toReplace.size()));
+        mylog.trace("count: " + NumberFormatter::format(toReplace.size()));
         for(vector< pair <int,int > >::iterator it = toReplace.end()-1; it >= toReplace.begin(); --it) {
-            mylog.debug("token: " +  NumberFormatter::format(it->first) + " " + NumberFormatter::format(it->second) + "  " + input.substr(it->first, it->second));
+            mylog.trace("token: " +  NumberFormatter::format(it->first) + " " + NumberFormatter::format(it->second) + "  " + input.substr(it->first, it->second));
             output.replace(it->first, it->second, replaceSingleValue(input.substr(it->first, it->second)) );
         }
-        mylog.debug("output: " + output);
+        mylog.trace("output: " + output);
     }
     return output;
     

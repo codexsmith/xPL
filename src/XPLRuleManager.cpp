@@ -310,7 +310,7 @@ void XPLRuleManager::run()
     {
         pNf = determinatorEventQueue.waitDequeueNotification();
         if(((Notification*) pNf) == NULL) {
-            poco_debug(rulelog, "got quit notification, exiting work thread");
+            poco_trace(rulelog, "got quit notification, exiting work thread");
             return;
         }
         
@@ -320,23 +320,23 @@ void XPLRuleManager::run()
         if (pWorkNf)
         {
             DeterminatorEnvironment env = pWorkNf->env;
-            poco_debug(rulelog, "got a determinatorEventNotification, checking against rules");
+            poco_trace(rulelog, "got a determinatorEventNotification, checking against rules");
             detLock.readLock();
             if (env.envType == DeterminatorEnvironment::globalChanged) {
-                poco_debug(rulelog, "global changed: " + env.globalName);
+                poco_trace(rulelog, "global changed: " + env.globalName);
             }
             if (env.envType == DeterminatorEnvironment::xPLMessage) {
-                poco_debug(rulelog, "msg rxed: " + env.message->GetSchemaClass()+ env.message->GetSchemaType());
+                poco_trace(rulelog, "msg rxed: " + env.message->GetSchemaClass()+ env.message->GetSchemaType());
             }
             if (env.envType == DeterminatorEnvironment::none) {
-                poco_debug(rulelog, "once-per-minute timer fired");
+                poco_trace(rulelog, "once-per-minute timer fired");
             }
             vector<Determinator*> toExecute;
             for(map<string,Determinator*>::iterator dit = determinators->begin(); dit!=determinators->end(); ++dit) {
              
                 if (dit->second->match(&env))
                 {
-                    poco_debug(rulelog, "determinator " + dit->second->getGUID() + "matched");
+                    poco_trace(rulelog, "determinator " + dit->second->getGUID() + " matched");
                     //if we want to run now
                     //dit->second->execute(&env);
                     
@@ -353,13 +353,13 @@ void XPLRuleManager::run()
             
             
             detLock.unlock();
-            poco_debug(rulelog, "finished checking determinators");
+            poco_trace(rulelog, "finished checking determinators");
             continue;
         }
         
         QuitNotification::Ptr pQuitNf = pNf.cast<QuitNotification>();
         if (pQuitNf){
-            poco_debug(rulelog, "got quit notification, exiting work thread");
+            poco_trace(rulelog, "got quit notification, exiting work thread");
             running = false;
         }
     }

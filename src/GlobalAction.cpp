@@ -5,6 +5,8 @@
 #include "GlobalAction.h"
 #include "XPLHal.h"
 #include <syslog.h>
+#include "Poco/NumberParser.h"
+#include "Poco/NumberFormatter.h"
 
 using namespace std;
 
@@ -58,7 +60,21 @@ GlobalAction::~GlobalAction()
 void GlobalAction::execute(DeterminatorEnvironment* env)
 {
     string toSet = env->handleValueReplacement(globalValue);
-    poco_debug(actlog, "Global action executing: " + globalName + " <- " + toSet);
+    
+    if ((toSet.find_first_of("++") == toSet.length()-2) || (toSet.find_first_of("--") == toSet.length()-2)){ //check for "blah++" and "blah--"
+        string pvalue = toSet.substr(0,toSet.length()-2);
+        string iglobalName = globalValue.substr(1,globalValue.length()-4);
+        iglobalName = GlobalManager::cleanGlobalName(iglobalName);
+        int currNumber;
+        if (env->globals->hasGlobal(iglobalName) && NumberParser::tryParse(pvalue,currNumber)) {
+            if((toSet.find_first_of("++") == toSet.length()-2)){
+                toSet = NumberFormatter::format(currNumber+1);
+            }else {
+                toSet = NumberFormatter::format(currNumber-1);
+            }
+        }
+    }
+    poco_trace(actlog, "Global action executing: " + globalName + " <- " + toSet);
     XPLHal::instance().globals->setGlobal(globalName, toSet);
 }
 

@@ -216,11 +216,11 @@ bool GlobalManager::deleteGlobal(string name) {
 
 map<string, string> GlobalManager::getGlobals() const {
     cout << "ommmp " << this<< "   " << &globallog << "\n";
-    poco_warning(globallog, "omp p " +  NumberFormatter::format(this) ); 
+    poco_trace(globallog, "omp p " +  NumberFormatter::format(this) ); 
     globalLock.lock();
-    poco_warning(globallog, "other p " +  NumberFormatter::format(&globalVars) ); 
+    poco_trace(globallog, "other p " +  NumberFormatter::format(&globalVars) ); 
     map<string, string> globalcopy(globalVars);
-    poco_warning(globallog, "count " +  NumberFormatter::format(globalcopy.size()) );   
+    poco_trace(globallog, "count " +  NumberFormatter::format(globalcopy.size()) );   
     globalLock.unlock();
     return globalcopy;
 }
@@ -241,7 +241,7 @@ void GlobalManager::setGlobal(string name, string value) {
     globalLock.unlock();
     
     if(changed){
-        poco_warning(globallog, realName + " changed, firing event");   
+        poco_trace(globallog, realName + " changed, firing event");   
         DeterminatorEnvironment env(realName);
         XPLHal::instance().ruleMgr->match(env);
     }
