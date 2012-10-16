@@ -26,7 +26,6 @@
 
 
 #include "XPLHal.h"
-#include "../../../src/heeks/skeleton/prim.h"
 
 using namespace Poco;
 

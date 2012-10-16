@@ -4,7 +4,6 @@
 #include "XPLCommon.h"
 #include "XPLHal.h"
 #include "xplMsgItem.h"
-#include "../../../src/heeks/skeleton/prim.h"
 #include "Poco/RegularExpression.h"
 #include "Poco/Exception.h"
 #include <Poco/DateTime.h>
