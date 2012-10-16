@@ -106,7 +106,11 @@ void XPLAction::execute(DeterminatorEnvironment* env)
 // @return true if equal.
 bool XPLAction::equals(XPLAction* action)
 {
-    // TODO actually compare here, I guess.
+    if(display_name!=action->display_name) return false;
+    if(executeOrder!=action->executeOrder) return false;
+    if(message!=action->message) return false;
+
+        
 }
 
 //Takes the current Action, and packs it up into XML, appending it all to outputnode.

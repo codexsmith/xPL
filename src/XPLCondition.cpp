@@ -49,7 +49,7 @@ XPLCondition::XPLCondition(pugi::xml_node condnode) {
         failed = true;
     }
     if (condnode.attribute("msg_type")) {
-        msgType_ = condnode.attribute("msg_type").as_int();
+        msgType_ = condnode.attribute("msg_type").as_string();
     } else {
         failed = true;
     }
@@ -137,12 +137,21 @@ bool XPLCondition::match(DeterminatorEnvironment* env)
     
 	XPLAddress sourceAddress = message->GetSource();
 	XPLAddress destinationAddress = message->GetTarget();
-	int hops = message->GetHop();
+  string mType = message->GetType();
+  if(mType.find_first_of("xpl-")==0) {
+      mType = mType.substr(mType.find_first_of("xpl-")+4);
+  }
+  int hops = message->GetHop();
 
-//	bool msgMatch = (msgType_.compare(message->getMsgType()) == 0);
+  Logger& condlog = Logger::get("xplCondition");
+  condlog.trace("source " + sourceAddress_.device + "  " + sourceAddress.device);
+  condlog.trace("dest " + destinationAddress_.device + "  " + destinationAddress.device);
+  condlog.trace("msg " + mType + "  " + msgType_);
+  
+  bool msgMatch = (msgType_.compare(mType) == 0);
 //	bool hopsMatch = (hops_ == hops) || hops_ == NULL;
-//	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0) || sourceAddress == NULL;
-//	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0) || destinationAddress == NULL;
+	bool sourceMatch = (sourceAddress_.vendor.compare(sourceAddress.vendor) == 0) && (sourceAddress_.device.compare(sourceAddress.device) == 0) && (sourceAddress_.instance.compare(sourceAddress.instance) == 0);
+	bool destinationMatch = (destinationAddress_.vendor.compare(destinationAddress.vendor) == 0) && (destinationAddress_.device.compare(destinationAddress.device) == 0) && (destinationAddress_.instance.compare(destinationAddress.instance) == 0);
 	bool membersMatch = true;
   
 	for(int i = 0; i < attributes_.size(); i++)
@@ -166,7 +175,7 @@ bool XPLCondition::match(DeterminatorEnvironment* env)
 		//cout<<"\t\tXPL cond testing: " << memberToFind.member << " =  " << itemp->GetValue(0) << " : true\n";
 	}
 	//cout << "cond matched: " << membersMatch << "\n";
-	return membersMatch;
+	return (msgMatch && sourceMatch && destinationMatch && membersMatch);
 }
 
 //Compares conditions based on the equivalencey of each of their member variables.
