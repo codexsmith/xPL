@@ -1,11 +1,11 @@
 #ifndef DeterminatorCondition_H
 #define DeterminatorCondition_H
 
-#include "XPLCommon.h"
+#include "../XPLCommon.h"
 
 #include <string>
-#include "pugixml/pugixml.hpp"
-#include "DeterminatorEnvironment.h"
+#include "../pugixml/pugixml.hpp"
+#include <DeterminatorEnvironment.h>
 
 using namespace std;
 

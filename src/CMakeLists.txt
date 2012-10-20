@@ -13,6 +13,8 @@ configure_file (
   "${PROJECT_BINARY_DIR}/projconfig.h"
   )
 
+include_directories ("${PROJECT_SOURCE_DIR}")
+
 # add the binary tree to the search path for include files
 # so that we will find TutorialConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
@@ -28,6 +30,9 @@ add_subdirectory (pugixml)
 include_directories ("${PROJECT_SOURCE_DIR}/xPLsdk/src")
 add_subdirectory (xPLsdk/src)
 
+add_subdirectory(conditions)
+add_subdirectory(actions)
+
 find_package (Threads)
 
 add_definitions(-D_DEBUG)
@@ -40,12 +45,14 @@ find_library(POCO_UTIL PocoUtil)
 #Sends the -std=c99 flag to the gcc compiler
 #add_definitions(-std=c99)
 #This tells CMake to fib.c and name it fibonacci
-add_executable(xplhallite Determinator.cpp XPLAction.cpp XPLCondition.cpp XPLParser.cpp XPLRuleManager.cpp LogAction.cpp TimeCondition.cpp DayCondition.cpp DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp GlobalAction.cpp GlobalCondition.cpp GlobalChangedCondition.cpp XHCPServerConnection.cpp determinator-main.cpp)
+add_executable(xplhallite Determinator.cpp  XPLParser.cpp XPLRuleManager.cpp  DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp XHCPServerConnection.cpp determinator-main.cpp)
 # target_link_libraries (xplhallite pthreadcc)
 # target_link_libraries (xplhallite socketcc)
 # target_link_libraries (xplhallite xPLLib)
 target_link_libraries (xplhallite pugixml)
 target_link_libraries (xplhallite xplsdk)
+target_link_libraries(xplhallite conditions)
+target_link_libraries(xplhallite actions)
 target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
 
 target_link_libraries(xplhallite ${POCO_FOUNDATION} ${POCO_NET} ${POCO_XML} ${POCO_UTIL})

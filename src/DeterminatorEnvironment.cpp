@@ -1,6 +1,6 @@
 
 #include "DeterminatorEnvironment.h"
-#include "XPLCondition.h"
+#include "conditions/XPLCondition.h"
 #include "XPLCommon.h"
 #include "XPLHal.h"
 #include "xplMsgItem.h"

@@ -19,9 +19,8 @@
 #include "XPLParser.h"
 #include "XPLRuleManager.h"
 #include "Determinator.h"
-#include "DeterminatorAction.h"
-#include "XPLAction.h"
-#include "XPLCondition.h"
+#include "actions/DeterminatorAction.h"
+#include "conditions/XPLCondition.h"
 #include "Poco/Logger.h"
 
 #include "Poco/ConsoleChannel.h"

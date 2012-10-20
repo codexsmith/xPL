@@ -1,9 +1,8 @@
 #ifndef Determinator_H
 #define Determinator_H
 
-#include "DeterminatorAction.h"
-#include "XPLAction.h"
-#include "XPLCondition.h"
+#include "actions/DeterminatorAction.h"
+#include "conditions/XPLCondition.h"
 #include "xplMsg.h"
 #include "DeterminatorEnvironment.h"
 #include "Poco/Logger.h"
