@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 #Name your project here
 project(xplhallite)
 set (xplhallite_VERSION_MAJOR 1)
-set (xplhallite_VERSION_MINOR 1)
-
+set (xplhallite_VERSION_MINOR 2)
 
 # configure a header file to pass some of the CMake settings
 # to the source code
@@ -15,16 +14,9 @@ configure_file (
 
 include_directories ("${PROJECT_SOURCE_DIR}")
 
-# add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
 include_directories("${PROJECT_BINARY_DIR}")
 
-# include_directories ("${PROJECT_SOURCE_DIR}/pthreadcc")
-# add_subdirectory (pthreadcc)
-# include_directories ("${PROJECT_SOURCE_DIR}/socketcc")
-# add_subdirectory (socketcc)
-# include_directories ("${PROJECT_SOURCE_DIR}/xPLLib")
-# add_subdirectory (xPLLib)
+
 include_directories ("${PROJECT_SOURCE_DIR}/pugixml")
 add_subdirectory (pugixml)
 include_directories ("${PROJECT_SOURCE_DIR}/xPLsdk/src")
@@ -42,17 +34,33 @@ find_library(POCO_NET PocoNet)
 find_library(POCO_XML PocoXML)
 find_library(POCO_UTIL PocoUtil)
 
-#Sends the -std=c99 flag to the gcc compiler
 #add_definitions(-std=c99)
-#This tells CMake to fib.c and name it fibonacci
 add_executable(xplhallite Determinator.cpp  XPLParser.cpp XPLRuleManager.cpp  DeterminatorEnvironment.cpp XHCPDispatcher.cpp XPLHal.cpp GlobalManager.cpp XHCPServerConnection.cpp determinator-main.cpp)
-# target_link_libraries (xplhallite pthreadcc)
-# target_link_libraries (xplhallite socketcc)
-# target_link_libraries (xplhallite xPLLib)
+
+#the old XML library, in-tree
 target_link_libraries (xplhallite pugixml)
+#our XPL library
 target_link_libraries (xplhallite xplsdk)
+#internal subdirs
 target_link_libraries(xplhallite conditions)
 target_link_libraries(xplhallite actions)
-target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
 
+target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
+#we use POCO for just about everything.
 target_link_libraries(xplhallite ${POCO_FOUNDATION} ${POCO_NET} ${POCO_XML} ${POCO_UTIL})
+
+
+
+# add a target to generate API documentation with Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+add_custom_target(doc
+${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+COMMENT "Generating API documentation with Doxygen" VERBATIM
+)
+endif(DOXYGEN_FOUND)
+
+
+

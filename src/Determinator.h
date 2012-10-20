@@ -10,19 +10,20 @@
 
 using namespace std;
 
-class Determinator {
+class Determinator
+{
 public:
     explicit Determinator();
-    explicit Determinator( XPLCondition* condition, DeterminatorAction* action );
-    explicit Determinator( string );
+    explicit Determinator ( XPLCondition* condition, DeterminatorAction* action );
+    explicit Determinator ( string );
     ~Determinator();
-    bool match( DeterminatorEnvironment* env );
-    void execute(DeterminatorEnvironment*);
-    void setEnabled(bool enable);
+    bool match ( DeterminatorEnvironment* env );
+    void execute ( DeterminatorEnvironment* );
+    void setEnabled ( bool enable );
     bool isEnabled();
 //     void setAction(DeterminatorAction* action);
     string printXML();
-    void setGUID(string GUID);
+    void setGUID ( string GUID );
     string getGUID();
     string name;
     string description;
@@ -32,8 +33,8 @@ public:
     string groupName;
     bool matchany;
 //     DeterminatorAction* getAction();
-    static string cleanGUID(string guidin);
-    static string unescape( const string input );
+    static string cleanGUID ( string guidin );
+    static string unescape ( const string input );
 private:
     string GUID_;
     Logger& detlog;

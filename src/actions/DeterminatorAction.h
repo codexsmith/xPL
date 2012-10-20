@@ -7,15 +7,40 @@
 #include "DeterminatorEnvironment.h"
 using namespace std;
 
-class DeterminatorAction {
-  public:
+/**
+ * @brief An action from the determinator XML. This is an action that will be taken when a determinator rule matches.
+ **/
+class DeterminatorAction
+{
+public:
 
-      virtual void execute(DeterminatorEnvironment* env) = 0;
-      virtual void appendAction(pugi::xml_node* outputnode) = 0;
+    /**
+     * @brief Executes the Action.
+     *
+     * @param env An environment passed in, used for things like Global replacement.
+     * @return void
+     **/
+    virtual void execute ( DeterminatorEnvironment* env ) = 0;
+    /**
+     * @brief Outputs this action as Determinator XML
+     *
+     * @param outputnode The node that a logAction element will be added to, usually the output section
+     * @return void
+     **/
+    virtual void appendAction ( pugi::xml_node* outputnode ) = 0;
+
     //bool equals(XPLAction* action);
-      virtual ~DeterminatorAction(){};
-      string display_name;
-      int executeOrder;
+
+    virtual ~DeterminatorAction() {};
+    /**
+     * @brief A friendly name for the determinator
+     *
+     **/
+    string display_name;
+    /**
+     * @brief A number represententing the order that the actions should be executed in within a determinator
+     **/
+    int executeOrder;
 };
 
 #endif //DeterminatorAction_H

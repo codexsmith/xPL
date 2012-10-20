@@ -18,41 +18,47 @@ public:
         Equals,NotEquals,GreaterThan,LessThan,GreaterThanOrEquals,LessThanOrEquals
     };
     Type t_;
-    DeterminatorOperator(): t_(Equals){};
-    DeterminatorOperator(Type t) : t_(t) {};
-    DeterminatorOperator(string in) {
-        if(in=="=")
+    DeterminatorOperator() : t_ ( Equals ) {};
+    DeterminatorOperator ( Type t ) : t_ ( t ) {};
+    DeterminatorOperator ( string in )
+    {
+        if ( in=="=" )
             t_ = Equals;
-        else if(in=="!=")
+        else if ( in=="!=" )
             t_ = NotEquals;
-        else if(in=="<")
+        else if ( in=="<" )
             t_ = LessThan;
-        else if(in==">")
+        else if ( in==">" )
             t_ = GreaterThan;
-        else if(in=="<=")
+        else if ( in=="<=" )
             t_ = LessThanOrEquals;
-        else if(in==">=")
+        else if ( in==">=" )
             t_ = GreaterThanOrEquals;
         else
             t_ = Equals;
     };
-    bool operator==(DeterminatorOperator const &rhs) const {
-        if(t_ ==rhs.t_) return true;
+    bool operator== ( DeterminatorOperator const &rhs ) const
+    {
+        if ( t_ ==rhs.t_ ) return true;
         return false;
     }
-    operator Type () const {return t_;}
-    string toString() {
-        if (t_ == Equals)
+    operator Type () const
+    {
+        return t_;
+    }
+    string toString()
+    {
+        if ( t_ == Equals )
             return "=";
-        else if (t_ == NotEquals)
+        else if ( t_ == NotEquals )
             return "!=";
-        else if (t_ == LessThan)
+        else if ( t_ == LessThan )
             return "<";
-        else if (t_ == GreaterThan)
+        else if ( t_ == GreaterThan )
             return ">";
-        else if (t_ == LessThanOrEquals)
+        else if ( t_ == LessThanOrEquals )
             return "<=";
-        else if (t_ == GreaterThanOrEquals)
+        else if ( t_ == GreaterThanOrEquals )
             return ">=";
         return "=";
     }
@@ -63,22 +69,23 @@ private:
 };
 
 
-class DeterminatorCondition {
-	public:
-      
-    
-      
-		DeterminatorCondition() {};
-		virtual ~DeterminatorCondition() {};
-    virtual bool match(DeterminatorEnvironment*) = 0;
-		//bool equals(DeterminatorCondition* condition);
-		virtual void appendCondition( pugi::xml_node* inputnode ) = 0;
+class DeterminatorCondition
+{
+public:
 
-	protected:
-		
-	private:
-		string display_name;
-		
+
+
+    DeterminatorCondition() {};
+    virtual ~DeterminatorCondition() {};
+    virtual bool match ( DeterminatorEnvironment* ) = 0;
+    //bool equals(DeterminatorCondition* condition);
+    virtual void appendCondition ( pugi::xml_node* inputnode ) = 0;
+
+protected:
+
+private:
+    string display_name;
+
 };
 
 #endif //DeterminatorCondition_H

@@ -7,3 +7,4 @@ set(conditions_source_files
     GlobalChangedCondition.cpp
 )
 add_library(conditions ${conditions_source_files})
+

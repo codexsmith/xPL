@@ -32,7 +32,7 @@ class DetetminatorEventNotification: public Notification
 public:
     typedef AutoPtr<DetetminatorEventNotification> Ptr;
     DeterminatorEnvironment env;
-    DetetminatorEventNotification(DeterminatorEnvironment envin): env(envin){  }
+    DetetminatorEventNotification ( DeterminatorEnvironment envin ) : env ( envin ) {  }
 };
 
 // quit notification sent to make our worked thread quit
@@ -44,47 +44,48 @@ public:
 
 
 
-class XPLRuleManager : public Runnable{
-	public:
+class XPLRuleManager : public Runnable
+{
+public:
 
     static XPLRuleManager& instance();
 
 
-  XPLRuleManager( std::map< string, Determinator* >* determinators );
-  XPLRuleManager( );
+    XPLRuleManager ( std::map< string, Determinator* >* determinators );
+    XPLRuleManager( );
 
-  ~XPLRuleManager();
-  
-  
-  void match(DeterminatorEnvironment& env);
-  std::string detToString();//XHCP support
-  Determinator* retrieveDeterminator(string GUID);
-  //takes ownership
-  void setDeterminator(string GUID, Determinator* detin);
-  bool removeDeterminator(string GUID);
-  bool runDeterminator(string GUID);
-  
-  void saveDeterminators();
-  
-  void run();
-  
-  NotificationQueue determinatorEventQueue;
-  
-  //TODO make these private and give other classes some magic way to touch them
-  RWLock detLock;
-  map< string, Determinator*>* determinators;
-  
-	private:
+    ~XPLRuleManager();
+
+
+    void match ( DeterminatorEnvironment& env );
+    std::string detToString();//XHCP support
+    Determinator* retrieveDeterminator ( string GUID );
+    //takes ownership
+    void setDeterminator ( string GUID, Determinator* detin );
+    bool removeDeterminator ( string GUID );
+    bool runDeterminator ( string GUID );
+
+    void saveDeterminators();
+
+    void run();
+
+    NotificationQueue determinatorEventQueue;
+
+    //TODO make these private and give other classes some magic way to touch them
+    RWLock detLock;
+    map< string, Determinator*>* determinators;
+
+private:
     Logger& rulelog;
     static const string saveLocation ;
     void loadDeterminators( );
     static XPLRuleManager* m_pInstance;
-    
-    
+
+
     Thread eventThread;
     Timer determinatorEventTimer;
     Timestamp lastDeterminatorTimeEvent;
-    void timerCallback(Poco::Timer& timer);
+    void timerCallback ( Poco::Timer& timer );
 };
 
 #endif //XPLRuleManager_H

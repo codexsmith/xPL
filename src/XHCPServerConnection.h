@@ -29,7 +29,7 @@ using Poco::Thread;
 
 using namespace std;
 
-typedef std::string (XHCPDispatcher::*pt2Member)(std::string, SocketStream&);
+typedef std::string ( XHCPDispatcher::*pt2Member ) ( std::string, SocketStream& );
 
 class XHCPServerConnection: public TCPServerConnection
 {
@@ -45,17 +45,18 @@ class XHCPServerConnectionFactory: public TCPServerConnectionFactory
 {
 public:
     XPLHal* hal;
-    XHCPServerConnectionFactory ( XPLHal* halin ) 
+    XHCPServerConnectionFactory ( XPLHal* halin )
     {
-        hal = (halin);
+        hal = ( halin );
     }
-    TCPServerConnection* createConnection(const StreamSocket& socket) {
-        return new XHCPServerConnection ( socket, hal);
+    TCPServerConnection* createConnection ( const StreamSocket& socket )
+    {
+        return new XHCPServerConnection ( socket, hal );
     }
 
 private:
     std::string _format;
-    
+
 };
 
 

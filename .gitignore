@@ -2,6 +2,7 @@
 ###################
 build/*
 bin/*
+doc/*
 CMakeFiles
 Makefile
 CMakeCache*

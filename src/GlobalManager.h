@@ -28,19 +28,19 @@ class GlobalManager
 public:
     GlobalManager();
     ~GlobalManager();
-    
-    GlobalManager& operator=(const GlobalManager&);
-    GlobalManager(const GlobalManager&);
-    
+
+    GlobalManager& operator= ( const GlobalManager& );
+    GlobalManager ( const GlobalManager& );
+
     void saveDeterminators();
-    static string cleanGlobalName(string name );
-    bool hasGlobal(string name);
-    string getGlobal(string name);
-    bool deleteGlobal(string name);
-    
+    static string cleanGlobalName ( string name );
+    bool hasGlobal ( string name );
+    string getGlobal ( string name );
+    bool deleteGlobal ( string name );
+
     //gets a copy
     map<string, string> getGlobals() const;
-    void setGlobal(string name, string value);
+    void setGlobal ( string name, string value );
     void loadGlobals();
     void saveGlobals();
 private:

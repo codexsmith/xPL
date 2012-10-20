@@ -10,23 +10,24 @@
 
 using namespace std;
 
-class GlobalAction : public DeterminatorAction {
-  public:
-    GlobalAction(string name, string globalName, string globalValue);
-    GlobalAction(pugi::xml_node);
+class GlobalAction : public DeterminatorAction
+{
+public:
+    GlobalAction ( string name, string globalName, string globalValue );
+    GlobalAction ( pugi::xml_node );
     ~GlobalAction();
-    void execute(DeterminatorEnvironment* env);
-    void appendAction(pugi::xml_node* outputnode);
-    bool equals(GlobalAction* action);
-    
-    
-  protected:
+    void execute ( DeterminatorEnvironment* env );
+    void appendAction ( pugi::xml_node* outputnode );
+    bool equals ( GlobalAction* action );
 
-  private:
-      string globalName;
-      string globalValue;
-      Logger& actlog;
-    
+
+protected:
+
+private:
+    string globalName;
+    string globalValue;
+    Logger& actlog;
+
 };
 
 #endif //GlobalAction_H

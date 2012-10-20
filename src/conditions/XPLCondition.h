@@ -11,14 +11,15 @@
 using namespace std;
 static const string tabs = "\t\t";
 
-class XPLCondition : public DeterminatorCondition {
+class XPLCondition : public DeterminatorCondition
+{
 public:
-    XPLCondition( std::vector< XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType );
-    XPLCondition(pugi::xml_node);
+    XPLCondition ( std::vector< XPLValuePair>* attributes, XPLAddress sourceAddress, XPLAddress destinationAddress, XPLSchema schema, int hops, string msgType );
+    XPLCondition ( pugi::xml_node );
     XPLCondition();
-    bool match(DeterminatorEnvironment* env);
-    bool equals(XPLCondition* condition);
-    void appendCondition( pugi::xml_node* inputnode );
+    bool match ( DeterminatorEnvironment* env );
+    bool equals ( XPLCondition* condition );
+    void appendCondition ( pugi::xml_node* inputnode );
     string printXML();
 
 protected:

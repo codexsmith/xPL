@@ -17,7 +17,7 @@ XPLParser::XPLParser()
 
 XPLParser::~XPLParser()
 {
-    
+
 }
 
 
@@ -135,10 +135,10 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     }
 
     //Set the schema class/type
-    
-    
+
+
     msg.setSchema(xPL_getSchemaClass(theMessage), xPL_getSchemaType(theMessage));
-    
+
     memberList = xPL_getMessageBody(theMessage);
     for (int i = 0; i < xPL_getNamedValueCount(memberList); i++)
     {
@@ -149,7 +149,7 @@ void XPLParser::recvMsg(xPL_MessagePtr theMessage, xPL_ObjectPtr userValue)
     syslog(LOG_DEBUG , "Received an XPL message: ");
     msg.sendToSyslog();
     syslog(LOG_DEBUG , " " );
-    
+
     /////////// ADD CODE HERE TO PASS MESSAGE TO RULE MANAGER /////////////////
     XPLRuleManager::instance().match(msg);
 

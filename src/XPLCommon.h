@@ -12,7 +12,7 @@ using namespace std;
 
 class XPLValuePair
 {
-    public:
+public:
     string member, value;
 };
 

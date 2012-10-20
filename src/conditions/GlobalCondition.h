@@ -10,13 +10,14 @@
 
 using namespace std;
 
-class GlobalCondition : public DeterminatorCondition {
+class GlobalCondition : public DeterminatorCondition
+{
 public:
-    GlobalCondition( string nameIn, string operatorIn, string valueIn );
-    GlobalCondition(pugi::xml_node);
-    bool match(DeterminatorEnvironment* env);
-    bool equals(GlobalCondition* condition);
-    void appendCondition( pugi::xml_node* inputnode );
+    GlobalCondition ( string nameIn, string operatorIn, string valueIn );
+    GlobalCondition ( pugi::xml_node );
+    bool match ( DeterminatorEnvironment* env );
+    bool equals ( GlobalCondition* condition );
+    void appendCondition ( pugi::xml_node* inputnode );
 protected:
 
 private:

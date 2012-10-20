@@ -26,7 +26,7 @@
 #include "Poco/ConsoleChannel.h"
 #include "Poco/PatternFormatter.h"
 #include "Poco/FormattingChannel.h"
-
+#include "Poco/NumberFormatter.h"
 #include "Poco/Thread.h"
 
 using namespace Poco;
@@ -34,7 +34,7 @@ using namespace Poco;
 //Logger& rootlogger = Logger::root();
 
 //Prototypes
-void* xHCPService(void*);
+void* xHCPService ( void* );
 vector<Determinator>* createDeterminator();
 
 // pthread_t xHCP_thread;
@@ -46,73 +46,76 @@ bool running = true;
 
 //Logger& testLog = Logger::get("rulemanager.determinator.timecondition");
 
-void shutdown_handler(int s){
+void shutdown_handler ( int s )
+{
     Logger& rootlogger = Logger::root();
-    poco_information(rootlogger, "  caught signal" + s);
+    poco_information ( rootlogger, "  caught signal" + s );
 
     running = false;
 }
 
-void setup_singnal_handler() {
+void setup_singnal_handler()
+{
     struct sigaction sigIntHandler;
-    
+
     sigIntHandler.sa_handler = shutdown_handler;
-    sigemptyset(&sigIntHandler.sa_mask);
+    sigemptyset ( &sigIntHandler.sa_mask );
     sigIntHandler.sa_flags = 0;
-    
-    sigaction(SIGINT, &sigIntHandler, NULL);
+
+    sigaction ( SIGINT, &sigIntHandler, NULL );
 }
 
-int main(int argc,const char * argv[])
+int main ( int argc,const char * argv[] )
 {
-    
-    
-    AutoPtr<ConsoleChannel> pCons(new ConsoleChannel);
-    AutoPtr<PatternFormatter> pPF(new PatternFormatter);
+
+
+    AutoPtr<ConsoleChannel> pCons ( new ConsoleChannel );
+    AutoPtr<PatternFormatter> pPF ( new PatternFormatter );
     //pPF->setProperty("pattern", "%p %I-%T %H:%M:%S %s: %t");
     //pPF->setProperty("pattern", "%H:%M:%S %s %I-%T %p: %t");
-    pPF->setProperty("pattern", "%H:%M:%S %s %I %p: %t");
-    AutoPtr<FormattingChannel> pFC(new FormattingChannel(pPF, pCons));
-    
+    pPF->setProperty ( "pattern", "%H:%M:%S %s %I %p: %t" );
+    AutoPtr<FormattingChannel> pFC ( new FormattingChannel ( pPF, pCons ) );
+
     Logger& rootlogger = Logger::root();
     //Logger::root().setChannel(pFC);
-    rootlogger.setChannel(pFC);
-    
-    rootlogger.setLevel("debug");
+    rootlogger.setChannel ( pFC );
 
-     //Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
-     //testLog.setLevel(Message::PRIO_TRACE);
+    rootlogger.setLevel ( "debug" );
 
-    poco_warning(rootlogger, "starting logger");
-    
-    
-    poco_information(rootlogger, "Starting up version 1.1");
-    
-    openlog("xplhallite", LOG_PID, LOG_DAEMON);
-    
+    //Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
+    //testLog.setLevel(Message::PRIO_TRACE);
+
+    poco_warning ( rootlogger, "starting logger" );
+
+
+    poco_information ( rootlogger, "Starting up version " + NumberFormatter::format ( xplhallite_VERSION_MAJOR ) + "." + NumberFormatter::format ( xplhallite_VERSION_MINOR ) );
+
+    openlog ( "xplhallite", LOG_PID, LOG_DAEMON );
+
     //XPLHal& hal = XPLHal::instance();
     XPLHal& hal = XPLHal::createInstance();
     hal.start();
-    
+
     //pthread_create(&xHCP_thread,NULL,&xHCPService, NULL);
-    
-    poco_information(rootlogger, "Main thread created");
-    
+
+    poco_information ( rootlogger, "Main thread created" );
+
     setup_singnal_handler();
     //cout << "rule manager addr: " << ruleMgr << " \n";
     //Source Address
 
-    while(running) {
-        
-        Thread::sleep(1000);
+    while ( running )
+    {
+
+        Thread::sleep ( 1000 );
         //cout << "test app sleeping\n";
-        
+
     }
-  
-  XPLHal::deleteInstance();
-  closelog();
+
+    XPLHal::deleteInstance();
+    closelog();
     return 0;
-   // exit(0);
+    // exit(0);
 }
 
 
@@ -120,7 +123,7 @@ int main(int argc,const char * argv[])
 
 
 //The xHCP thread executes this function
-void* xHCPService(void*)
+void* xHCPService ( void* )
 {
 
     // disxhcp  cDaemon.RunDaemon();

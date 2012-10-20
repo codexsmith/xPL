@@ -7,27 +7,28 @@
 #include "XPLRuleManager.h"
 #include "Poco/SharedPtr.h"
 
-typedef std::string (XHCPDispatcher::*pt2Member)(std::string);
+typedef std::string ( XHCPDispatcher::*pt2Member ) ( std::string );
 class XHCP_Parser
 {
-    public:
-        static XHCP_Parser* Create()
+public:
+    static XHCP_Parser* Create()
+    {
+        if ( !singleton )
         {
-            if(!singleton){
-                singleton = new XHCP_Parser;
-            }
-            return singleton;
+            singleton = new XHCP_Parser;
         }
-        virtual ~XHCP_Parser();
-        void recvMsg(TCPSocket *pcClientSocket, char *msg, int msgSize);
-        void acceptMsg(TCPSocket *pcClientSocket);
+        return singleton;
+    }
+    virtual ~XHCP_Parser();
+    void recvMsg ( TCPSocket *pcClientSocket, char *msg, int msgSize );
+    void acceptMsg ( TCPSocket *pcClientSocket );
 
-    protected:
-    private:
-        std::map<std::string,pt2Member> theMap;
-        static XHCP_Parser* singleton;
-        XHCP_Parser();
-        SharedPtr<XHCPDispatcher> aParser;
+protected:
+private:
+    std::map<std::string,pt2Member> theMap;
+    static XHCP_Parser* singleton;
+    XHCP_Parser();
+    SharedPtr<XHCPDispatcher> aParser;
 
 };
 

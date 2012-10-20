@@ -17,20 +17,21 @@ using namespace std;
 
 
 
-class DayCondition : public DeterminatorCondition {
-    
-    
+class DayCondition : public DeterminatorCondition
+{
+
+
 public:
-    DayCondition(pugi::xml_node);
+    DayCondition ( pugi::xml_node );
     DayCondition();
     ~DayCondition();
-    bool match(DeterminatorEnvironment* env );
-    bool equals(DayCondition* condition);
-    void appendCondition( pugi::xml_node* inputnode );
-    
-    
+    bool match ( DeterminatorEnvironment* env );
+    bool equals ( DayCondition* condition );
+    void appendCondition ( pugi::xml_node* inputnode );
+
+
 protected:
-    
+
 private:
     string display_name;
     vector<bool> days;

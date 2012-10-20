@@ -40,7 +40,7 @@ public:
     static XPLHal& instance();
     static XPLHal& createInstance();
     static void deleteInstance() ;
-    
+
     XPLHal();
     ~XPLHal();
 
@@ -56,9 +56,9 @@ public:
     static Path getConfigFileLocation();
 private:
     xplUDP* myComms;
-    
+
     Logger& hallog;
-    
+
     //xplDevice* pDevice;
     SharedPtr<xplDevice> pDevice;
     SharedPtr<XPLHal> sharedThis;
