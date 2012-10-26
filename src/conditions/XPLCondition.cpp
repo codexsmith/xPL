@@ -189,8 +189,8 @@ bool XPLCondition::match ( DeterminatorEnvironment* env )
 
     bool msgMatch = ( msgType_.compare ( mType ) == 0 );
 //	bool hopsMatch = (hops_ == hops) || hops_ == NULL;
-    bool sourceMatch = ( sourceAddress_.vendor.compare ( sourceAddress.vendor ) == 0 ) && ( sourceAddress_.device.compare ( sourceAddress.device ) == 0 ) && ( sourceAddress_.instance.compare ( sourceAddress.instance ) == 0 );
-    bool destinationMatch = ( destinationAddress_.vendor.compare ( destinationAddress.vendor ) == 0 ) && ( destinationAddress_.device.compare ( destinationAddress.device ) == 0 ) && ( destinationAddress_.instance.compare ( destinationAddress.instance ) == 0 );
+    bool sourceMatch = ( sourceAddress_.match(sourceAddress));
+    bool destinationMatch = ( destinationAddress_.match( destinationAddress));
     bool membersMatch = true;
 
     for ( int i = 0; i < attributes_.size(); i++ )

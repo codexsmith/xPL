@@ -5,6 +5,11 @@ project(xplhallite)
 set (xplhallite_VERSION_MAJOR 1)
 set (xplhallite_VERSION_MINOR 2)
 
+#we can ask do this to try to statically link
+SET(CMAKE_FIND_LIBRARY_SUFFIXES .lib .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
+add_definitions(-DPOCO_STATIC)
+
+
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
