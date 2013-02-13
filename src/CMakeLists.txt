@@ -55,6 +55,10 @@ target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(xplhallite ${POCO_FOUNDATION} ${POCO_NET} ${POCO_XML} ${POCO_UTIL})
 
 
+INSTALL(TARGETS xplhallite
+        DESTINATION "bin"
+        PERMISSIONS OWNER_READ OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
 
 # add a target to generate API documentation with Doxygen
 find_package(Doxygen)
