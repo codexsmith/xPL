@@ -109,7 +109,6 @@ void GlobalManager::loadGlobals()
             Element* rootElem = gDoc->documentElement();
             if ( rootElem->nodeName() != "xPLHalGlobals" )
             {
-                //cout << "something is wrong with the globals root element" << std::endl;
                 poco_warning ( globallog, "something is wrong with the globals root element" );
                 return;
             }
@@ -121,7 +120,6 @@ void GlobalManager::loadGlobals()
                 poco_debug ( globallog, "List of loaded globals:" );
                 if ( pNode->hasAttribute ( "name" ) && pNode->hasAttribute ( "value" ) )
                 {
-                    //std::cout << fromXMLString(pNode->getAttribute("name")) << ":" << fromXMLString(pNode->getAttribute("value")) << std::endl;
                     poco_debug ( globallog, fromXMLString ( pNode->getAttribute ( "name" ) ) + ":" + fromXMLString ( pNode->getAttribute ( "value" ) ) );
                     globalVars[cleanGlobalName ( fromXMLString ( pNode->getAttribute ( "name" ) ) )] = fromXMLString ( pNode->getAttribute ( "value" ) );
                 }
@@ -133,14 +131,14 @@ void GlobalManager::loadGlobals()
         catch ( Poco::XML::SAXParseException e )
         {
             globalLock.unlock();
-            cout << "XML read error" << std::endl;
+            poco_warning ( globallog, "XML read error");
             return;
         }
 
     }
     else
     {
-        poco_notice ( globallog, "GLOBAL vars XML files doesn't exist" );
+        poco_warning ( globallog, "GLOBAL vars XML files doesn't exist" );
     }
     globalLock.unlock();
 }
@@ -163,7 +161,7 @@ void GlobalManager::saveGlobals()
 //     cout << "exist: " <<globalvarfile.exists() << std::endl;
     if ( globalvarfile.exists() && globalvarfile.canWrite() )
     {
-        poco_notice ( globallog, "removing previous save file" );
+        poco_information ( globallog, "removing previous save file" );
         globalvarfile.remove();
     }
     globalvarfile.createFile();
@@ -241,7 +239,6 @@ bool GlobalManager::deleteGlobal ( string name )
 
 map<string, string> GlobalManager::getGlobals() const
 {
-    cout << "ommmp " << this<< "   " << &globallog << "\n";
     poco_trace ( globallog, "omp p " +  NumberFormatter::format ( this ) );
     globalLock.lock();
     poco_trace ( globallog, "other p " +  NumberFormatter::format ( &globalVars ) );
@@ -258,7 +255,7 @@ void GlobalManager::setGlobal ( string name, string value )
     env.handleValueReplacement ( value );
 
     globalLock.lock();
-    poco_warning ( globallog, "setting " + name + " to " +value );
+    poco_notice ( globallog, "setting " + name + " to " +value );
     bool changed = false;
     string realName = cleanGlobalName ( name );
     if ( globalVars[realName] != value )

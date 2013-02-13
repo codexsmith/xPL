@@ -192,7 +192,7 @@ Determinator::Determinator ( string  detin ) :
                 actions.push_back ( new GlobalAction ( *ait ) );
             }
         }
-        poco_notice ( detlog, "Loaded " + NumberFormatter::format ( actions.size() ) + " actions" );
+        poco_information ( detlog, "Loaded " + NumberFormatter::format ( actions.size() ) + " actions" );
     }
 
 
@@ -277,8 +277,7 @@ void Determinator::execute ( DeterminatorEnvironment* env )
 {
     if ( isEnabled() )
     {
-        poco_notice ( detlog, "executing determinator " + GUID_ + ": " + name + ": " + description );
-        //cout << "executing determinator " << GUID_ << ": " << name << ": " << description << "\n";
+        poco_notice ( detlog, "executing determinator " + name + " : " + description );
         for ( vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit )
         {
             ( *dit )->execute ( env );

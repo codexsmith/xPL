@@ -15,6 +15,7 @@
 #include "Poco/String.h"
 #include "XHCPServerConnection.h"
 #include <Poco/Path.h>
+#include <Poco/Net/NetException.h>
 #include <xplMsg.h>
 
 using namespace std;
@@ -25,6 +26,7 @@ using Poco::Net::TCPServerConnectionFactory;
 using Poco::Net::TCPServerConnectionFactoryImpl;
 using Poco::Net::TCPServerParams;
 using Poco::Net::IPAddress;
+using namespace Poco::Net;
 
 XPLHal::XPLHal() :
     hallog ( Logger::get ( "xplhal" ) )
@@ -133,16 +135,19 @@ void XPLHal::startXHCP()
 
 
     ServerSocket sckt ( 3865 );
+    try {
+    //     srv.assign(new TCPServer(new TCPServerConnectionFactoryImpl<XHCPServerConnection>(ruleMgr), sckt));
+    //     cout << "dispactchmaster: " << dispatch << " pt " << dispatch.get() << "\n";
+        poco_debug ( hallog, "XHCP connection listerner set up" );
+        srv.assign ( new TCPServer ( new XHCPServerConnectionFactory ( this ), sckt ) );
+        //TCPServer srv(new XHCPServerConnectionFactory(), sckt);
 
-//     srv.assign(new TCPServer(new TCPServerConnectionFactoryImpl<XHCPServerConnection>(ruleMgr), sckt));
-//     cout << "dispactchmaster: " << dispatch << " pt " << dispatch.get() << "\n";
-    poco_debug ( hallog, "XHCP connection listerner set up" );
-    srv.assign ( new TCPServer ( new XHCPServerConnectionFactory ( this ), sckt ) );
-    //TCPServer srv(new XHCPServerConnectionFactory(), sckt);
-
-    srv->start();
-    poco_debug ( hallog, "XHCP server started at " + sckt.address().toString() );
-//     cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
+        srv->start();
+        poco_debug ( hallog, "XHCP server started at " + sckt.address().toString() );
+    //     cout << "XHCP server started (?) at " << sckt.address().toString() <<  "\n";
+    } catch (NetException & e ) {
+        poco_debug ( hallog, "Failed to start XHCP" );
+    }
 
 }
 

@@ -80,7 +80,8 @@ int main ( int argc,const char * argv[] )
     //Logger::root().setChannel(pFC);
     rootlogger.setChannel ( pFC );
 
-    rootlogger.setLevel ( "debug" );
+    //rootlogger.setLevel ( "trace" );
+    rootlogger.setLevel (Message::PRIO_NOTICE  );
 
     //Logger& testLog = Logger::get("rulemanager.determinator.daycondition");
     //testLog.setLevel(Message::PRIO_TRACE);
