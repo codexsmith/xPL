@@ -40,6 +40,21 @@ public:
     /**
      * @brief A number represententing the order that the actions should be executed in within a determinator
      **/
+    
+    
+    /**
+     * @brief We define these comparison operators so we can sort a vector of actions
+     **/
+    bool operator> (DeterminatorAction &other)
+    {
+        return executeOrder > other.executeOrder;
+    }
+    
+    bool operator< (DeterminatorAction &other)
+    {
+        return executeOrder < other.executeOrder;
+    }
+    
     int executeOrder;
 };
 

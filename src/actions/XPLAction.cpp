@@ -137,8 +137,8 @@ void XPLAction::appendAction ( pugi::xml_node* outputnode )
 {
 
     pugi::xml_node actionnode = outputnode->append_child ( "xplAction" );
-    actionnode.append_attribute ( "display_name" ) = "test";
-    actionnode.append_attribute ( "executeOrder" ) = "001";
+    actionnode.append_attribute ( "display_name" ) = display_name.c_str();
+    actionnode.append_attribute ( "executeOrder" ) = executeOrder;
     actionnode.append_attribute ( "msg_type" ) = message->GetType().substr ( 4 ).c_str(); //message->getMsgType().c_str();
     //XPLAddress destinationAddress = message->GetTarget(); //getDestination();
     actionnode.append_attribute ( "msg_target" ) = message->GetTarget().toString().c_str(); //(destinationAddress.vendor+"."+destinationAddress.device+"."+destinationAddress.instance).c_str();

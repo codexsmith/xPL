@@ -278,6 +278,8 @@ void Determinator::execute ( DeterminatorEnvironment* env )
     if ( isEnabled() )
     {
         poco_notice ( detlog, "executing determinator " + name + " : " + description );
+        //we sort them by executeOrder before running them
+        std::sort(actions.begin(),actions.end());
         for ( vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit )
         {
             ( *dit )->execute ( env );
