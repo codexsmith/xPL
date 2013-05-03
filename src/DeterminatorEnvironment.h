@@ -9,13 +9,13 @@
 #include <string>
 #include "pugixml/pugixml.hpp"
 #include <ctime>
-#include "xplMsg.h"
+#include "XplMsg.h"
 
 using namespace std;
 using namespace Poco;
 using namespace xpl;
 /*
-class xplMsg;*/
+class XplMsg;*/
 
 class DeterminatorEnvironment
 {
@@ -24,7 +24,7 @@ public:
     enum determinatorEventType { xPLMessage, globalChanged, none};
 
     DeterminatorEnvironment();
-    DeterminatorEnvironment ( AutoPtr<xplMsg> );
+    DeterminatorEnvironment ( AutoPtr<XplMsg> );
     DeterminatorEnvironment ( string globalname );
     //~XPLRuleManager();
 
@@ -38,7 +38,7 @@ public:
     //populated if a global changed
     string globalName;
     //populated if a message came in
-    AutoPtr<xplMsg> message;
+    AutoPtr<XplMsg> message;
     Timestamp mtime;
     determinatorEventType envType;
 

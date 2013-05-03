@@ -3,7 +3,7 @@
 
 #include "actions/DeterminatorAction.h"
 #include "conditions/XPLCondition.h"
-#include "xplMsg.h"
+#include "XplMsg.h"
 #include "DeterminatorEnvironment.h"
 #include "Poco/Logger.h"
 #include <vector>

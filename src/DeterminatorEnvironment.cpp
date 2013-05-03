@@ -3,7 +3,7 @@
 #include "conditions/XPLCondition.h"
 #include "XPLCommon.h"
 #include "XPLHal.h"
-#include "xplMsgItem.h"
+#include "XplMsgItem.h"
 #include "Poco/RegularExpression.h"
 #include "Poco/Exception.h"
 #include <Poco/DateTime.h>
@@ -30,7 +30,7 @@ DeterminatorEnvironment::DeterminatorEnvironment()
     globals = XPLHal::instance().globals;
     envType = none;
 }
-DeterminatorEnvironment::DeterminatorEnvironment ( AutoPtr< xplMsg > messagein )
+DeterminatorEnvironment::DeterminatorEnvironment ( AutoPtr< XplMsg > messagein )
 {
     message = messagein;
     time_t stime = time ( 0 );
@@ -113,7 +113,7 @@ string DeterminatorEnvironment::replaceSingleValue ( const string inputin )
                 mylog.trace ( "i: " + name + " : " + elementindex.substr ( split ) );
                 int index = 0;
                 NumberParser::tryParse ( indexstr,index );
-                const xplMsgItem* item = message->GetMsgItem ( name );
+                const XplMsgItem* item = message->GetMsgItem ( name );
                 if ( item == NULL ) return "";
                 string got = item->GetValue ( index );
                 return got;
@@ -123,7 +123,7 @@ string DeterminatorEnvironment::replaceSingleValue ( const string inputin )
 //                 for (int j=0; j< message->GetNumMsgItems(); j++) {
 //                     mylog.debug("msgitem: " + NumberFormatter::format(j) + " = " + message->GetMsgItem(j)->GetName());
 //                 }
-                const xplMsgItem* item = message->GetMsgItem ( elementindex );
+                const XplMsgItem* item = message->GetMsgItem ( elementindex );
                 if ( item == NULL ) return "";
                 string got = item->GetValue ( 0 );
                 return got;

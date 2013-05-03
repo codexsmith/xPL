@@ -171,7 +171,7 @@ bool XPLCondition::match ( DeterminatorEnvironment* env )
     {
         return false;
     }
-    AutoPtr<xplMsg> message = env->message;
+    AutoPtr<XplMsg> message = env->message;
 
     XPLAddress sourceAddress = message->GetSource();
     XPLAddress destinationAddress = message->GetTarget();
@@ -198,7 +198,7 @@ bool XPLCondition::match ( DeterminatorEnvironment* env )
 
         XPLValuePair memberToFind = attributes_.at ( i );
         //string value = message->findMember(memberToFind.member);
-        const xplMsgItem* itemp = message->GetMsgItem ( memberToFind.member );
+        const XplMsgItem* itemp = message->GetMsgItem ( memberToFind.member );
         if ( !itemp )
         {
             //cout<<"\t\tXPL cond testing: " << memberToFind.member << " : false\n";

@@ -10,9 +10,9 @@
 #include "GlobalManager.h"
 
 #include "Poco/SharedPtr.h"
-#include "xplUDP.h"
-#include "xplComms.h"
-#include "xplDevice.h"
+#include "XplUDP.h"
+#include "XplComms.h"
+#include "XplDevice.h"
 #include "XHCPDispatcher.h"
 #include "Poco/Net/TCPServer.h"
 #include "Poco/Logger.h"
@@ -31,7 +31,16 @@ extern "C" {
 using namespace std;
 
 
-
+// The notification sent to us to save our state
+class SaveStateNotification: public Notification 
+{
+public:
+    typedef AutoPtr<SaveStateNotification> Ptr;
+    SaveStateNotification(bool save_determinators, bool save_globals):save_determinators_(save_determinators),save_globals_(save_globals){};
+    SaveStateNotification():save_determinators_(true),save_globals_(true){};
+    bool save_determinators_;
+    bool save_globals_;
+};
 
 
 class XPLHal
@@ -51,18 +60,29 @@ public:
 
     void HandleDeviceMessages ( MessageRxNotification* );
     void HandleAllMessages ( MessageRxNotification* );
-
+    /**
+     * @brief Called when the XPL Hal needs to save out it's state to disk. Can be called from any thread.
+     **/
+    void SaveState ();
+    void SaveStateGlobals ();
+    void SaveStateDeterminators ();
+    void SaveStateLoop();
+    
+    NotificationQueue save_state_request_queue_;
+    
     SharedPtr<GlobalManager> globals;
     static Path getConfigFileLocation();
 private:
-    xplUDP* myComms;
+    XplUDP* myComms;
 
     Logger& hallog;
 
-    //xplDevice* pDevice;
-    SharedPtr<xplDevice> pDevice;
+    //XplDevice* pDevice;
+    SharedPtr<XplDevice> pDevice;
     SharedPtr<XPLHal> sharedThis;
     SharedPtr<TCPServer> srv;
+    RunnableAdapter< XPLHal >* save_adapter_;
+    Thread save_thread_;
     void startXHCP();
 
 };

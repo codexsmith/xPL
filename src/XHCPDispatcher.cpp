@@ -135,7 +135,7 @@ std::string XHCPDispatcher::setRule ( std::string aString , SocketStream& strm )
     }
 
     ruleMgr->setDeterminator ( newdet->getGUID(), newdet );
-
+    
     theString = "238 "  + newdet->getGUID() + XHCPCRLF;
     return theString;
 }

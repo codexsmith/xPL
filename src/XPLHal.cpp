@@ -16,7 +16,7 @@
 #include "XHCPServerConnection.h"
 #include <Poco/Path.h>
 #include <Poco/Net/NetException.h>
-#include <xplMsg.h>
+#include <XplMsg.h>
 
 using namespace std;
 using Poco::Net::ServerSocket;
@@ -49,11 +49,11 @@ void XPLHal::start()
 
     globals->loadGlobals();
 
-    xplUDP::instance()->rxNotificationCenter.addObserver ( Observer<XPLHal, MessageRxNotification> ( *this,&XPLHal::HandleAllMessages ) );
+    XplUDP::instance()->rxNotificationCenter.addObserver ( Observer<XPLHal, MessageRxNotification> ( *this,&XPLHal::HandleAllMessages ) );
 
-    poco_debug ( hallog, "xplUDP created" );
-    //pDevice = xplDevice( "smgpoe", "xplhal", "1.2", true, true, myComms );
-    pDevice.assign ( new xplDevice ( "smgpoe", "xplhal", "1.2", true, true, xplUDP::instance() ) );
+    poco_debug ( hallog, "XplUDP created" );
+    //pDevice = XplDevice( "smgpoe", "xplhal", "1.2", true, true, myComms );
+    pDevice.assign ( new XplDevice ( "smgpoe", "xplhal", "1.2", true, XplUDP::instance() ) );
     if ( NULL == pDevice )
     {
         poco_error ( hallog, "no device" );
@@ -62,6 +62,10 @@ void XPLHal::start()
 
     pDevice->rxNotificationCenter.addObserver ( Observer<XPLHal, MessageRxNotification> ( *this,&XPLHal::HandleDeviceMessages ) );
 
+    save_adapter_ = new RunnableAdapter<XPLHal> ( *this,&XPLHal::SaveStateLoop );
+    save_thread_.setName ( "Save state loop" );
+    save_thread_.start ( *save_adapter_ );
+    
     pDevice->Init();
 
     startXHCP();
@@ -73,7 +77,9 @@ XPLHal::~XPLHal()
 {
     poco_debug ( hallog, "destroying xplHal" );
     srv->stop();
-    globals->saveGlobals();
+    SaveState();
+    save_state_request_queue_.enqueueNotification(new QuitNotification());
+    save_thread_.join();
 
 }
 
@@ -122,6 +128,45 @@ void XPLHal::HandleAllMessages ( MessageRxNotification* mNot )
 
 }
 
+void XPLHal::SaveStateLoop()
+{
+    while(1){
+        
+        AutoPtr<Notification> notification = save_state_request_queue_.waitDequeueNotification();
+        
+        SaveStateNotification::Ptr pSaveNf = notification.cast<SaveStateNotification>();
+        if ( pSaveNf )
+        {
+            poco_trace ( hallog, "saving changes to disk" );
+            if(pSaveNf->save_globals_)
+                globals->saveGlobals();
+            if(pSaveNf->save_determinators_)
+                saveDeterminators();
+            continue;
+        }
+
+        QuitNotification::Ptr pQuitNf = notification.cast<QuitNotification>();
+        if ( pQuitNf )
+        {
+            poco_trace ( hallog, "got quit notification, exiting work thread" );
+            return;
+        }
+    }
+}
+
+
+void XPLHal::SaveState()
+{
+    save_state_request_queue_.enqueueNotification(new SaveStateNotification());
+}
+void XPLHal::SaveStateDeterminators()
+{
+    save_state_request_queue_.enqueueNotification(new SaveStateNotification(true,false));
+}
+void XPLHal::SaveStateGlobals()
+{
+    save_state_request_queue_.enqueueNotification(new SaveStateNotification(false,true));
+}
 
 void XPLHal::saveDeterminators ( void )
 {

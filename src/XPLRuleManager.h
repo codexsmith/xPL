@@ -6,7 +6,7 @@
 #include <map>
 #include "Determinator.h"
 #include "XPLCommon.h"
-#include "xplMsg.h"
+#include "XplMsg.h"
 #include "Poco/RWLock.h"
 #include "Poco/Logger.h"
 #include "Poco/NumberFormatter.h"

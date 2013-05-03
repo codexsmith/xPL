@@ -271,7 +271,7 @@ void GlobalManager::setGlobal ( string name, string value )
         DeterminatorEnvironment env ( realName );
         XPLHal::instance().ruleMgr->match ( env );
     }
-
+    XPLHal::instance().SaveStateGlobals();
 
 }
 

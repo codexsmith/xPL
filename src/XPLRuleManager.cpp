@@ -149,6 +149,7 @@ void XPLRuleManager::setDeterminator ( string GUID, Determinator* detin )
     poco_debug ( rulelog, "Modified " + ( *determinators ) [GUID]->name );
 //     cout << "Rulemgr: modified " << (*determinators)[GUID]->name << "\n";
     detLock.unlock();
+    XPLHal::instance().SaveStateDeterminators();
 }
 
 bool XPLRuleManager::removeDeterminator ( string GUID )
@@ -179,6 +180,7 @@ bool XPLRuleManager::removeDeterminator ( string GUID )
         return true;
     }*/
     detLock.unlock();
+    XPLHal::instance().SaveStateDeterminators();
 
     poco_notice ( rulelog, "determinator " + GUID + "doesn't exist, so not deleting\n" );
     return false;

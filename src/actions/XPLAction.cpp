@@ -4,8 +4,8 @@
 
 #include "XPLAction.h"
 #include "XPLParser.h"
-#include <xplComms.h>
-#include <xplUDP.h>
+#include <XplComms.h>
+#include <XplUDP.h>
 
 using namespace std;
 
@@ -74,7 +74,7 @@ XPLAction::XPLAction ( pugi::xml_node actionnode ) :
         failed = true;
     }
 
-    message = new xplMsg ( type_str, source_str, target_str, schemaClass_str, schemaType_str );
+    message = new XplMsg ( type_str, source_str, target_str, schemaClass_str, schemaType_str );
 
 //     cout << "target: " << target_str << "\n";
 
@@ -114,7 +114,7 @@ XPLAction::XPLAction ( pugi::xml_node actionnode ) :
 void XPLAction::execute ( DeterminatorEnvironment* env )
 {
     //XPLParser::instance().sendMsg(message); //FIXME
-    xplUDP* comm = xplUDP::instance();
+    XplUDP* comm = XplUDP::instance();
     comm->TxMsg ( *message );
     poco_information ( actlog, "Action \"" + display_name + "\" sending a message" );
     poco_trace ( actlog, message->GetRawData() );

@@ -4,7 +4,7 @@
 #include <vector>
 #include "DeterminatorAction.h"
 #include "pugixml/pugixml.hpp"
-#include "xplMsg.h"
+#include "XplMsg.h"
 #include "Poco/Logger.h"
 #include "Poco/NumberFormatter.h"
 //#include "DeterminatorEnvironment.h"
@@ -23,7 +23,7 @@ public:
     void appendAction ( pugi::xml_node* outputnode );
     bool equals ( XPLAction* action );
     //XPLMessage message;
-    AutoPtr<xplMsg> message;
+    AutoPtr<XplMsg> message;
     Logger& actlog;
 
 };
