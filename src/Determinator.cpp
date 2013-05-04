@@ -22,6 +22,14 @@
 
 using namespace Poco;
 
+//used to sort our vector of ponters
+struct det_action_less {
+    bool operator()( DeterminatorAction const *lhs, DeterminatorAction const *rhs ) const
+    { return  lhs->executeOrder <  rhs->executeOrder; }
+};
+
+
+
 //default constructor
 Determinator::Determinator() :
     detlog ( Logger::get ( "rulemanager.determinator" ) )
@@ -43,10 +51,12 @@ Determinator::Determinator ( XPLCondition* condition, DeterminatorAction* action
     enabled_ = true;
 }
 
+
+
 Determinator::Determinator ( string  detin ) :
     detlog ( Logger::get ( "rulemanager.determinator" ) )
 {
-
+//     detlog.setLevel("trace");
     poco_debug ( detlog, "Creating determinator from xml." );
     //cout << "create determinator from xml: " << this << " \n" ;
     pugi::xml_document doc;
@@ -195,7 +205,9 @@ Determinator::Determinator ( string  detin ) :
         poco_information ( detlog, "Loaded " + NumberFormatter::format ( actions.size() ) + " actions" );
     }
 
-
+    std::sort(actions.begin(),actions.end(),det_action_less());
+    poco_notice ( detlog, "sorted " + NumberFormatter::format(actions.size()) + " actions.");
+    
 
 }
 
@@ -279,7 +291,7 @@ void Determinator::execute ( DeterminatorEnvironment* env )
     {
         poco_notice ( detlog, "executing determinator " + name + " : " + description );
         //we sort them by executeOrder before running them
-        std::sort(actions.begin(),actions.end());
+         std::sort(actions.begin(),actions.end(),det_action_less());
         for ( vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit )
         {
             ( *dit )->execute ( env );
@@ -357,7 +369,8 @@ string Determinator::printXML()
 
     for ( vector<DeterminatorAction*>::iterator dit = actions.begin(); dit != actions.end(); ++dit )
     {
-
+        poco_notice ( detlog, "saving action in det " + name + " : " + NumberFormatter::format( (*dit)->executeOrder ));
+        
         ( *dit )->appendAction ( &outputnode );
     }
 

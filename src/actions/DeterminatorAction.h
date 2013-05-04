@@ -45,12 +45,12 @@ public:
     /**
      * @brief We define these comparison operators so we can sort a vector of actions
      **/
-    bool operator> (DeterminatorAction &other)
+    const bool operator> (const DeterminatorAction &other)
     {
         return executeOrder > other.executeOrder;
     }
     
-    bool operator< (DeterminatorAction &other)
+    const bool operator< (const DeterminatorAction &other)
     {
         return executeOrder < other.executeOrder;
     }

@@ -14,7 +14,7 @@ using namespace std;
 XPLAction::XPLAction() :
     actlog ( Logger::get ( "rulemanager.determinator.xplaction" ) )
 {
-
+    actlog.setLevel("trace");
 }
 
 //A constructor that builds the XPLAction from XML, passed in from the Action node down.
