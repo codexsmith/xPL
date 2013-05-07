@@ -251,7 +251,7 @@ void XPLCondition::appendCondition ( pugi::xml_node* inputnode )
 
     pugi::xml_node condnode = inputnode->append_child ( "xplCondition" );
 
-    condnode.append_attribute ( "display_name" ) = "test";
+    condnode.append_attribute ( "display_name" ) = display_name.c_str();
     condnode.append_attribute ( "msg_type" ) = msgType_.c_str();
 
     condnode.append_attribute ( "source_vendor" ) = sourceAddress_.vendor.c_str();
