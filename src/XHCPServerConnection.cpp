@@ -49,6 +49,8 @@ XHCPServerConnection::XHCPServerConnection ( const StreamSocket& s , XPLHal* hal
     theMap["LISTDEVICES"]= &XHCPDispatcher::listDevices;
     theMap["LISTSUBS"]= &XHCPDispatcher::listSubs;
     theMap["QUIT"]= &XHCPDispatcher::quit;
+    
+    theMap["ADDEVENT"]= &XHCPDispatcher::addEvent;
 
     hal = ( halin );
     cout << "dispactchconinit: " << hal << "\n";

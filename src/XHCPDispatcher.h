@@ -41,6 +41,8 @@ public:
     std::string listSubs ( std::string aString , SocketStream& strm );
     std::string listOptions ( std::string  , SocketStream& strm );
     std::string quit ( std::string  , SocketStream& strm );
+    std::string addEvent ( std::string  , SocketStream& strm );
+    
 private:
     std::string name;
     XPLHal* hal;
