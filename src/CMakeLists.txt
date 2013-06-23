@@ -49,6 +49,7 @@ target_link_libraries (xplhallite xplsdk)
 #internal subdirs
 target_link_libraries(xplhallite conditions)
 target_link_libraries(xplhallite actions)
+target_link_libraries(xplhallite events)
 
 target_link_libraries (xplhallite ${CMAKE_THREAD_LIBS_INIT})
 #we use POCO for just about everything.
@@ -73,3 +74,5 @@ endif(DOXYGEN_FOUND)
 
 
 
+
+add_subdirectory(events)

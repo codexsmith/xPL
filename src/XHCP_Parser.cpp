@@ -10,6 +10,7 @@ XHCP_Parser::XHCP_Parser()
     theMap["LISTRULES"] = &XHCPDispatcher::listRules;
     theMap["DELRULE"]= &XHCPDispatcher::deleteRule;
     theMap["CAPABILITIES"]= &XHCPDispatcher::capCommand;
+    
 
 }
 

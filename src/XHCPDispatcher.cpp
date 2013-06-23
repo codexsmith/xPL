@@ -2,6 +2,7 @@
 #include "XPLRuleManager.h"
 #include "Poco/String.h"
 #include "XPLHal.h"
+#include "events/XHCPEvent.h"
 
 
 
@@ -300,4 +301,36 @@ std::string XHCPDispatcher::quit ( std::string aString , SocketStream& strm )
     string ret = "221 Closing transmission channel - goodbye." + XHCPCRLF;
     return ret;
 }
-
+std::string XHCPDispatcher::addEvent ( std::string aString , SocketStream& strm )
+{
+    
+    int split = aString.find_first_of ( " " );
+    string arg = aString.substr ( 0,split );
+    toUpperInPlace ( trimInPlace ( arg ) );
+    string ret;
+    cout << "arg is " << arg << "\n";
+    
+    std::string theString = "319 Enter event data, end with <CrLf>.<CrLf>" + XHCPCRLF;
+    cout << theString;
+    strm << theString;
+    strm.flush();
+    
+    string line  = "";
+    string evttxt = "";
+    
+    while ( line != "." )
+    {
+        evttxt += line + "\n";
+        getline ( strm,line );
+        trimInPlace ( line );
+    }
+    
+    cout << "evt: " << evttxt << "::\n";
+    XHCPEvent evt = XHCPEvent(evttxt);
+    
+    cout << "evt:" + evt.getDescription() + "\n";
+    
+    
+    theString = "219 Event added successfully" + XHCPCRLF;
+    return theString;
+}
